@@ -22,6 +22,7 @@ class NCLoginView : NCBaseView{
   
   //MARK: Fields
   private var scrollView: UIScrollView?
+  private var contentViewHeightConstraint: Constraint?
   private var contentView: UIView?
   
   private var topGradientView : NCGradientView?
@@ -45,6 +46,17 @@ class NCLoginView : NCBaseView{
     super.didInit()
     setup()
     setupConstraints()
+  }
+  
+  override func layoutSubviews() {
+    guard let contentViewHeightConstraint = self.contentViewHeightConstraint,
+          let scrollView = self.scrollView,
+          contentViewHeightConstraint.constant == 0 else { return }
+    
+    self.layoutIfNeeded()
+    self.setNeedsLayout()
+    
+    contentViewHeightConstraint.constant = scrollView.frame.height
   }
   
   
@@ -207,9 +219,17 @@ class NCLoginView : NCBaseView{
     
     let TOP_OFFSET = (UIScreen.main.bounds.height * 30 ) / 100
     
-    scrollView.edgesToSuperview()
-    contentView.edgesToSuperview()
-    contentView.width(to: scrollView)
+    //Height of the contentView is decided scroll View(same as scroll view)
+    //by since scroll view size changes as the keyboard comes up by the
+    //but the size of contentview must remain same as so setting the size of the
+    //content view equal to the scroll only once when content view height == 0
+    //Setting in the layoutSubviews() method
+    scrollView.edgesToSuperview()//Edge to SuperView
+    contentView.edgesToSuperview()//Edge to SuperView
+    contentViewHeightConstraint = contentView.height(0)//Currently zero but will set to same as scrollview height but only once in layoutSubviews()
+    contentView.width(to: scrollView)//Should be equal to scroll View
+    
+    //In this method the the bottom label position is decide by the content View
     
     topGradientView.edgesToSuperview(excluding: .bottom)
     topGradientView.height(TOP_OFFSET)
@@ -258,8 +278,8 @@ class NCLoginView : NCBaseView{
     fbBtn.edgesToSuperview()
     
     bottomLblStack.centerXToSuperview()
-    bottomLblStack.topToSuperview(offset : UIScreen.main.bounds.height - LoginConstant.BOTTOM_LABEL_BOTTOM_OFF)
-    bottomLblStack.bottom(to: contentView)
+//    bottomLblStack.topToSuperview(offset : UIScreen.main.bounds.height - LoginConstant.BOTTOM_LABEL_BOTTOM_OFF)
+    bottomLblStack.bottom(to: contentView, offset : -20)
   }
   
   

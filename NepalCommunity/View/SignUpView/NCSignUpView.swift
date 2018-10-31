@@ -244,9 +244,12 @@ class NCSignUpView : NCBaseView{
     
     let TOP_OFFSET = (UIScreen.main.bounds.height * 30 ) / 100
     
+    
+    //Height of the contentView is decidec by the bottom view i.e signupbtn
     scrollView.edgesToSuperview()
     contentView.edgesToSuperview()
     contentView.width(to: scrollView)
+    //In this method the height of the content view is decided by the bottom signupBottom
     
     topGradientView.edgesToSuperview(excluding: .bottom)
     topGradientView.height(TOP_OFFSET)

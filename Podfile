@@ -11,4 +11,5 @@ target 'NepalCommunity' do
 	pod 'Firebase/Core'
   
   pod 'TinyConstraints'
+  pod 'NVActivityIndicatorView'
 end

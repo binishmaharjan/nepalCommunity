@@ -30,6 +30,8 @@
 		ACB249142186E353008B510E /* NCAccountType.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACB249132186E353008B510E /* NCAccountType.swift */; };
 		ACB249162187F2C3008B510E /* NCEmailSignUp.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACB249152187F2C3008B510E /* NCEmailSignUp.swift */; };
 		ACB2491A2187F77B008B510E /* NCDatebaseWrite.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACB249192187F77B008B510E /* NCDatebaseWrite.swift */; };
+		ACB2491C21893852008B510E /* NCActivityIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACB2491B21893852008B510E /* NCActivityIndicator.swift */; };
+		ACB2491E21896956008B510E /* NCDropDownNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACB2491D21896955008B510E /* NCDropDownNotification.swift */; };
 		ACCC08AC2180140100D6391A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACCC08AB2180140100D6391A /* AppDelegate.swift */; };
 		ACCC08B62180140500D6391A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = ACCC08B42180140500D6391A /* LaunchScreen.storyboard */; };
 		ACCC08BE218018DC00D6391A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = ACCC08BD218018DC00D6391A /* GoogleService-Info.plist */; };
@@ -62,6 +64,8 @@
 		ACB249132186E353008B510E /* NCAccountType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCAccountType.swift; sourceTree = "<group>"; };
 		ACB249152187F2C3008B510E /* NCEmailSignUp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCEmailSignUp.swift; sourceTree = "<group>"; };
 		ACB249192187F77B008B510E /* NCDatebaseWrite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCDatebaseWrite.swift; sourceTree = "<group>"; };
+		ACB2491B21893852008B510E /* NCActivityIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCActivityIndicator.swift; sourceTree = "<group>"; };
+		ACB2491D21896955008B510E /* NCDropDownNotification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCDropDownNotification.swift; sourceTree = "<group>"; };
 		ACCC08A82180140100D6391A /* d_NepalCommunity.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = d_NepalCommunity.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		ACCC08AB2180140100D6391A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		ACCC08B52180140500D6391A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -144,7 +148,6 @@
 				AC1EDCB0218147C60089C7AF /* NCFont.swift */,
 				AC1EDCB2218148AC0089C7AF /* NCColors.swift */,
 				AC1EDCB421814F380089C7AF /* NCNotificationManager.swift */,
-				ACA50A802185F88900B2040A /* NCGradientView.swift */,
 			);
 			path = Utility;
 			sourceTree = "<group>";
@@ -198,7 +201,10 @@
 		ACA50A8A2186AA8000B2040A /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				ACA50A802185F88900B2040A /* NCGradientView.swift */,
+				ACB2491B21893852008B510E /* NCActivityIndicator.swift */,
 				ACA50A8B2186AA8800B2040A /* Button */,
+				ACB2491D21896955008B510E /* NCDropDownNotification.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -343,6 +349,7 @@
 				"${BUILT_PRODUCTS_DIR}/BoringSSL/openssl.framework",
 				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
 				"${BUILT_PRODUCTS_DIR}/GoogleUtilities/GoogleUtilities.framework",
+				"${BUILT_PRODUCTS_DIR}/NVActivityIndicatorView/NVActivityIndicatorView.framework",
 				"${BUILT_PRODUCTS_DIR}/Protobuf/Protobuf.framework",
 				"${BUILT_PRODUCTS_DIR}/TinyConstraints/TinyConstraints.framework",
 				"${BUILT_PRODUCTS_DIR}/gRPC/GRPCClient.framework",
@@ -358,6 +365,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/openssl.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMSessionFetcher.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleUtilities.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/NVActivityIndicatorView.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Protobuf.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TinyConstraints.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GRPCClient.framework",
@@ -402,6 +410,7 @@
 				ACA50A872186A1FE00B2040A /* NCSignUpViewController.swift in Sources */,
 				ACA50A812185F88900B2040A /* NCGradientView.swift in Sources */,
 				AC1EDCC921829D450089C7AF /* NCViewController.swift in Sources */,
+				ACB2491E21896956008B510E /* NCDropDownNotification.swift in Sources */,
 				ACA50A8F2186AB0B00B2040A /* NCImageButtonView.swift in Sources */,
 				AC1EDCB521814F380089C7AF /* NCNotificationManager.swift in Sources */,
 				ACB249162187F2C3008B510E /* NCEmailSignUp.swift in Sources */,
@@ -414,6 +423,7 @@
 				ACB2491A2187F77B008B510E /* NCDatebaseWrite.swift in Sources */,
 				ACA50A7D2182B8CB00B2040A /* UIButton+Animation.swift in Sources */,
 				ACA50A912186AD7F00B2040A /* NCTextButton.swift in Sources */,
+				ACB2491C21893852008B510E /* NCActivityIndicator.swift in Sources */,
 				ACB249142186E353008B510E /* NCAccountType.swift in Sources */,
 				ACA50A932186AF4100B2040A /* Array+extension.swift in Sources */,
 				AC1EDCCD2182A1220089C7AF /* UIView+Draw.swift in Sources */,

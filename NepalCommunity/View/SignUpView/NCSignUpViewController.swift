@@ -11,7 +11,7 @@ import TinyConstraints
 import Firebase
 import FirebaseAuth
 import FirebaseFirestore
-
+import NVActivityIndicatorView
 
 class NCSignUpViewController: NCViewController{
   //MARK: Main View
@@ -84,35 +84,42 @@ extension NCSignUpViewController: NCButtonDelegate, NCEmailSignUpProtocol, NCDat
           let password = passwordField.text,
           let email = emailField.text else { return }
     if username.count <= 0{
-      Dlog("Input Error")
+      NCDropDownNotification.shared.showError(message: LOCALIZE("Error : Empty Fields"))
       return
     }
     if password.count <= 0{
-      Dlog("Input Error")
+      NCDropDownNotification.shared.showError(message: LOCALIZE("Error : Empty Fields"))
       return
     }
     if email.count <= 0{
-      Dlog("Input Error")
+      NCDropDownNotification.shared.showError(message: LOCALIZE("Error : Empty Fields"))
       return
     }
     
+    NCActivityIndicator.shared.start(view: self.view)
     //Registering User with email
     self.registerEmail(email: email, password: password, username: username) { (userId, error) in
       if let error = error{
         Dlog(error.localizedDescription)
+        NCActivityIndicator.shared.stop()
+        NCDropDownNotification.shared.showError(message: LOCALIZE("Error : \(error.localizedDescription)"))
         return
       }
       guard let userId = userId else {
-        Dlog("No User")
+        NCActivityIndicator.shared.stop()
+        NCDropDownNotification.shared.showError(message: LOCALIZE("Error : Sign Up Error"))
         return
       }
       //Writing the data to the database
       self.writeEmailUser(userId: userId, username: username, iconUrl: "Icon_URl", completion: { (error) in
         if let error = error{
-          Dlog(error.localizedDescription)
+          NCActivityIndicator.shared.stop()
+          NCDropDownNotification.shared.showError(message: LOCALIZE("Error : \(error.localizedDescription)"))
           return
         }
         self.navigationController?.popViewController(animated: true)
+        NCActivityIndicator.shared.stop()
+        NCDropDownNotification.shared.showSuccess(message: LOCALIZE("Account Successfully Created"))
       })
     }
   }
