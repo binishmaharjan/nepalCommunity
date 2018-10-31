@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>AD_UNIT_ID_FOR_BANNER_TEST</key>
+	<string>ca-app-pub-3940256099942544/2934735716</string>
+	<key>AD_UNIT_ID_FOR_INTERSTITIAL_TEST</key>
+	<string>ca-app-pub-3940256099942544/4411468910</string>
+	<key>CLIENT_ID</key>
+	<string>681951406004-4ol2lui7n7k2gqurg39ifv2lfvoh6qlj.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.681951406004-4ol2lui7n7k2gqurg39ifv2lfvoh6qlj</string>
+	<key>API_KEY</key>
+	<string>AIzaSyARHCW4qbZl78SCJYQ7p23IbTODV4QpQyk</string>
+	<key>GCM_SENDER_ID</key>
+	<string>681951406004</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.jec.17cm0219.NepalCommunity.dev</string>
+	<key>PROJECT_ID</key>
+	<string>nepalcommunity-dev</string>
+	<key>STORAGE_BUCKET</key>
+	<string>nepalcommunity-dev.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<true></true>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<false></false>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:681951406004:ios:897d0cdc2fdef698</string>
+	<key>DATABASE_URL</key>
+	<string>https://nepalcommunity-dev.firebaseio.com</string>
+</dict>
+</plist>
