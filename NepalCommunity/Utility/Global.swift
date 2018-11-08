@@ -6,7 +6,7 @@
 //  Copyright © 2018年 guest. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 
 #if DEBUG
@@ -44,6 +44,8 @@ func LOCALIZE(_ text: String) -> String{
   return NSLocalizedString(text, comment: "")
 }
 
+let appDelegate = UIApplication.shared.delegate as! AppDelegate
+
 class DatabaseReference{
   static let USERS_REF = "users"
   static let USER_ID = "uid"
@@ -52,4 +54,9 @@ class DatabaseReference{
   static let DOB = "dob"
   static let ACCOUNT_TYPE = "account_type"
   static let DATE_CREATED = "date_created"
+}
+
+class StorageReference{
+  static let USER_PROFILE = "user_profile"
+  static let PROFILE_IMAGE = "profile_image.jpg"
 }
