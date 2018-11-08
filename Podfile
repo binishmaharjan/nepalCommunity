@@ -12,4 +12,5 @@ target 'NepalCommunity' do
   
   pod 'TinyConstraints'
   pod 'NVActivityIndicatorView'
+  pod 'Gallery'
 end

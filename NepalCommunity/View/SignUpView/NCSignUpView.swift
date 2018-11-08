@@ -36,7 +36,7 @@ class NCSignUpView : NCBaseView{
 
   //Icon
   private var iconViewBG : UIView?
-  private var iconView : UIImageView?
+  var iconView : UIImageView?
   var cameraIcon : NCImageButtonView?
   
   //Fields
@@ -111,7 +111,7 @@ class NCSignUpView : NCBaseView{
     iconViewBG.addSubview(iconView)
     iconView.backgroundColor = NCColors.white
     iconView.image = UIImage(named: "icon_default")
-    iconView.contentMode = .scaleAspectFit
+    iconView.contentMode = .scaleAspectFill
     iconView.clipsToBounds = true
     
     let cameraIcon = NCImageButtonView()
