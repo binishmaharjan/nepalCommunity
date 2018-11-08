@@ -13,6 +13,7 @@ import FirebaseAuth
 import FirebaseFirestore
 import NVActivityIndicatorView
 import Gallery
+import FirebaseStorage
 
 class NCSignUpViewController: NCViewController{
   //MARK: Main View
@@ -64,7 +65,7 @@ class NCSignUpViewController: NCViewController{
 
 
 //MARK: Button Delegate
-extension NCSignUpViewController: NCButtonDelegate, NCEmailSignUpProtocol, NCDatabaseWriteProtocol{
+extension NCSignUpViewController: NCButtonDelegate, NCEmailSignUpProtocol, NCDatabaseWriteProtocol, NCStorage{
   func buttonViewTapped(view: NCButtonView) {
     if view == mainView?.backBtn{
       self.navigationController?.popViewController(animated: true)
@@ -106,21 +107,40 @@ extension NCSignUpViewController: NCButtonDelegate, NCEmailSignUpProtocol, NCDat
         NCDropDownNotification.shared.showError(message: LOCALIZE("Error : \(error.localizedDescription)"))
         return
       }
+      //User id after account is successfully created
       guard let userId = userId else {
         NCActivityIndicator.shared.stop()
         NCDropDownNotification.shared.showError(message: LOCALIZE("Error : Sign Up Error"))
         return
       }
-      //Writing the data to the database
-      self.writeEmailUser(userId: userId, username: username, iconUrl: "Icon_URl", completion: { (error) in
+      
+      //Uploading the image to the storage
+      guard let image = self.mainView?.iconView?.image else{
+         NCActivityIndicator.shared.stop()
+        Dlog("No Profile Image")
+        NCDropDownNotification.shared.showError(message: LOCALIZE("Error Occured!"))
+        return
+      }
+      
+      self.saveImageToStorage(image: image, userId: userId, completion: { (url, error) in
         if let error = error{
-          NCActivityIndicator.shared.stop()
+          Dlog(error.localizedDescription)
+           NCActivityIndicator.shared.stop()
           NCDropDownNotification.shared.showError(message: LOCALIZE("Error : \(error.localizedDescription)"))
           return
         }
-        self.navigationController?.popViewController(animated: true)
-        NCActivityIndicator.shared.stop()
-        NCDropDownNotification.shared.showSuccess(message: LOCALIZE("Account Successfully Created"))
+        
+        //Write the data to the database
+        self.writeEmailUser(userId: userId, username: username, iconUrl: url!, completion: { (error) in
+          if let error = error{
+            NCActivityIndicator.shared.stop()
+            NCDropDownNotification.shared.showError(message: LOCALIZE("Error : \(error.localizedDescription)"))
+            return
+          }
+          self.navigationController?.popViewController(animated: true)
+          NCActivityIndicator.shared.stop()
+          NCDropDownNotification.shared.showSuccess(message: LOCALIZE("Account Successfully Created"))
+        })
       })
     }
   }
@@ -179,6 +199,36 @@ extension NCSignUpViewController : GalleryControllerDelegate{
   func galleryController(_ controller: GalleryController, didSelectImages images: [Image]) {
     images[0].resolve(completion: { (image) in
       self.mainView?.iconView?.image = image
+      
+      
+//      let profileImageFromPicker = image
+//      let metaData = StorageMetadata()
+//      metaData.contentType = "image/jpeg"
+//
+//      let imageData : Data = (profileImageFromPicker?.jpegData(compressionQuality: 0.5))!
+//
+//      let store = Storage.storage()
+//      let userID = "AHNSHD76sHS"
+//
+//      let storeRef = store.reference().child("user_profile/\(userID)/profile_photo.jpg")
+//      NCActivityIndicator.shared.start(view: self.view)
+//      let _ = storeRef.putData(imageData, metadata: metaData){(metaData, error) in
+//        NCActivityIndicator.shared.stop()
+//        guard let _  = metaData else {
+//          Dlog("error: \(error.debugDescription)")
+//          return
+//        }
+//
+//        storeRef.downloadURL(completion: { (url, error) in
+//          guard  let url = url else {
+//            Dlog(error?.localizedDescription)
+//            return
+//          }
+//          Dlog(url)
+//        })
+//      }
+//
+      
     })
     controller.dismiss(animated: true, completion: nil)
   }
