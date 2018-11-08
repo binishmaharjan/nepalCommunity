@@ -12,6 +12,7 @@ import Firebase
 import FirebaseAuth
 import FirebaseFirestore
 import NVActivityIndicatorView
+import Gallery
 
 class NCSignUpViewController: NCViewController{
   //MARK: Main View
@@ -70,7 +71,7 @@ extension NCSignUpViewController: NCButtonDelegate, NCEmailSignUpProtocol, NCDat
     }else if view == mainView?.signUpBtn{
       emailSignUp()
     }else if view == mainView?.cameraIcon{
-      Dlog("Camera Icon Pressed")
+      self.presentPicker()
     }
   }
   
@@ -163,5 +164,37 @@ extension NCSignUpViewController{
       self.view.layoutIfNeeded()
     })
   }
+}
+
+extension NCSignUpViewController : GalleryControllerDelegate{
+  
+  private func presentPicker(){
+    let gallery = GalleryController()
+    gallery.delegate = self
+    Config.tabsToShow = [.imageTab]
+    Config.Camera.imageLimit = 1
+    present(gallery, animated: true, completion: nil)
+  }
+  
+  func galleryController(_ controller: GalleryController, didSelectImages images: [Image]) {
+    images[0].resolve(completion: { (image) in
+      self.mainView?.iconView?.image = image
+    })
+    controller.dismiss(animated: true, completion: nil)
+  }
+  
+  func galleryController(_ controller: GalleryController, didSelectVideo video: Video) {
+    
+  }
+  
+  func galleryController(_ controller: GalleryController, requestLightbox images: [Image]) {
+    
+  }
+  
+  func galleryControllerDidCancel(_ controller: GalleryController) {
+    controller.dismiss(animated: true, completion: nil)
+  }
+  
+  
 }
 
