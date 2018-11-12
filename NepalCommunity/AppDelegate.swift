@@ -8,6 +8,7 @@
 
 import UIKit
 import Firebase
+import FBSDKCoreKit
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -19,12 +20,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     //Setting up initial windows
     window = UIWindow(frame: UIScreen.main.bounds)
     window?.makeKeyAndVisible()
-    window?.rootViewController = UINavigationController(rootViewController: NCLoginViewController())
+    window?.rootViewController = UINavigationController(rootViewController: HomeViewController())
     
     //Firebase Server
-    setupFirebaseServer()
+    setupFirebaseServer(application,launchOptions)
     
     return true
+  }
+  
+  func application(_ application: UIApplication, open url: URL, sourceApplication: String?, annotation: Any) -> Bool {
+    return FBSDKApplicationDelegate.sharedInstance().application(application, open: url, sourceApplication: sourceApplication, annotation: annotation)
   }
   
 }
@@ -32,7 +37,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 //MARK: Firebase Server Setup
 extension AppDelegate{
-  private func setupFirebaseServer(){
+  private func setupFirebaseServer(_ application : UIApplication, _ launchOptions: [UIApplication.LaunchOptionsKey: Any]?){
     var firebasePlistName = ""
     
     if IS_DEBUG {
@@ -42,6 +47,7 @@ extension AppDelegate{
     }
     if let path = Bundle.main.path(forResource: firebasePlistName, ofType: "plist"), let firbaseOptions = FirebaseOptions(contentsOfFile: path) {
       FirebaseApp.configure(options: firbaseOptions)
+      FBSDKApplicationDelegate.sharedInstance()?.application(application, didFinishLaunchingWithOptions: launchOptions)
     }
   }
 }
