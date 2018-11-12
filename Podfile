@@ -10,8 +10,11 @@ target 'NepalCommunity' do
 	pod 'Firebase/Firestore'
 	pod 'Firebase/Core'
   pod 'Firebase/Storage'
+  pod 'FacebookCore'
+  pod 'FacebookLogin'
   
   pod 'TinyConstraints'
   pod 'NVActivityIndicatorView'
   pod 'Gallery'
+  pod 'SwiftyJSON'
 end

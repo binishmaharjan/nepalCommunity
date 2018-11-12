@@ -8,6 +8,10 @@
 
 import UIKit
 import TinyConstraints
+import FacebookCore
+import FacebookLogin
+import FirebaseAuth
+import SwiftyJSON
 
 
 class NCLoginViewController: NCViewController{
@@ -60,19 +64,80 @@ class NCLoginViewController: NCViewController{
 }
 
 //MARK: Button Delegate
-extension NCLoginViewController : NCLoginViewDelegate, NCButtonDelegate{
+extension NCLoginViewController : NCLoginViewDelegate, NCButtonDelegate, NCSignUp, NCDatabaseWrite, NCStorage{
   func buttonViewTapped(view: NCButtonView) {
     if view == mainView?.signInBtn{
       Dlog("Sign In")
-    }else if view == mainView?.fbBtn{
-      Dlog("FB Sign in")
+    }else if view == mainView?.fbBtn{//Facebook Login
+      //Start the indicator
+      NCActivityIndicator.shared.start(view: self.view)
+      //Register with Facebook
+      self.registerWithFacebook(viewController: self) { (error) in
+        if let error = error {
+          NCActivityIndicator.shared.stop()
+          NCDropDownNotification.shared.showError(message: error.localizedDescription)
+          return
+        }
+        //If successful, login with the facebook
+        self.loginWithFacebook(completion: { (error) in
+          if let error = error {
+            NCActivityIndicator.shared.stop()
+            NCDropDownNotification.shared.showError(message: error.localizedDescription)
+            return
+          }
+          //Get the information form the facebook
+          self.fetchFacebookUser(completion: { (name, uid, email, image, error) in
+            if let error = error {
+              NCActivityIndicator.shared.stop()
+              NCDropDownNotification.shared.showError(message: error.localizedDescription)
+              return
+            }
+            
+            guard let name = name,
+              let uid = uid,
+              let _ = email,
+              let image = image else {
+                NCActivityIndicator.shared.stop()
+                NCDropDownNotification.shared.showError(message: "Fetch Error")
+                return
+            }
+            //Once image is downloaded, save the image to the storage
+            self.saveImageToStorage(image: image, userId: uid, completion: { (url, error) in
+              if let error = error {
+                NCActivityIndicator.shared.stop()
+                NCDropDownNotification.shared.showError(message: error.localizedDescription)
+                return
+              }
+              
+              guard let url = url else {
+                NCActivityIndicator.shared.stop()
+                NCDropDownNotification.shared.showError(message: "URL Error")
+                return
+              }
+              
+              //If save is successful,write the user info to the database
+              self.writeFacebookUser(userId: uid, username: name, iconUrl: url, completion: { (error) in
+                if let error = error {
+                  NCActivityIndicator.shared.stop()
+                  NCDropDownNotification.shared.showError(message: error.localizedDescription)
+                  return
+                }
+                NCActivityIndicator.shared.stop()
+                self.dismiss(animated: true, completion: nil)
+              })
+            })
+          })
+        })
+      }
     }
   }
   
+  //Sign up new email user button is pressed
   func signUpButtonPressed() {
     let vc = NCSignUpViewController()
     self.navigationController?.pushViewController(vc, animated: true)
   }
+  
 }
 
 //MARK: Notification

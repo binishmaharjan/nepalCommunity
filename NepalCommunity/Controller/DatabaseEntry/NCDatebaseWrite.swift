@@ -9,17 +9,33 @@
 import Foundation
 import Firebase
 
-protocol NCDatabaseWriteProtocol{
+protocol NCDatabaseWrite{
   func writeEmailUser(userId : String, username: String,iconUrl : String, completion : ((_ error: Error?)->())? )
 }
 
 
-extension NCDatabaseWriteProtocol{
+extension NCDatabaseWrite{
   func writeEmailUser(userId: String, username: String, iconUrl: String, completion: ((Error?) -> ())?) {
     Firestore.firestore().collection(DatabaseReference.USERS_REF).document(userId).setData([
       DatabaseReference.USER_ID : userId,
       DatabaseReference.USERNAME : username,
       DatabaseReference.ACCOUNT_TYPE : NCAccountType.email.rawValue,
+      DatabaseReference.DATE_CREATED : Date(),
+      DatabaseReference.ICON_URL : iconUrl
+    ]) { (error) in
+      if let error = error{
+        completion?(error)
+      }else{
+        completion?(nil)
+      }
+    }
+  }
+  
+  func writeFacebookUser(userId: String, username: String, iconUrl: String, completion: ((Error?) -> ())?) {
+    Firestore.firestore().collection(DatabaseReference.USERS_REF).document(userId).setData([
+      DatabaseReference.USER_ID : userId,
+      DatabaseReference.USERNAME : username,
+      DatabaseReference.ACCOUNT_TYPE : NCAccountType.facebook.rawValue,
       DatabaseReference.DATE_CREATED : Date(),
       DatabaseReference.ICON_URL : iconUrl
     ]) { (error) in

@@ -17,32 +17,38 @@ protocol NCStorage{
 
 extension NCStorage{
   func saveImageToStorage(image : UIImage, userId : String,completion: ((String?, Error?) -> ())?){
-    //Profile IMage 
+    //Profile Image (Downloaded from facebook or user upploaded)
     let profileImage = image
     let metaData = StorageMetadata()
-    metaData.contentType = "image/jpeg"
+    metaData.contentType = "image/jpeg" // Meta type for the data
     
-    let imageData : Data = profileImage.jpegData(compressionQuality: 0.5)!
+    let imageData : Data = profileImage.jpegData(compressionQuality: 0.5)!//Converted to JPEG WIth Compression Quality 0.5
     
-    let store = Storage.storage()
-    let user = Auth.auth().currentUser
+    let store = Storage.storage()//Access to the storage
+    let user = Auth.auth().currentUser//Current Login User
     if let user = user{
-      let storeRef = store.reference().child("\(StorageReference.USER_PROFILE)/\(user.uid)/\(StorageReference.PROFILE_IMAGE)")
+      let storeRef = store.reference().child("\(StorageReference.USER_PROFILE)/\(user.uid)/\(StorageReference.PROFILE_IMAGE)")//Reference to the user profile images file.if file is not available new file will be created
       
-      let _ = storeRef.putData(imageData, metadata: metaData) { (metadata, error) in
-        guard let _  = metadata else{
-          completion?(nil,error)
-          return
-        }
-        
-        storeRef.downloadURL(completion: { (url, error) in
-          guard let url = url else {
+      //Saving the data to the storage
+      DispatchQueue.main.async {
+        let _ = storeRef.putData(imageData, metadata: metaData) { (metadata, error) in
+          guard let _  = metadata else{
             completion?(nil,error)
             return
           }
-          completion?(url.absoluteString,error)
-        })
+          
+          //Getting the url after storing the data to the storage
+          storeRef.downloadURL(completion: { (url, error) in
+            guard let url = url else {
+              completion?(nil,error)
+              return
+            }
+            //returning the url to save in the database
+            completion?(url.absoluteString,error)
+          })
+        }
       }
+     
     }
   }
 }
