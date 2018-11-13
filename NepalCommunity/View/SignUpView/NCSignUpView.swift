@@ -10,12 +10,10 @@ import UIKit
 import TinyConstraints
 
 class NCSignUpView : NCBaseView{
-
+  
   //MARK: Fields
   private var scrollView: UIScrollView?
   private var contentView: UIView?
-  
-  private var topGradientView : NCGradientView?
   
   //MARK: Delegate
   var delegate: NCButtonDelegate?{
@@ -33,44 +31,30 @@ class NCSignUpView : NCBaseView{
   private let BACK_C_X:CGFloat = 12.0
   weak var backBtn:NCImageButtonView?
   private weak var border:UIView?
-
+  
   //Icon
-  private var iconViewBG : UIView?
   var iconView : UIImageView?
   var cameraIcon : NCImageButtonView?
   
   //Fields
+  private var usernameTitle : UILabel?
   private var usernameFieldBG : UIView?
-  private var usernameIcon: UIImageView?
   var usernameField: UITextField?
+  private var passwordTitle: UILabel?
   private var passwordFieldBG: UIView?
-  private var passwordIcon : UIImageView?
   var passwordField: UITextField?
+  private var emailTitle :UILabel?
   private var emailFieldBG : UIView?
-  private var emailIcon : UIImageView?
   var emailField :UITextField?
   private weak var signUpBtnBG :NCGradientView?
   weak var signUpBtn: NCTextButton?
-
+  
   
   //MARK: Methods
   override func didInit() {
     super.didInit()
     setup()
     setupConstraints()
-  }
-  
-  private func setupHeaderConstraints(){
-    guard let header = self.header,
-      let backBtn = self.backBtn else { return }
-    
-    header.topToSuperview()
-    header.leftToSuperview()
-    header.rightToSuperview()
-    header.height(HEADER_H)
-    
-    backBtn.centerYToSuperview()
-    backBtn.leftToSuperview(offset: BACK_C_X)
   }
   
   private func setup(){
@@ -88,30 +72,14 @@ class NCSignUpView : NCBaseView{
     self.contentView = contentView
     scrollView.addSubview(contentView)
     
-    //GradientView
-    let topGradientView = NCGradientView(
-      colors: [NCColors.red.cgColor, NCColors.lightRed.cgColor, NCColors.white.cgColor],
-      cornerRadius: SignUpConstants.CORNER_RADIUS_ZERO,
-      startPoint: CGPoint(x: 0, y: 0),
-      endPoint: CGPoint(x:0, y:1)
-    )
-    
-    self.topGradientView = topGradientView
-    contentView.addSubview(topGradientView)
-    
-    //Icon
-    let iconViewBG = UIView()
-    self.iconViewBG = iconViewBG
-    contentView.addSubview(iconViewBG)
-    iconViewBG.backgroundColor = NCColors.lightRed
-    iconViewBG.dropShadow()
-    
     let iconView = UIImageView()
     self.iconView = iconView
-    iconViewBG.addSubview(iconView)
+    contentView.addSubview(iconView)
     iconView.backgroundColor = NCColors.white
     iconView.image = UIImage(named: "icon_default")
     iconView.contentMode = .scaleAspectFill
+    iconView.layer.borderColor = NCColors.gray.cgColor
+    iconView.layer.borderWidth = 5
     iconView.clipsToBounds = true
     
     let cameraIcon = NCImageButtonView()
@@ -133,82 +101,95 @@ class NCSignUpView : NCBaseView{
     header.addSubview(backBtn)
     self.backBtn = backBtn
     
+    let titleLabel = UILabel()
+    self.titleLbl = titleLabel
+    titleLabel.text = LOCALIZE("Sign Up")
+    titleLabel.font = NCFont.normal(size: 18)
+    titleLabel.textColor = NCColors.blue
+    header.addSubview(titleLabel)
+    
     
     //Username
+    let usernameTitle = UILabel()
+    self.usernameTitle = usernameTitle
+    usernameTitle.font = NCFont.normal(size: SignUpConstants.FONT_SIZE)
+    usernameTitle.textColor = NCColors.black
+    usernameTitle.text = LOCALIZE("Your fullname")
+    contentView.addSubview(usernameTitle)
+    
     let usernameFieldBG = UIView()
     self.usernameFieldBG = usernameFieldBG
     usernameFieldBG.backgroundColor = NCColors.white
-    usernameFieldBG.layer.cornerRadius = SignUpConstants.CORNER_RADIUS
-    usernameFieldBG.dropShadow()
+    usernameFieldBG.layer.cornerRadius = SignUpConstants.CORNER_RADIUS_ZERO
     contentView.addSubview(usernameFieldBG)
-    
-    let usernameIcon = UIImageView()
-    self.usernameIcon = usernameIcon
-    usernameIcon.contentMode = .scaleAspectFit
-    usernameIcon.image = UIImage(named: "icon_user")
-    usernameFieldBG.addSubview(usernameIcon)
     
     let usernameField = UITextField()
     self.usernameField = usernameField
     usernameField.backgroundColor = NCColors.white
-    usernameField.placeholder = LOCALIZE("USERNAME")
+    usernameField.placeholder = LOCALIZE("Fullname")
     usernameField.font = NCFont.normal(size: SignUpConstants.FONT_SIZE)
+    usernameFieldBG.layer.borderColor = NCColors.gray.cgColor
+    usernameFieldBG.layer.borderWidth = 2
     usernameFieldBG.addSubview(usernameField)
     usernameField.delegate = self
     
     //Password
+    let passwordTitle = UILabel()
+    self.passwordTitle = passwordTitle
+    passwordTitle.font = NCFont.normal(size: SignUpConstants.FONT_SIZE)
+    passwordTitle.textColor = NCColors.black
+    passwordTitle.text = LOCALIZE("Password")
+    contentView.addSubview(passwordTitle)
+    
     let passwordFieldBG = UIView()
     self.passwordFieldBG = passwordFieldBG
     passwordFieldBG.backgroundColor = NCColors.white
-    passwordFieldBG.layer.cornerRadius = SignUpConstants.CORNER_RADIUS
-    passwordFieldBG.dropShadow()
+    passwordFieldBG.layer.cornerRadius = SignUpConstants.CORNER_RADIUS_ZERO
+    passwordFieldBG.layer.borderColor = NCColors.gray.cgColor
+    passwordFieldBG.layer.borderWidth = 2
     contentView.addSubview(passwordFieldBG)
-    
-    let passwordIcon = UIImageView()
-    self.passwordIcon = passwordIcon
-    passwordIcon.contentMode = .scaleAspectFit
-    passwordIcon.image = UIImage(named: "icon_lock")
-    passwordFieldBG.addSubview(passwordIcon)
     
     let passwordField = UITextField()
     self.passwordField = passwordField
     passwordField.backgroundColor = NCColors.white
-    passwordField.placeholder = LOCALIZE("PASSWORD")
+    passwordField.placeholder = LOCALIZE("Password")
     passwordField.font = NCFont.normal(size: SignUpConstants.FONT_SIZE)
     passwordFieldBG.addSubview(passwordField)
     passwordField.delegate = self
     
     //Email
+    let emailTitle = UILabel()
+    self.emailTitle = emailTitle
+    emailTitle.font = NCFont.normal(size: SignUpConstants.FONT_SIZE)
+    emailTitle.textColor = NCColors.black
+    emailTitle.text = LOCALIZE("Your email address")
+    contentView.addSubview(emailTitle)
+    
     let emailFieldBG = UIView()
     self.emailFieldBG = emailFieldBG
     emailFieldBG.backgroundColor = NCColors.white
-    emailFieldBG.layer.cornerRadius = SignUpConstants.CORNER_RADIUS
-    emailFieldBG.dropShadow()
+    emailFieldBG.layer.cornerRadius = SignUpConstants.CORNER_RADIUS_ZERO
+    emailFieldBG.layer.borderColor = NCColors.gray.cgColor
+    emailFieldBG.layer.borderWidth = 2
     contentView.addSubview(emailFieldBG)
-    
-    let emailIcon = UIImageView()
-    self.emailIcon = emailIcon
-    emailIcon.contentMode = .scaleAspectFit
-    emailIcon.image = UIImage(named: "icon_mail")
-    emailFieldBG.addSubview(emailIcon)
     
     let emailField = UITextField()
     self.emailField = emailField
     emailField.backgroundColor = NCColors.white
-    emailField.placeholder = LOCALIZE("EMAIL")
+    emailField.placeholder = LOCALIZE("Email")
     emailField.font = NCFont.normal(size: SignUpConstants.FONT_SIZE)
     emailFieldBG.addSubview(emailField)
     emailField.delegate = self
     
     //SignIn Button
     let signUpBtnBG = NCGradientView(
-      colors: [NCColors.red.cgColor, NCColors.lightRed.cgColor],
-      cornerRadius: SignUpConstants.CORNER_RADIUS,
+      colors: [NCColors.blue.cgColor, NCColors.blue.cgColor],
+      cornerRadius: SignUpConstants.CORNER_RADIUS_ZERO,
       startPoint: CGPoint(x: 0, y: 0),
       endPoint: CGPoint(x:1, y:0)
     )
     self.signUpBtnBG = signUpBtnBG
-    signUpBtnBG.layer.cornerRadius = SignUpConstants.CORNER_RADIUS
+    signUpBtnBG.layer.cornerRadius = SignUpConstants.CORNER_RADIUS_ZERO
     signUpBtnBG.dropShadow()
     contentView.addSubview(signUpBtnBG)
     
@@ -223,36 +204,29 @@ class NCSignUpView : NCBaseView{
   
   private func setupConstraints(){
     guard let passwordFieldBG = self.passwordFieldBG,
-      let passwordIcon = self.passwordIcon,
+      let passwordTitle = self.passwordTitle,
       let passwordField = self.passwordField,
       let usernameFieldBG = self.usernameFieldBG,
       let usernameField = self.usernameField,
-      let usernameIcon = self.usernameIcon,
+      let  usernameTitle = self.usernameTitle,
       let signUpBtnBg = self.signUpBtnBG,
       let signUpBtn = self.signUpBtn,
       let emailFieldBG = self.emailFieldBG,
-      let emailIcon = self.emailIcon,
+      let emailTitle = self.emailTitle,
       let emailField  = self.emailField,
       let scrollView = self.scrollView,
       let contentView = self.contentView,
       let header = self.header,
+      let titleLbl = self.titleLbl,
       let backBtn = self.backBtn,
-      let iconViewBG = self.iconViewBG,
       let iconView = self.iconView,
-      let cameraIcon = self.cameraIcon,
-      let topGradientView = self.topGradientView else { return }
+      let cameraIcon = self.cameraIcon  else { return }
     
-    let TOP_OFFSET = (UIScreen.main.bounds.height * 30 ) / 100
-    
-    
-    //Height of the contentView is decidec by the bottom view i.e signupbtn
+    //Height of the contentView is decided by the bottom view i.e signupbtn
     scrollView.edgesToSuperview()
     contentView.edgesToSuperview()
     contentView.width(to: scrollView)
     //In this method the height of the content view is decided by the bottom signupBottom
-    
-    topGradientView.edgesToSuperview(excluding: .bottom)
-    topGradientView.height(TOP_OFFSET)
     
     header.topToSuperview()
     header.leftToSuperview()
@@ -262,67 +236,53 @@ class NCSignUpView : NCBaseView{
     backBtn.centerYToSuperview()
     backBtn.leftToSuperview(offset: BACK_C_X)
     
-    iconViewBG.centerX(to: topGradientView)
-    iconViewBG.width(SignUpConstants.ICON_WIDTH)
-    iconViewBG.height(to: iconViewBG,iconViewBG.widthAnchor)
-    iconViewBG.centerY(to: topGradientView)
+    titleLbl.centerInSuperview()
     
-    iconView.centerInSuperview()
-    iconView.widthToSuperview(offset: -SignUpConstants.ICON_OFF)
-    iconView.height(to: iconView, iconView.widthAnchor)
+    iconView.topToBottom(of: header, offset: 16)
+    iconView.centerXToSuperview()
+    iconView.width(SignUpConstants.ICON_WIDTH)
+    iconView.height(to:iconView, iconView.widthAnchor)
     
-    iconViewBG.setNeedsLayout()
-    iconViewBG.layoutIfNeeded()
     iconView.setNeedsLayout()
     iconView.layoutIfNeeded()
     
-    iconViewBG.layer.cornerRadius = iconViewBG.bounds.width / 2
     iconView.layer.cornerRadius = iconView.bounds.width / 2
     
     cameraIcon.width(SignUpConstants.CAMERA_ICON_WIDTH)
     cameraIcon.height(to: cameraIcon, cameraIcon.widthAnchor)
-    cameraIcon.right(to: iconViewBG)
-    cameraIcon.bottom(to: iconViewBG)
+    cameraIcon.right(to: iconView)
+    cameraIcon.bottom(to: iconView)
     
-    usernameFieldBG.topToBottom(of: topGradientView, offset: SignUpConstants.TOP_GRADIENT_BOTTOM_OFF)
+    usernameTitle.topToBottom(of: iconView, offset: SignUpConstants.TOP_GRADIENT_BOTTOM_OFF)
+    usernameTitle.leftToSuperview(offset : SignUpConstants.SIDE_OFF)
+    
+    usernameFieldBG.topToBottom(of: usernameTitle, offset: 6)
     usernameFieldBG.leftToSuperview(offset : SignUpConstants.SIDE_OFF)
     usernameFieldBG.rightToSuperview(offset : -SignUpConstants.SIDE_OFF)
     usernameFieldBG.height(SignUpConstants.FIELD_HEIGHT)
     
-    usernameIcon.leftToSuperview(offset : SignUpConstants.USER_ICON_LEFT_OFF)
-    usernameIcon.centerYToSuperview()
-    usernameIcon.width(SignUpConstants.USER_ICON_WIDTH)
-    usernameIcon.height(to: usernameIcon, usernameIcon.widthAnchor)
-    
-    usernameField.leftToRight(of: usernameIcon, offset: SignUpConstants.USER_ICON_RIGHT_OFF)
-    usernameField.edgesToSuperview(excluding: .left, insets: UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 5))
+    usernameField.edgesToSuperview(insets: UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16))
     
     
-    passwordFieldBG.topToBottom(of: usernameFieldBG, offset: SignUpConstants.FIELD_TOP_OFF)
+    passwordTitle.topToBottom(of: usernameFieldBG, offset: SignUpConstants.FIELD_TOP_OFF)
+    passwordTitle.leftToSuperview(offset : SignUpConstants.SIDE_OFF)
+    
+    passwordFieldBG.topToBottom(of: passwordTitle, offset: 6)
     passwordFieldBG.left(to: usernameFieldBG)
     passwordFieldBG.right(to: usernameFieldBG)
     passwordFieldBG.height(to: usernameFieldBG)
     
-    passwordIcon.leftToSuperview(offset : SignUpConstants.USER_ICON_LEFT_OFF)
-    passwordIcon.centerYToSuperview()
-    passwordIcon.width(SignUpConstants.USER_ICON_WIDTH)
-    passwordIcon.height(to: passwordIcon, passwordIcon.widthAnchor)
+    passwordField.edgesToSuperview(insets: UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16))
     
-    passwordField.leftToRight(of: usernameIcon, offset: SignUpConstants.USER_ICON_RIGHT_OFF)
-    passwordField.edgesToSuperview(excluding: .left, insets: UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 5))
+    emailTitle.topToBottom(of: passwordFieldBG, offset: SignUpConstants.FIELD_TOP_OFF)
+    emailTitle.leftToSuperview(offset : SignUpConstants.SIDE_OFF)
     
-    emailFieldBG.topToBottom(of: passwordFieldBG, offset: SignUpConstants.FIELD_TOP_OFF)
+    emailFieldBG.topToBottom(of: emailTitle, offset: 6)
     emailFieldBG.left(to: usernameFieldBG)
     emailFieldBG.right(to: usernameFieldBG)
     emailFieldBG.height(to: usernameFieldBG)
     
-    emailIcon.leftToSuperview(offset : SignUpConstants.USER_ICON_LEFT_OFF)
-    emailIcon.centerYToSuperview()
-    emailIcon.width(SignUpConstants.USER_ICON_WIDTH)
-    emailIcon.height(to: emailIcon, emailIcon.widthAnchor)
-    
-    emailField.leftToRight(of: usernameIcon, offset: SignUpConstants.USER_ICON_RIGHT_OFF)
-    emailField.edgesToSuperview(excluding: .left, insets: UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 5))
+    emailField.edgesToSuperview(insets: UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16))
     
     signUpBtnBg.topToBottom(of: emailFieldBG, offset: SignUpConstants.BUTTON_TOP_OFF)
     signUpBtnBg.leftToSuperview(offset : SignUpConstants.SIDE_OFF)

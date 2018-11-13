@@ -17,7 +17,7 @@ class NCLoginViewController: NCViewController{
   
   override func didInit() {
     super.didInit()
-    outsideSafeAreaTopViewTemp?.backgroundColor = NCColors.red
+    outsideSafeAreaTopViewTemp?.backgroundColor = NCColors.white
     outsideSafeAreaBottomViewTemp?.backgroundColor = NCColors.white
     self.statusBarStyle = .lightContent
   }

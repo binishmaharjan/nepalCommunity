@@ -25,13 +25,14 @@ class NCLoginView : NCBaseView{
   private var contentViewHeightConstraint: Constraint?
   private var contentView: UIView?
   
-  private var topGradientView : NCGradientView?
+//  private var topGradientView : NCGradientView?
   
+  private var titleText : UILabel?
   private var emailFieldBG : UIView?//Was changed to email from user name
-  private var emailIcon: UIImageView?
+  private var emailTitle :UILabel?
   var emailField: UITextField?
   private var passwordFieldBG: UIView?
-  private var passwordIcon : UIImageView?
+  private var passwordTitle:UILabel?
   var passwordField: UITextField?
   private var signInBtnBG :NCGradientView?
   var signInBtn: NCTextButton?
@@ -77,77 +78,89 @@ class NCLoginView : NCBaseView{
     
     
     //GradientView
-    let topGradientView = NCGradientView(
-      colors: [NCColors.red.cgColor, NCColors.lightRed.cgColor, NCColors.white.cgColor],
-      cornerRadius: LoginConstant.CORNER_RADIUS_ZERO,
-      startPoint: CGPoint(x: 0, y: 0),
-      endPoint: CGPoint(x:0, y:1)
-    )
-
-    self.topGradientView = topGradientView
-    contentView.addSubview(topGradientView)
+//    let topGradientView = NCGradientView(
+//      colors: [NCColors.red.cgColor, NCColors.lightRed.cgColor, NCColors.white.cgColor],
+//      cornerRadius: LoginConstant.CORNER_RADIUS_ZERO,
+//      startPoint: CGPoint(x: 0, y: 0),
+//      endPoint: CGPoint(x:0, y:1)
+//    )
+//
+//    self.topGradientView = topGradientView
+//    contentView.addSubview(topGradientView)
+    
+    //Title Text
+    let titleText = UILabel()
+    self.titleText = titleText
+    titleText.textColor = NCColors.blue
+    titleText.font = NCFont.normal(size: 32)
+    contentView.addSubview(titleText)
+    titleText.text = LOCALIZE("Sign In")
 
     
   //Username
+    let emailTitle = UILabel()
+    self.emailTitle = emailTitle
+    emailTitle.font = NCFont.normal(size: LoginConstant.FONT_SIZE)
+    emailTitle.textColor = NCColors.black
+    emailTitle.text = LOCALIZE("Your email address")
+    contentView.addSubview(emailTitle)
+    
     let usernameFieldBG = UIView()
     self.emailFieldBG = usernameFieldBG
     usernameFieldBG.backgroundColor = NCColors.white
-    usernameFieldBG.layer.cornerRadius = LoginConstant.CORNER_RADIUS
-    usernameFieldBG.dropShadow()
+    usernameFieldBG.layer.cornerRadius = LoginConstant.CORNER_RADIUS_ZERO
+    usernameFieldBG.layer.borderColor = NCColors.gray.cgColor
+    usernameFieldBG.layer.borderWidth = 2
     contentView.addSubview(usernameFieldBG)
-    
-    let usernameIcon = UIImageView()
-    self.emailIcon = usernameIcon
-    usernameIcon.contentMode = .scaleAspectFit
-    usernameIcon.image = UIImage(named: "icon_mail")
-    usernameFieldBG.addSubview(usernameIcon)
     
     let usernameField = UITextField()
     self.emailField = usernameField
     usernameField.backgroundColor = NCColors.white
-    usernameField.placeholder = LOCALIZE("E-MAIL")
+    usernameField.placeholder = LOCALIZE("Email")
     usernameField.font = NCFont.normal(size: LoginConstant.FONT_SIZE)
     usernameField.delegate = self
     usernameFieldBG.addSubview(usernameField)
     
     //Password
+    let passwordTitle = UILabel()
+    self.passwordTitle = passwordTitle
+    passwordTitle.font = NCFont.normal(size: LoginConstant.FONT_SIZE)
+    passwordTitle.textColor = NCColors.black
+    passwordTitle.text = LOCALIZE("Password")
+    contentView.addSubview(passwordTitle)
+    
     let passwordFieldBG = UIView()
     self.passwordFieldBG = passwordFieldBG
     passwordFieldBG.backgroundColor = NCColors.white
-    passwordFieldBG.layer.cornerRadius = LoginConstant.CORNER_RADIUS
-    passwordFieldBG.dropShadow()
+    passwordFieldBG.layer.cornerRadius = LoginConstant.CORNER_RADIUS_ZERO
+    passwordFieldBG.layer.borderColor = NCColors.gray.cgColor
+    passwordFieldBG.layer.borderWidth = 2
     contentView.addSubview(passwordFieldBG)
-    
-    let passwordIcon = UIImageView()
-    self.passwordIcon = passwordIcon
-    passwordIcon.contentMode = .scaleAspectFit
-    passwordIcon.image = UIImage(named: "icon_lock")
-    passwordFieldBG.addSubview(passwordIcon)
     
     let passwordField = UITextField()
     self.passwordField = passwordField
     passwordField.backgroundColor = NCColors.white
-    passwordField.placeholder = LOCALIZE("PASSWORD")
+    passwordField.placeholder = LOCALIZE("Password")
     passwordField.font = NCFont.normal(size: LoginConstant.FONT_SIZE)
     passwordField.delegate = self
     passwordFieldBG.addSubview(passwordField)
     
     //SignIn Button
     let signInBtnBG = NCGradientView(
-      colors: [NCColors.red.cgColor, NCColors.lightRed.cgColor],
-      cornerRadius: LoginConstant.CORNER_RADIUS,
+      colors: [NCColors.blue.cgColor, NCColors.blue.cgColor],
+      cornerRadius: LoginConstant.CORNER_RADIUS_ZERO,
       startPoint: CGPoint(x: 0, y: 0),
       endPoint: CGPoint(x:1, y:0)
     )
     self.signInBtnBG = signInBtnBG
-    signInBtnBG.layer.cornerRadius = LoginConstant.CORNER_RADIUS
+    signInBtnBG.layer.cornerRadius = LoginConstant.CORNER_RADIUS_ZERO
     signInBtnBG.dropShadow()
     contentView.addSubview(signInBtnBG)
     
     let signInBtn = NCTextButton()
     self.signInBtn = signInBtn
     signInBtn.backgroundColor = NCColors.clear
-    signInBtn.text = LOCALIZE("SIGN IN")
+    signInBtn.text = LOCALIZE("Sign In")
     signInBtn.font = NCFont.bold(size: LoginConstant.FONT_SIZE)
     signInBtn.textColor = NCColors.white
     signInBtnBG.addSubview(signInBtn)
@@ -155,21 +168,21 @@ class NCLoginView : NCBaseView{
     
     //FaceBook Button
     let fbBtnBG = NCGradientView(
-      colors: [NCColors.fbBlue.cgColor, NCColors.lightFbBlue.cgColor],
-      cornerRadius: LoginConstant.CORNER_RADIUS,
+      colors: [NCColors.fbBlue.cgColor, NCColors.fbBlue.cgColor],
+      cornerRadius: LoginConstant.CORNER_RADIUS_ZERO,
       startPoint: CGPoint(x: 0, y: 0),
       endPoint: CGPoint(x:1, y:0)
     )
 
     self.fbBtnBG = fbBtnBG
-    fbBtnBG.layer.cornerRadius = LoginConstant.CORNER_RADIUS
+    fbBtnBG.layer.cornerRadius = LoginConstant.CORNER_RADIUS_ZERO
     fbBtnBG.dropShadow()
     contentView.addSubview(fbBtnBG)
     
     let fbBtn = NCTextButton()
     self.fbBtn = fbBtn
     fbBtn.backgroundColor = NCColors.clear
-    fbBtn.text = LOCALIZE("SIGN IN WITH FACEBOOK")
+    fbBtn.text = LOCALIZE("Sign In With Facebook")
     fbBtn.font = NCFont.bold(size: LoginConstant.FONT_SIZE)
     fbBtn.textColor = NCColors.white
     fbBtnBG.addSubview(fbBtn)
@@ -188,16 +201,16 @@ class NCLoginView : NCBaseView{
     let noAccountLbl = UILabel()
     self.noAccountLbl = noAccountLbl
     noAccountLbl.text = LOCALIZE("Don't have an account? ")
-    noAccountLbl.font = NCFont.bold(size: LoginConstant.FONT_SIZE)
-    noAccountLbl.textColor = NCColors.grey
+    noAccountLbl.font = NCFont.normal(size: LoginConstant.FONT_SIZE)
+    noAccountLbl.textColor = NCColors.black
     bottomLblStack.addArrangedSubview(noAccountLbl)
     
     
     let signUpLbl = UILabel()
     self.signUpLbl = signUpLbl
     signUpLbl.text = LOCALIZE("Sign Up")
-    signUpLbl.font = NCFont.bold(size: LoginConstant.FONT_SIZE)
-    signUpLbl.textColor = NCColors.red
+    signUpLbl.font = NCFont.normal(size: LoginConstant.FONT_SIZE)
+    signUpLbl.textColor = NCColors.blue
     bottomLblStack.addArrangedSubview(signUpLbl)
     signUpLbl.isUserInteractionEnabled = true
     signUpLbl.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(signUpButtonPressed)))
@@ -205,21 +218,22 @@ class NCLoginView : NCBaseView{
   
   private func setupConstraints(){
     guard let passwordFieldBG = self.passwordFieldBG,
-          let passwordIcon = self.passwordIcon,
+          let passwordTitle = self.passwordTitle,
           let passwordField = self.passwordField,
           let usernameFieldBG = self.emailFieldBG,
           let usernameField = self.emailField,
-          let usernameIcon = self.emailIcon,
+          let emailTitle = self.emailTitle,
           let signInBtnBG = self.signInBtnBG,
           let signInBtn = self.signInBtn,
           let fbBtnBG = self.fbBtnBG,
           let fbBtn  = self.fbBtn,
           let scrollView = self.scrollView,
           let contentView = self.contentView,
-          let topGradientView = self.topGradientView,
+          let titleText = self.titleText,
+          //let topGradientView = self.topGradientView,
           let bottomLblStack = self.bottomLblStack else { return }
     
-    let TOP_OFFSET = (UIScreen.main.bounds.height * 30 ) / 100
+    let TOP_OFFSET = (UIScreen.main.bounds.height * 20 ) / 100
     
     //Height of the contentView is decided scroll View(same as scroll view)
     //by since scroll view size changes as the keyboard comes up by the
@@ -233,35 +247,30 @@ class NCLoginView : NCBaseView{
     
     //In this method the the bottom label position is decide by the content View
     
-    topGradientView.edgesToSuperview(excluding: .bottom)
-    topGradientView.height(TOP_OFFSET)
+//    topGradientView.edgesToSuperview(excluding: .bottom)
+//    topGradientView.height(TOP_OFFSET)
+    titleText.topToSuperview(offset : TOP_OFFSET)
+    titleText.centerXToSuperview()
     
-    usernameFieldBG.topToBottom(of: topGradientView, offset: LoginConstant.TOP_GRADIENT_BOTTOM_OFF)
+    emailTitle.topToBottom(of: titleText, offset: LoginConstant.TOP_GRADIENT_BOTTOM_OFF)
+    emailTitle.leftToSuperview(offset : LoginConstant.SIDE_OFF)
+    
+    usernameFieldBG.topToBottom(of: emailTitle, offset: 6)
     usernameFieldBG.leftToSuperview(offset : LoginConstant.SIDE_OFF)
     usernameFieldBG.rightToSuperview(offset : -LoginConstant.SIDE_OFF)
     usernameFieldBG.height(LoginConstant.FIELD_HEIGHT)
+  
+    usernameField.edgesToSuperview(insets: UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16))
     
-    usernameIcon.leftToSuperview(offset : LoginConstant.USER_ICON_LEFT_OFF)
-    usernameIcon.centerYToSuperview()
-    usernameIcon.width(LoginConstant.USER_ICON_WIDTH)
-    usernameIcon.height(to: usernameIcon, usernameIcon.widthAnchor)
+    passwordTitle.topToBottom(of: usernameFieldBG, offset: LoginConstant.FIELD_TOP_OFF)
+    passwordTitle.leftToSuperview(offset : LoginConstant.SIDE_OFF)
     
-    usernameField.leftToRight(of: usernameIcon, offset: LoginConstant.USER_ICON_RIGHT_OFF)
-    usernameField.edgesToSuperview(excluding: .left, insets: UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 5))
-    
-    
-    passwordFieldBG.topToBottom(of: usernameFieldBG, offset: LoginConstant.FIELD_TOP_OFF)
+    passwordFieldBG.topToBottom(of: passwordTitle, offset: 6)
     passwordFieldBG.left(to: usernameFieldBG)
     passwordFieldBG.right(to: usernameFieldBG)
     passwordFieldBG.height(to: usernameFieldBG)
     
-    passwordIcon.leftToSuperview(offset : LoginConstant.USER_ICON_LEFT_OFF)
-    passwordIcon.centerYToSuperview()
-    passwordIcon.width(LoginConstant.USER_ICON_WIDTH)
-    passwordIcon.height(to: passwordIcon, passwordIcon.widthAnchor)
-    
-    passwordField.leftToRight(of: usernameIcon, offset: LoginConstant.USER_ICON_RIGHT_OFF)
-    passwordField.edgesToSuperview(excluding: .left, insets: UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 5))
+    passwordField.edgesToSuperview(insets: UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16))
   
     
     
@@ -294,7 +303,7 @@ extension NCLoginView : UITextFieldDelegate{
     passwordField?.resignFirstResponder()
   }
   
-  private func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+  func textFieldShouldReturn(_ textField: UITextField) -> Bool {
     if textField == emailField{
       passwordField?.becomeFirstResponder()
     }else if textField == passwordField{
