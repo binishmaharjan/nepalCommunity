@@ -10,12 +10,7 @@ import UIKit
 
 class NCViewController: UIViewController{
   var isNib:Bool = false
-  var statusBarStyle:UIStatusBarStyle = .lightContent {
-    didSet {
-      UIApplication.shared.statusBarStyle = statusBarStyle
-      setNeedsStatusBarAppearanceUpdate()
-    }
-  }
+  var statusBarStyle:UIStatusBarStyle = .default
   
   weak var outsideSafeAreaTopViewTemp:UIView?
   weak var outsideSafeAreaBottomViewTemp:UIView?

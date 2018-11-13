@@ -23,7 +23,7 @@ class NCSignUpViewController: NCViewController{
   //MARK : Functions
   override func didInit() {
     super.didInit()
-    outsideSafeAreaTopViewTemp?.backgroundColor = NCColors.red
+    outsideSafeAreaTopViewTemp?.backgroundColor = NCColors.white
     outsideSafeAreaBottomViewTemp?.backgroundColor = NCColors.white
     self.statusBarStyle = .lightContent
   }
@@ -199,36 +199,6 @@ extension NCSignUpViewController : GalleryControllerDelegate{
   func galleryController(_ controller: GalleryController, didSelectImages images: [Image]) {
     images[0].resolve(completion: { (image) in
       self.mainView?.iconView?.image = image
-      
-      
-//      let profileImageFromPicker = image
-//      let metaData = StorageMetadata()
-//      metaData.contentType = "image/jpeg"
-//
-//      let imageData : Data = (profileImageFromPicker?.jpegData(compressionQuality: 0.5))!
-//
-//      let store = Storage.storage()
-//      let userID = "AHNSHD76sHS"
-//
-//      let storeRef = store.reference().child("user_profile/\(userID)/profile_photo.jpg")
-//      NCActivityIndicator.shared.start(view: self.view)
-//      let _ = storeRef.putData(imageData, metadata: metaData){(metaData, error) in
-//        NCActivityIndicator.shared.stop()
-//        guard let _  = metaData else {
-//          Dlog("error: \(error.debugDescription)")
-//          return
-//        }
-//
-//        storeRef.downloadURL(completion: { (url, error) in
-//          guard  let url = url else {
-//            Dlog(error?.localizedDescription)
-//            return
-//          }
-//          Dlog(url)
-//        })
-//      }
-//
-      
     })
     controller.dismiss(animated: true, completion: nil)
   }

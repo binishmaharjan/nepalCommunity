@@ -15,7 +15,7 @@ class NCActivityIndicator{
   static let shared = NCActivityIndicator()
   private let background : UIView = UIView(frame: CGRect(x: UIScreen.main.bounds.width / 2 - 35, y: UIScreen.main.bounds.height / 2 - 35, width: 70, height: 70))
   
-  var activityIndicator = NVActivityIndicatorView(frame: CGRect(x: 0, y: 0, width: 50, height: 50), type: NVActivityIndicatorType.ballSpinFadeLoader, color: NCColors.red)
+  var activityIndicator = NVActivityIndicatorView(frame: CGRect(x: 0, y: 0, width: 50, height: 50), type: NVActivityIndicatorType.ballSpinFadeLoader, color: NCColors.blue)
   
   func start(view : UIView){
     view.addSubview(background)
