@@ -12,15 +12,16 @@ import FacebookCore
 import FacebookLogin
 import SwiftyJSON
 
-protocol NCSignUp {
+protocol NCSignUpAndSignIn{
   func registerEmail(email : String, password : String, username : String,completion:((_ userId:String?, _ error:Error?)->())?)
   
   func registerWithFacebook(viewController : UIViewController, completion : ((Error?) -> ())?)
   func loginWithFacebook(completion: ((Error?) -> ())?)
   func fetchFacebookUser(completion : ((_ name : String?, _ id : String?,_ email : String? , _ image : UIImage?, _ error : Error?) -> ())?)
+  func loginWithEmail(email : String, password : String,completion: ((Error?) -> ())?)
 }
 
-extension NCSignUp{
+extension NCSignUpAndSignIn{
   func registerEmail(email: String, password : String,username: String, completion: ((String?, Error?) -> ())?) {
     Auth.auth().createUser(withEmail: email, password: password) { (result, error) in
       if let error = error{
@@ -137,6 +138,17 @@ extension NCSignUp{
     
     //Starting the connection to the get information form the facebook
     graphRequestConnection.start()
+  }
+  
+  //Signing in the wmail
+  func loginWithEmail(email : String, password : String,completion: ((Error?) -> ())?){
+    Auth.auth().signIn(withEmail: email, password: password) { (result, error) in
+      if let error = error{
+        completion?(error)
+        return
+      }
+      completion?(nil)
+    }
   }
   
 }

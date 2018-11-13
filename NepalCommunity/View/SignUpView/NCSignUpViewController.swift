@@ -65,7 +65,7 @@ class NCSignUpViewController: NCViewController{
 
 
 //MARK: Button Delegate
-extension NCSignUpViewController: NCButtonDelegate, NCSignUp, NCDatabaseWrite, NCStorage{
+extension NCSignUpViewController: NCButtonDelegate, NCSignUpAndSignIn, NCDatabaseWrite, NCStorage{
   func buttonViewTapped(view: NCButtonView) {
     if view == mainView?.backBtn{
       self.navigationController?.popViewController(animated: true)

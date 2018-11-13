@@ -30,7 +30,7 @@
 		ACA50A912186AD7F00B2040A /* NCTextButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACA50A902186AD7F00B2040A /* NCTextButton.swift */; };
 		ACA50A932186AF4100B2040A /* Array+extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACA50A922186AF4100B2040A /* Array+extension.swift */; };
 		ACB249142186E353008B510E /* NCAccountType.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACB249132186E353008B510E /* NCAccountType.swift */; };
-		ACB249162187F2C3008B510E /* NCEmailSignUp.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACB249152187F2C3008B510E /* NCEmailSignUp.swift */; };
+		ACB249162187F2C3008B510E /* NCSignUpAndSignIn.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACB249152187F2C3008B510E /* NCSignUpAndSignIn.swift */; };
 		ACB2491A2187F77B008B510E /* NCDatebaseWrite.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACB249192187F77B008B510E /* NCDatebaseWrite.swift */; };
 		ACB2491C21893852008B510E /* NCActivityIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACB2491B21893852008B510E /* NCActivityIndicator.swift */; };
 		ACB2491E21896956008B510E /* NCDropDownNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACB2491D21896955008B510E /* NCDropDownNotification.swift */; };
@@ -66,7 +66,7 @@
 		ACA50A902186AD7F00B2040A /* NCTextButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCTextButton.swift; sourceTree = "<group>"; };
 		ACA50A922186AF4100B2040A /* Array+extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+extension.swift"; sourceTree = "<group>"; };
 		ACB249132186E353008B510E /* NCAccountType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCAccountType.swift; sourceTree = "<group>"; };
-		ACB249152187F2C3008B510E /* NCEmailSignUp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCEmailSignUp.swift; sourceTree = "<group>"; };
+		ACB249152187F2C3008B510E /* NCSignUpAndSignIn.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCSignUpAndSignIn.swift; sourceTree = "<group>"; };
 		ACB249192187F77B008B510E /* NCDatebaseWrite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCDatebaseWrite.swift; sourceTree = "<group>"; };
 		ACB2491B21893852008B510E /* NCActivityIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCActivityIndicator.swift; sourceTree = "<group>"; };
 		ACB2491D21896955008B510E /* NCDropDownNotification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCDropDownNotification.swift; sourceTree = "<group>"; };
@@ -244,7 +244,7 @@
 		ACB249172187F6E3008B510E /* SignUp */ = {
 			isa = PBXGroup;
 			children = (
-				ACB249152187F2C3008B510E /* NCEmailSignUp.swift */,
+				ACB249152187F2C3008B510E /* NCSignUpAndSignIn.swift */,
 			);
 			path = SignUp;
 			sourceTree = "<group>";
@@ -449,7 +449,7 @@
 				ACB2491E21896956008B510E /* NCDropDownNotification.swift in Sources */,
 				ACA50A8F2186AB0B00B2040A /* NCImageButtonView.swift in Sources */,
 				AC1EDCB521814F380089C7AF /* NCNotificationManager.swift in Sources */,
-				ACB249162187F2C3008B510E /* NCEmailSignUp.swift in Sources */,
+				ACB249162187F2C3008B510E /* NCSignUpAndSignIn.swift in Sources */,
 				ACA50A8D2186AA9A00B2040A /* NCButtonView.swift in Sources */,
 				ACA50A892186A32F00B2040A /* NCLoginViewDelegate.swift in Sources */,
 				AC06048E21801F69006582B9 /* Global.swift in Sources */,
