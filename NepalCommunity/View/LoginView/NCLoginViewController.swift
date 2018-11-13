@@ -8,10 +8,6 @@
 
 import UIKit
 import TinyConstraints
-import FacebookCore
-import FacebookLogin
-import FirebaseAuth
-import SwiftyJSON
 
 
 class NCLoginViewController: NCViewController{
@@ -64,11 +60,34 @@ class NCLoginViewController: NCViewController{
 }
 
 //MARK: Button Delegate
-extension NCLoginViewController : NCLoginViewDelegate, NCButtonDelegate, NCSignUp, NCDatabaseWrite, NCStorage{
+extension NCLoginViewController : NCLoginViewDelegate, NCButtonDelegate, NCSignUpAndSignIn, NCDatabaseWrite, NCStorage{
   func buttonViewTapped(view: NCButtonView) {
+    /*
+     Sign in with email
+     */
     if view == mainView?.signInBtn{
-      Dlog("Sign In")
-    }else if view == mainView?.fbBtn{//Facebook Login
+      NCActivityIndicator.shared.start(view: self.view)
+      guard let email = self.mainView?.emailField?.text,
+        let password = self.mainView?.passwordField?.text else {
+          NCActivityIndicator.shared.stop()
+          NCDropDownNotification.shared.showError(message: "Empty Fields")
+          return
+      }
+      loginWithEmail(email: email, password: password) { (error) in
+        if let error = error {
+          NCActivityIndicator.shared.stop()
+          NCDropDownNotification.shared.showError(message: error.localizedDescription)
+          return
+        }
+        //Login Successful
+        NCActivityIndicator.shared.stop()
+        self.dismiss(animated: true, completion: nil)
+      }
+    }
+      /*
+       Sign in with email
+       */
+    else if view == mainView?.fbBtn{
       //Start the indicator
       NCActivityIndicator.shared.start(view: self.view)
       //Register with Facebook

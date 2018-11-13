@@ -27,12 +27,12 @@ class NCLoginView : NCBaseView{
   
   private var topGradientView : NCGradientView?
   
-  private var usernameFieldBG : UIView?
-  private var usernameIcon: UIImageView?
-  private var usernameField: UITextField?
+  private var emailFieldBG : UIView?//Was changed to email from user name
+  private var emailIcon: UIImageView?
+  var emailField: UITextField?
   private var passwordFieldBG: UIView?
   private var passwordIcon : UIImageView?
-  private var passwordField: UITextField?
+  var passwordField: UITextField?
   private var signInBtnBG :NCGradientView?
   var signInBtn: NCTextButton?
   private var fbBtnBG: NCGradientView?
@@ -90,23 +90,24 @@ class NCLoginView : NCBaseView{
     
   //Username
     let usernameFieldBG = UIView()
-    self.usernameFieldBG = usernameFieldBG
+    self.emailFieldBG = usernameFieldBG
     usernameFieldBG.backgroundColor = NCColors.white
     usernameFieldBG.layer.cornerRadius = LoginConstant.CORNER_RADIUS
     usernameFieldBG.dropShadow()
     contentView.addSubview(usernameFieldBG)
     
     let usernameIcon = UIImageView()
-    self.usernameIcon = usernameIcon
+    self.emailIcon = usernameIcon
     usernameIcon.contentMode = .scaleAspectFit
-    usernameIcon.image = UIImage(named: "icon_user")
+    usernameIcon.image = UIImage(named: "icon_mail")
     usernameFieldBG.addSubview(usernameIcon)
     
     let usernameField = UITextField()
-    self.usernameField = usernameField
+    self.emailField = usernameField
     usernameField.backgroundColor = NCColors.white
-    usernameField.placeholder = LOCALIZE("USERNAME")
+    usernameField.placeholder = LOCALIZE("E-MAIL")
     usernameField.font = NCFont.normal(size: LoginConstant.FONT_SIZE)
+    usernameField.delegate = self
     usernameFieldBG.addSubview(usernameField)
     
     //Password
@@ -128,6 +129,7 @@ class NCLoginView : NCBaseView{
     passwordField.backgroundColor = NCColors.white
     passwordField.placeholder = LOCALIZE("PASSWORD")
     passwordField.font = NCFont.normal(size: LoginConstant.FONT_SIZE)
+    passwordField.delegate = self
     passwordFieldBG.addSubview(passwordField)
     
     //SignIn Button
@@ -205,9 +207,9 @@ class NCLoginView : NCBaseView{
     guard let passwordFieldBG = self.passwordFieldBG,
           let passwordIcon = self.passwordIcon,
           let passwordField = self.passwordField,
-          let usernameFieldBG = self.usernameFieldBG,
-          let usernameField = self.usernameField,
-          let usernameIcon = self.usernameIcon,
+          let usernameFieldBG = self.emailFieldBG,
+          let usernameField = self.emailField,
+          let usernameIcon = self.emailIcon,
           let signInBtnBG = self.signInBtnBG,
           let signInBtn = self.signInBtn,
           let fbBtnBG = self.fbBtnBG,
@@ -286,10 +288,19 @@ class NCLoginView : NCBaseView{
 }
 
 //MARK:- Text View
-extension NCLoginView{
+extension NCLoginView : UITextFieldDelegate{
   @objc func viewTapped(){
-    usernameField?.resignFirstResponder()
+    emailField?.resignFirstResponder()
     passwordField?.resignFirstResponder()
+  }
+  
+  private func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+    if textField == emailField{
+      passwordField?.becomeFirstResponder()
+    }else if textField == passwordField{
+      passwordField?.resignFirstResponder()
+    }
+    return true
   }
 }
 
