@@ -20,11 +20,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     //Setting up initial windows
     window = UIWindow(frame: UIScreen.main.bounds)
     window?.makeKeyAndVisible()
-    window?.rootViewController = UINavigationController(rootViewController: HomeViewController())
+    let tabBar = NCTabViewController()
+    window?.rootViewController = UINavigationController(rootViewController: tabBar)
     
     //Firebase Server
     setupFirebaseServer(application,launchOptions)
-    
     return true
   }
   

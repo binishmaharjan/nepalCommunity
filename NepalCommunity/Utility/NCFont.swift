@@ -18,4 +18,8 @@ class NCFont: NSObject{
   static func bold(size: CGFloat) -> UIFont?{
     return UIFont.boldSystemFont(ofSize: size)
   }
+  
+  static func heavy(size : CGFloat) -> UIFont?{
+    return UIFont.systemFont(ofSize: size, weight: .heavy)
+  }
 }
