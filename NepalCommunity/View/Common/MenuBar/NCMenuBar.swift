@@ -14,6 +14,9 @@ class NCMenuBar : UIView{
   //Collection View for the menus
   var collectionView : UICollectionView?
   
+  //PageViewController
+  var pageView: NCPageViewController?
+  
   //CollectionView Cell
   typealias Cell = NCMenuCell
   let CELL_CLASS = Cell.self
@@ -24,7 +27,12 @@ class NCMenuBar : UIView{
   
   //MenuBar
   private var menuBar: UIView?
-  private var menuBarLeftConstraints : Constraint?
+  var menuBarLeftConstraints : Constraint?
+  var menuBarX: CGFloat = 0.0 {
+    didSet {
+      menuBarLeftConstraints?.constant = menuBarX
+    }
+  }
   
   //MARK : Defaults
   override init(frame: CGRect) {
@@ -96,5 +104,11 @@ extension NCMenuBar : UICollectionViewDataSource, UICollectionViewDelegate, UICo
     UIView.animate(withDuration: 0.75, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseIn, animations: {
       self.layoutIfNeeded()//Animate the change in constraints
     }, completion: nil)
+    
+    //Changing the view of the pageView Controller
+    guard let pageView = self.pageView else { return }
+    Dlog(indexPath.row)
+    pageView.menuBarMenuWasPresssed(at: indexPath.row)
   }
+  
 }

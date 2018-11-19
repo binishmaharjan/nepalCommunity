@@ -21,7 +21,7 @@
 		AC9F2568219C06530090A77E /* NCHomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC9F2567219C06530090A77E /* NCHomeViewController.swift */; };
 		AC9F256A219C07BD0090A77E /* NCNaviagtionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC9F2569219C07BD0090A77E /* NCNaviagtionController.swift */; };
 		AC9F256C219D05A80090A77E /* NCMenuBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC9F256B219D05A80090A77E /* NCMenuBar.swift */; };
-		AC9F256E219D061D0090A77E /* NCHomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC9F256D219D061D0090A77E /* NCHomeView.swift */; };
+		AC9F256E219D061D0090A77E /* NCHomeTopView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC9F256D219D061D0090A77E /* NCHomeTopView.swift */; };
 		AC9F2575219D12BC0090A77E /* NCMenuCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC9F2574219D12BC0090A77E /* NCMenuCell.swift */; };
 		ACA50A792182AC2D00B2040A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = ACA50A782182AC2C00B2040A /* Assets.xcassets */; };
 		ACA50A7B2182AC8600B2040A /* NCLoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACA50A7A2182AC8600B2040A /* NCLoginView.swift */; };
@@ -63,7 +63,7 @@
 		AC9F2567219C06530090A77E /* NCHomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCHomeViewController.swift; sourceTree = "<group>"; };
 		AC9F2569219C07BD0090A77E /* NCNaviagtionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCNaviagtionController.swift; sourceTree = "<group>"; };
 		AC9F256B219D05A80090A77E /* NCMenuBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCMenuBar.swift; sourceTree = "<group>"; };
-		AC9F256D219D061D0090A77E /* NCHomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCHomeView.swift; sourceTree = "<group>"; };
+		AC9F256D219D061D0090A77E /* NCHomeTopView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCHomeTopView.swift; sourceTree = "<group>"; };
 		AC9F2574219D12BC0090A77E /* NCMenuCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCMenuCell.swift; sourceTree = "<group>"; };
 		ACA50A782182AC2C00B2040A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		ACA50A7A2182AC8600B2040A /* NCLoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCLoginView.swift; sourceTree = "<group>"; };
@@ -157,6 +157,7 @@
 			children = (
 				ACDEACDA219E4C45009964AE /* PageView */,
 				AC9F2566219C062C0090A77E /* Home */,
+				AC1D2F15219518130073AC9A /* Tab */,
 				ACA50A8A2186AA8000B2040A /* Common */,
 				AC1EDCC321829A8E0089C7AF /* BaseView */,
 				ACA50A832186A13700B2040A /* SignUpView */,
@@ -218,7 +219,7 @@
 			isa = PBXGroup;
 			children = (
 				AC9F2567219C06530090A77E /* NCHomeViewController.swift */,
-				AC9F256D219D061D0090A77E /* NCHomeView.swift */,
+				AC9F256D219D061D0090A77E /* NCHomeTopView.swift */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -288,7 +289,6 @@
 			children = (
 				AC9F2570219D077E0090A77E /* MenuBar */,
 				AC9F256F219D07730090A77E /* Navigation */,
-				AC1D2F15219518130073AC9A /* Tab */,
 				AC9F2571219D07880090A77E /* GradientView */,
 				AC9F2572219D07A10090A77E /* ActivityIndicator */,
 				ACA50A8B2186AA8800B2040A /* Button */,
@@ -538,7 +538,7 @@
 				AC9F256A219C07BD0090A77E /* NCNaviagtionController.swift in Sources */,
 				ACB2491A2187F77B008B510E /* NCDatebaseWrite.swift in Sources */,
 				ACA50A7D2182B8CB00B2040A /* UIButton+Animation.swift in Sources */,
-				AC9F256E219D061D0090A77E /* NCHomeView.swift in Sources */,
+				AC9F256E219D061D0090A77E /* NCHomeTopView.swift in Sources */,
 				ACA50A912186AD7F00B2040A /* NCTextButton.swift in Sources */,
 				AC1D2F142193D41D0073AC9A /* NCStorage.swift in Sources */,
 				ACB2491C21893852008B510E /* NCActivityIndicator.swift in Sources */,
