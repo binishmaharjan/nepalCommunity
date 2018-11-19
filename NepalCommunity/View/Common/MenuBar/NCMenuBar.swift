@@ -107,7 +107,6 @@ extension NCMenuBar : UICollectionViewDataSource, UICollectionViewDelegate, UICo
     
     //Changing the view of the pageView Controller
     guard let pageView = self.pageView else { return }
-    Dlog(indexPath.row)
     pageView.menuBarMenuWasPresssed(at: indexPath.row)
   }
   
