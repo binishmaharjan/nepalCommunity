@@ -23,7 +23,7 @@ class NCTabViewController : UITabBarController{
     
     self.setupTabBar()
     
-    let homeView = NCHomeViewController()
+    let homeView = NCHomeController()
     let homeNav = UINavigationController(rootViewController: homeView)
     homeView.view.backgroundColor = .white
     homeView.tabBarItem.image = UIImage(named: "icon_home")

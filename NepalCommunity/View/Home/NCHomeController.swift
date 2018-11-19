@@ -9,7 +9,7 @@
 import UIKit
 
 
-class NCHomeViewController: NCViewController {
+class NCHomeController: NCViewController {
   
   private var homeTop : NCHomeTopView?
   

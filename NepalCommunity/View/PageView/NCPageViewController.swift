@@ -41,20 +41,20 @@ class NCPageViewController : UIPageViewController{
     self.delegate = self
     
     
-    let view1 = UIViewController()
+    let view1 = NCSingleHomeController()
     view1.view.backgroundColor = NCColors.gray
     view1.view.tag = 0
     
-    let view2 = UIViewController()
+    let view2 = NCSingleHomeController()
     view2.view.backgroundColor = NCColors.white
     view2.view.tag = 1
     
-    let view3 = UIViewController()
-    view3.view.backgroundColor = NCColors.blue
+    let view3 = NCSingleHomeController()
+    view3.view.backgroundColor = NCColors.gray
     view3.view.tag = 2
     
-    let view4 = UIViewController()
-    view4.view.backgroundColor = NCColors.red
+    let view4 = NCSingleHomeController()
+    view4.view.backgroundColor = NCColors.white
     view4.view.tag = 3
     
     

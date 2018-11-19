@@ -18,7 +18,10 @@
 		AC1EDCC521829A9E0089C7AF /* NCBaseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC1EDCC421829A9E0089C7AF /* NCBaseView.swift */; };
 		AC1EDCC921829D450089C7AF /* NCViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC1EDCC821829D450089C7AF /* NCViewController.swift */; };
 		AC1EDCCD2182A1220089C7AF /* UIView+Draw.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC1EDCCC2182A1220089C7AF /* UIView+Draw.swift */; };
-		AC9F2568219C06530090A77E /* NCHomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC9F2567219C06530090A77E /* NCHomeViewController.swift */; };
+		AC71844A21A24C360056DF3F /* NCSingleHomeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC71844921A24C360056DF3F /* NCSingleHomeController.swift */; };
+		AC71844C21A24D410056DF3F /* NCSingleHomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC71844B21A24D410056DF3F /* NCSingleHomeView.swift */; };
+		AC71845021A2528D0056DF3F /* NCArticleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC71844F21A2528D0056DF3F /* NCArticleCell.swift */; };
+		AC9F2568219C06530090A77E /* NCHomeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC9F2567219C06530090A77E /* NCHomeController.swift */; };
 		AC9F256A219C07BD0090A77E /* NCNaviagtionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC9F2569219C07BD0090A77E /* NCNaviagtionController.swift */; };
 		AC9F256C219D05A80090A77E /* NCMenuBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC9F256B219D05A80090A77E /* NCMenuBar.swift */; };
 		AC9F256E219D061D0090A77E /* NCHomeTopView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC9F256D219D061D0090A77E /* NCHomeTopView.swift */; };
@@ -60,7 +63,10 @@
 		AC1EDCC421829A9E0089C7AF /* NCBaseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCBaseView.swift; sourceTree = "<group>"; };
 		AC1EDCC821829D450089C7AF /* NCViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCViewController.swift; sourceTree = "<group>"; };
 		AC1EDCCC2182A1220089C7AF /* UIView+Draw.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Draw.swift"; sourceTree = "<group>"; };
-		AC9F2567219C06530090A77E /* NCHomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCHomeViewController.swift; sourceTree = "<group>"; };
+		AC71844921A24C360056DF3F /* NCSingleHomeController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCSingleHomeController.swift; sourceTree = "<group>"; };
+		AC71844B21A24D410056DF3F /* NCSingleHomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCSingleHomeView.swift; sourceTree = "<group>"; };
+		AC71844F21A2528D0056DF3F /* NCArticleCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCArticleCell.swift; sourceTree = "<group>"; };
+		AC9F2567219C06530090A77E /* NCHomeController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCHomeController.swift; sourceTree = "<group>"; };
 		AC9F2569219C07BD0090A77E /* NCNaviagtionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCNaviagtionController.swift; sourceTree = "<group>"; };
 		AC9F256B219D05A80090A77E /* NCMenuBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCMenuBar.swift; sourceTree = "<group>"; };
 		AC9F256D219D061D0090A77E /* NCHomeTopView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCHomeTopView.swift; sourceTree = "<group>"; };
@@ -155,6 +161,7 @@
 		AC1EDCAB2181467D0089C7AF /* View */ = {
 			isa = PBXGroup;
 			children = (
+				AC71844D21A2523E0056DF3F /* TableCell */,
 				ACDEACDA219E4C45009964AE /* PageView */,
 				AC9F2566219C062C0090A77E /* Home */,
 				AC1D2F15219518130073AC9A /* Tab */,
@@ -215,10 +222,36 @@
 			path = Extension;
 			sourceTree = "<group>";
 		};
+		AC71844821A247840056DF3F /* HomeView */ = {
+			isa = PBXGroup;
+			children = (
+				AC71844921A24C360056DF3F /* NCSingleHomeController.swift */,
+				AC71844B21A24D410056DF3F /* NCSingleHomeView.swift */,
+			);
+			path = HomeView;
+			sourceTree = "<group>";
+		};
+		AC71844D21A2523E0056DF3F /* TableCell */ = {
+			isa = PBXGroup;
+			children = (
+				AC71844E21A252470056DF3F /* ArticleCell */,
+			);
+			path = TableCell;
+			sourceTree = "<group>";
+		};
+		AC71844E21A252470056DF3F /* ArticleCell */ = {
+			isa = PBXGroup;
+			children = (
+				AC71844F21A2528D0056DF3F /* NCArticleCell.swift */,
+			);
+			path = ArticleCell;
+			sourceTree = "<group>";
+		};
 		AC9F2566219C062C0090A77E /* Home */ = {
 			isa = PBXGroup;
 			children = (
-				AC9F2567219C06530090A77E /* NCHomeViewController.swift */,
+				AC71844821A247840056DF3F /* HomeView */,
+				AC9F2567219C06530090A77E /* NCHomeController.swift */,
 				AC9F256D219D061D0090A77E /* NCHomeTopView.swift */,
 			);
 			path = Home;
@@ -519,7 +552,7 @@
 				ACCC08AC2180140100D6391A /* AppDelegate.swift in Sources */,
 				ACA50A872186A1FE00B2040A /* NCSignUpViewController.swift in Sources */,
 				ACDEACDC219E4C5B009964AE /* NCPageViewController.swift in Sources */,
-				AC9F2568219C06530090A77E /* NCHomeViewController.swift in Sources */,
+				AC9F2568219C06530090A77E /* NCHomeController.swift in Sources */,
 				ACA50A812185F88900B2040A /* NCGradientView.swift in Sources */,
 				AC9F2575219D12BC0090A77E /* NCMenuCell.swift in Sources */,
 				AC1EDCC921829D450089C7AF /* NCViewController.swift in Sources */,
@@ -527,12 +560,15 @@
 				ACA50A8F2186AB0B00B2040A /* NCImageButtonView.swift in Sources */,
 				AC1EDCB521814F380089C7AF /* NCNotificationManager.swift in Sources */,
 				ACB249162187F2C3008B510E /* NCSignUpAndSignIn.swift in Sources */,
+				AC71844A21A24C360056DF3F /* NCSingleHomeController.swift in Sources */,
 				ACA50A8D2186AA9A00B2040A /* NCButtonView.swift in Sources */,
 				ACA50A892186A32F00B2040A /* NCLoginViewDelegate.swift in Sources */,
 				AC06048E21801F69006582B9 /* Global.swift in Sources */,
 				AC1D2F172195182C0073AC9A /* NCTabViewController.swift in Sources */,
 				AC1EDCB3218148AC0089C7AF /* NCColors.swift in Sources */,
 				ACA50A7B2182AC8600B2040A /* NCLoginView.swift in Sources */,
+				AC71845021A2528D0056DF3F /* NCArticleCell.swift in Sources */,
+				AC71844C21A24D410056DF3F /* NCSingleHomeView.swift in Sources */,
 				AC9F256C219D05A80090A77E /* NCMenuBar.swift in Sources */,
 				AC1EDCB1218147C60089C7AF /* NCFont.swift in Sources */,
 				AC9F256A219C07BD0090A77E /* NCNaviagtionController.swift in Sources */,
