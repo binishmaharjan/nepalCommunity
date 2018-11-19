@@ -9,10 +9,18 @@
 import UIKit
 import TinyConstraints
 
-class NCHomeView: NCBaseView{
+class NCHomeTopView: NCBaseView{
   
   //Menu Bar
-  private var menuBar: NCMenuBar?
+  var menuBar: NCMenuBar?
+  
+  //PageViewController
+  var pageView: NCPageViewController?{
+    didSet{
+      menuBar?.pageView = pageView
+    }
+  }
+  
   //Header
   private let HEADER_H:CGFloat = 44
   private weak var header:UIView?
@@ -50,7 +58,6 @@ class NCHomeView: NCBaseView{
   }
   
   private func setup(){
-//    self.backgroundColor = UIColor.gray
     let menuBar = NCMenuBar()
     self.menuBar = menuBar
     self.addSubview(menuBar)
