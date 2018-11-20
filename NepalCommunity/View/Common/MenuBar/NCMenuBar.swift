@@ -17,22 +17,21 @@ class NCMenuBar : UIView{
   //PageViewController
   var pageView: NCPageViewController?
   
+  var parent : NCHomeController?
+  
   //CollectionView Cell
   typealias Cell = NCMenuCell
   let CELL_CLASS = Cell.self
   let CELL_ID = NSStringFromClass(Cell.self)
   
   //Items
-  private var menus = ["Popular", "Recent","Latest","Trend"]
+  private var menus = ["Popular", "Food & Travel","Japan Life","School & Visa", "PartTime", "Miscellaneous"]
   
-  //MenuBar
-  private var menuBar: UIView?
-  var menuBarLeftConstraints : Constraint?
-  var menuBarX: CGFloat = 0.0 {
-    didSet {
-      menuBarLeftConstraints?.constant = menuBarX
-    }
-  }
+  //Scroll
+  var scrollView: UIScrollView?
+  private var contentView: UIView?
+  
+  
   
   //MARK : Defaults
   override init(frame: CGRect) {
@@ -48,6 +47,7 @@ class NCMenuBar : UIView{
   //MARK: Setups
   private func setup(){
     let layout = UICollectionViewFlowLayout()
+    layout.scrollDirection = .horizontal
     let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
     self.collectionView = collectionView
     collectionView.backgroundColor = NCColors.blue
@@ -56,31 +56,23 @@ class NCMenuBar : UIView{
     collectionView.dataSource = self
     let selectedIndexPath = NSIndexPath(row: 0, section: 0)
     collectionView.selectItem(at: selectedIndexPath as IndexPath, animated: false, scrollPosition: .bottom)
+    collectionView.showsHorizontalScrollIndicator = false
     self.addSubview(collectionView)
     
-    let menuBar = UIView()
-    self.menuBar = menuBar
-    menuBar.backgroundColor = NCColors.white
-    self.addSubview(menuBar)
   }
   
   private func setupConstraints(){
-    guard let collectionView = self.collectionView,
-      let menuBar = self.menuBar
+    guard
+      let collectionView = self.collectionView
       else { return }
     collectionView.edgesToSuperview()
-    
-    menuBarLeftConstraints =  menuBar.leftToSuperview()
-    menuBar.bottomToSuperview()
-    menuBar.height(4)
-    menuBar.width(UIScreen.main.bounds.size.width / 4)
   }
 }
 
 //MARK: Datasource and delegate
 extension NCMenuBar : UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout{
   func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-    return 4
+    return 6
   }
   
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -98,9 +90,11 @@ extension NCMenuBar : UICollectionViewDataSource, UICollectionViewDelegate, UICo
   }
   
   func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-    //Moving the menu Bar to selected item position
+    //Getting position for menu Bar to selected item position
     let x = CGFloat(indexPath.item) * frame.width / 4
-    menuBarLeftConstraints?.constant = x
+
+    //Changing the position of the white bar
+    parent?.menuBarX = x
     UIView.animate(withDuration: 0.75, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseIn, animations: {
       self.layoutIfNeeded()//Animate the change in constraints
     }, completion: nil)
@@ -108,6 +102,15 @@ extension NCMenuBar : UICollectionViewDataSource, UICollectionViewDelegate, UICo
     //Changing the view of the pageView Controller
     guard let pageView = self.pageView else { return }
     pageView.menuBarMenuWasPresssed(at: indexPath.row)
+  }
+  
+  func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+    return 0
+  }
+  
+  func scrollViewDidScroll(_ scrollView: UIScrollView) {
+    let contentOffset = scrollView.contentOffset
+    parent?.scrollView?.contentOffset = contentOffset
   }
   
 }
