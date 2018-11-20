@@ -19,6 +19,11 @@ class NCPageViewController : UIPageViewController{
   
   //Current index
   var currentIndex : Int = 0
+  //Previous index
+  var previousIndex : Int = 0
+  
+  //Parent Controller
+  var parentVC : NCHomeController?
   
   //Flag to scroll the Menu bar
   var shouldScrollMenuBar : Bool = true
@@ -42,7 +47,7 @@ class NCPageViewController : UIPageViewController{
     
     
     let view1 = NCSingleHomeController()
-    view1.view.backgroundColor = NCColors.gray
+    view1.view.backgroundColor = NCColors.white
     view1.view.tag = 0
     
     let view2 = NCSingleHomeController()
@@ -50,18 +55,28 @@ class NCPageViewController : UIPageViewController{
     view2.view.tag = 1
     
     let view3 = NCSingleHomeController()
-    view3.view.backgroundColor = NCColors.gray
+    view3.view.backgroundColor = NCColors.white
     view3.view.tag = 2
     
     let view4 = NCSingleHomeController()
     view4.view.backgroundColor = NCColors.white
     view4.view.tag = 3
     
+    let view5 = NCSingleHomeController()
+    view5.view.backgroundColor = NCColors.white
+    view5.view.tag = 4
+    
+    let view6 = NCSingleHomeController()
+    view6.view.backgroundColor = NCColors.white
+    view6.view.tag = 5
+    
     
     self.pages.append(view1)
     self.pages.append(view2)
     self.pages.append(view3)
     self.pages.append(view4)
+    self.pages.append(view5)
+    self.pages.append(view6)
     
     self.setViewControllers([pages[0]], direction: .forward, animated: true, completion: nil)
     
@@ -122,6 +137,7 @@ extension NCPageViewController: UIPageViewControllerDelegate, UIPageViewControll
   func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
     if completed{
       let index : Int = pageViewController.viewControllers?.first?.view.tag ?? 0
+      previousIndex = currentIndex
       currentIndex = index
       Dlog(currentIndex)
     }
@@ -130,8 +146,9 @@ extension NCPageViewController: UIPageViewControllerDelegate, UIPageViewControll
   
   func menuBarMenuWasPresssed(at index : Int){
     self.shouldScrollMenuBar = false
+    previousIndex = currentIndex
     self.currentIndex = index
-    homeTop!.menuBar?.menuBarX = (CGFloat(currentIndex) * UIScreen.main.bounds.width / 4)
+    //homeTop!.menuBar?.menuBarX = (CGFloat(currentIndex) * UIScreen.main.bounds.width / 4)
     setViewControllers([pages[index]], direction: .forward, animated: true, completion: nil)
   }
 }
@@ -160,7 +177,7 @@ extension NCPageViewController: UIScrollViewDelegate{
       let scrollX = scrollView.contentOffset.x - (scrollView.contentSize.width / 3)
       /*
        After getting the total amount of the scrolled x value, we divide it by the
-       number of tabs(in this case 4), exactly giving us the starting point for the
+       number of tabs displayed in screen(in this case 4), exactly giving us the starting point for the
        menu bar
        */
       let menuX = scrollX / 4
@@ -172,8 +189,28 @@ extension NCPageViewController: UIScrollViewDelegate{
          help of the scrollview Content offset
          */
         let a = (CGFloat(currentIndex) * UIScreen.main.bounds.width / 4) + menuX
+        
         //Changing the left constarints of the menu bar
-        homeTop.menuBar?.menuBarX = a
+        parentVC?.menuBarXFromPageView = a
+        
+        //Chaning the offset of collectionview, when swiping backwards to lower index
+        if a <= (UIScreen.main.bounds.width / 4) * 2{
+          if previousIndex > currentIndex && currentIndex != 0{
+            parentVC?.homeTop?.menuBar?.collectionView?.contentOffset.x = a
+          }
+        }
+        
+        //Chaning the offset of collectionview, when swiping forward to higher index
+        if a >= (UIScreen.main.bounds.width / 4) * 3{
+          if currentIndex >=  3 && previousIndex < currentIndex && currentIndex != 5{
+
+            parentVC?.homeTop?.menuBar?.collectionView?.contentOffset.x = (a - (UIScreen.main.bounds.width / 4) * 3)
+
+          }
+        }
+        
+        
+        
       }
     }
   }

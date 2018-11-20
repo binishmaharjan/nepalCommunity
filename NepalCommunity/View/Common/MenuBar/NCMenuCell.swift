@@ -48,12 +48,15 @@ class NCMenuCell: UICollectionViewCell{
     label.text = LOCALIZE("MENU")
     label.textColor = NCColors.white
     label.font = NCFont.bold(size: 14)
+    label.numberOfLines = 2
+    label.adjustsFontSizeToFitWidth = false
+    label.textAlignment = .center
     self.addSubview(label)
   }
   
   private func setupConstraints(){
     guard let label = self.label else { return }
-    label.centerInSuperview()
+    label.edgesToSuperview(insets:UIEdgeInsets(top: 0, left: 4, bottom: 0, right: 4))
   }
   
 }

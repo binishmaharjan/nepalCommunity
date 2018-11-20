@@ -138,7 +138,8 @@ class NCArticleCell : UITableViewCell{
     //Seperator
     let seperator = UIView()
     self.seperator = seperator
-    seperator.backgroundColor = UIColor.gray
+    seperator.backgroundColor = NCColors.darKGray
+    
     self.addSubview(seperator)
   }
   

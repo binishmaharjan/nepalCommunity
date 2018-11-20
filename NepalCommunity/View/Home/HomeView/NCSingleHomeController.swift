@@ -12,6 +12,12 @@ import TinyConstraints
 class NCSingleHomeController : NCViewController{
   
   private var mainView : NCSingleHomeView?
+//  var label : UILabel?
+//  var labelText: String = ""{
+//    didSet{
+//      label?.text = labelText
+//    }
+//  }
   
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -23,6 +29,13 @@ class NCSingleHomeController : NCViewController{
     let mainView  = NCSingleHomeView()
     self.mainView = mainView
     self.view.addSubview(mainView)
+    
+//    let label  = UILabel()
+//    self.label = label
+//    self.view.addSubview(label)
+//    label.font = NCFont.bold(size: 54)
+//    label.textAlignment = .center
+//    label.edgesToSuperview()
   }
   
   private func setupConstraints(){

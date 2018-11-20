@@ -14,6 +14,12 @@ class NCHomeTopView: NCBaseView{
   //Menu Bar
   var menuBar: NCMenuBar?
   
+  var parent : NCHomeController?{
+    didSet{
+      menuBar?.parent = parent
+    }
+  }
+  
   //PageViewController
   var pageView: NCPageViewController?{
     didSet{
