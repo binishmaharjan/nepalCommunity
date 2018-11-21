@@ -85,7 +85,7 @@ extension NCLoginViewController : NCLoginViewDelegate, NCButtonDelegate, NCSignU
       }
     }
       /*
-       Sign in with email
+       Sign in with Facebook
        */
     else if view == mainView?.fbBtn{
       //Start the indicator
