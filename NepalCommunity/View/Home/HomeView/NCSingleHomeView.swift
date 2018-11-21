@@ -49,12 +49,16 @@ extension NCSingleHomeView : UITableViewDelegate, UITableViewDataSource{
   
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     if let cell = tableView.dequeueReusableCell(withIdentifier: CELL_ID, for: indexPath) as? NCArticleCell{
+      cell.selectionStyle = .none
       return cell
     }
     return UITableViewCell()
   }
   
   func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-    return 105
+    return 113
   }
+  
+  
+  
 }

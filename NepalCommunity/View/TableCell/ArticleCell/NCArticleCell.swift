@@ -12,6 +12,7 @@ import TinyConstraints
 class NCArticleCell : UITableViewCell{
   
   //Variables
+  private var container: UIView?
   private var userImageBG : UIView?
   private var userImage: UIImageView?
   private var topLabel: UILabel?
@@ -27,7 +28,6 @@ class NCArticleCell : UITableViewCell{
   private var commentLabel: UILabel?
   private var menuIconBG: UIView?
   private var menuIcon: NCImageButtonView?
-  private var seperator : UIView?
   
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -40,10 +40,18 @@ class NCArticleCell : UITableViewCell{
   }
   
   private func setup(){
+    //Container
+    let container = UIView()
+    self.container = container
+    container.backgroundColor = NCColors.white
+    container.dropShadow(opacity: 0.05,radius: 2.0)
+    container.layer.cornerRadius = 5
+    self.addSubview(container)
+    
     //User Image
     let userImageBG = UIView()
     self.userImageBG = userImageBG
-    self.addSubview(userImageBG)
+    container.addSubview(userImageBG)
     userImageBG.layer.cornerRadius = 5.0
     userImageBG.dropShadow()
     
@@ -61,12 +69,12 @@ class NCArticleCell : UITableViewCell{
     topLabel.textColor = NCColors.darKGray
     topLabel.font = NCFont.normal(size: 12)
     topLabel.adjustsFontSizeToFitWidth = true
-    self.addSubview(topLabel)
+    container.addSubview(topLabel)
     
     //Menu Icon
     let menuIconBG = UIView()
     self.menuIconBG = menuIconBG
-    self.addSubview(menuIconBG)
+    container.addSubview(menuIconBG)
     
     let menuIcon = NCImageButtonView()
     self.menuIcon = menuIcon
@@ -77,7 +85,7 @@ class NCArticleCell : UITableViewCell{
     let titleLabel = UILabel()
     self.titleLabel = titleLabel
     titleLabel.text = LOCALIZE("What shoud i cook for dinner?pork or chicken with rice.")
-    self.addSubview(titleLabel)
+    container.addSubview(titleLabel)
     titleLabel.font = NCFont.normal(size: 16)
     titleLabel.textColor = NCColors.black
     titleLabel.numberOfLines = 2
@@ -87,7 +95,7 @@ class NCArticleCell : UITableViewCell{
     //Comment Label
     let commentIconBG = UIView()
     self.commentIconBG = commentIconBG
-    self.addSubview(commentIconBG)
+    container.addSubview(commentIconBG)
     
     let commentIcon = NCImageButtonView()
     self.commentIcon = commentIcon
@@ -99,12 +107,12 @@ class NCArticleCell : UITableViewCell{
     commentLabel.text = LOCALIZE("12346")
     commentLabel.textColor = NCColors.darKGray
     commentLabel.font = NCFont.normal(size: 12)
-    self.addSubview(commentLabel)
+    container.addSubview(commentLabel)
     
     //Dislike Lablel
     let dislikeIconBG = UIView()
     self.dislikeIconBG = dislikeIconBG
-    self.addSubview(dislikeIconBG)
+    container.addSubview(dislikeIconBG)
     
     let dislikeIcon = NCImageButtonView()
     self.dislikeIcon = dislikeIcon
@@ -116,12 +124,12 @@ class NCArticleCell : UITableViewCell{
     dislikeLabel.text = LOCALIZE("12346")
     dislikeLabel.textColor = NCColors.darKGray
     dislikeLabel.font = NCFont.normal(size: 12)
-    self.addSubview(dislikeLabel)
+    container.addSubview(dislikeLabel)
     
     //Like Label
     let likeIconBG = UIView()
     self.likeIconBG = likeIconBG
-    self.addSubview(likeIconBG)
+    container.addSubview(likeIconBG)
     
     let likeIcon = NCImageButtonView()
     self.likeIcon = likeIcon
@@ -133,14 +141,7 @@ class NCArticleCell : UITableViewCell{
     likeLabel.text = LOCALIZE("12346")
     likeLabel.textColor = NCColors.darKGray
     likeLabel.font = NCFont.normal(size: 12)
-    self.addSubview(likeLabel)
-    
-    //Seperator
-    let seperator = UIView()
-    self.seperator = seperator
-    seperator.backgroundColor = NCColors.darKGray
-    
-    self.addSubview(seperator)
+    container.addSubview(likeLabel)
   }
   
   private func setupConstraints(){
@@ -157,9 +158,15 @@ class NCArticleCell : UITableViewCell{
           let dislikeIconBG = self.dislikeIconBG,
           let dislikeIcon = self.dislikeIcon,
           let dislikeLabel = self.dislikeLabel,
-          let seperator = self.seperator,
+          let container = self.container,
           let menuIconBG = self.menuIconBG,
       let menuIcon = self.menuIcon else { return }
+    
+    container.topToSuperview(offset : 6)
+    container.leftToSuperview(offset : 8)
+    container.bottomToSuperview(offset : -6)
+    container.rightToSuperview(offset : -8)
+    
     
     userImageBG.topToSuperview(offset : 16)
     userImageBG.leftToSuperview(offset : 16)
@@ -220,12 +227,5 @@ class NCArticleCell : UITableViewCell{
 //    likeIconBG.isDrawRectangle = true
     
     likeIcon.edgesToSuperview()
-    
-    seperator.bottomToSuperview()
-    seperator.leftToSuperview()
-    seperator.rightToSuperview()
-    seperator.height(0.5)
-
-    
   }
 }
