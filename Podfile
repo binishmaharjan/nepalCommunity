@@ -17,4 +17,6 @@ target 'NepalCommunity' do
   pod 'NVActivityIndicatorView'
   pod 'Gallery'
   pod 'SwiftyJSON'
+  pod 'CodableFirebase'
+  pod 'SDWebImage'
 end

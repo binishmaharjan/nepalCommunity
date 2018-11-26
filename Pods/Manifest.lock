@@ -11,6 +11,7 @@ PODS:
   - BoringSSL/Implementation (10.0.6):
     - BoringSSL/Interface (= 10.0.6)
   - BoringSSL/Interface (10.0.6)
+  - CodableFirebase (0.2.1)
   - FacebookCore (0.5.0):
     - Bolts (~> 1.9)
     - FBSDKCoreKit (~> 4.37)
@@ -144,10 +145,14 @@ PODS:
     - NVActivityIndicatorView/Presenter (= 4.4.0)
   - NVActivityIndicatorView/Presenter (4.4.0)
   - Protobuf (3.6.1)
+  - SDWebImage (4.4.2):
+    - SDWebImage/Core (= 4.4.2)
+  - SDWebImage/Core (4.4.2)
   - SwiftyJSON (4.2.0)
   - TinyConstraints (3.3.1)
 
 DEPENDENCIES:
+  - CodableFirebase
   - FacebookCore
   - FacebookLogin
   - Firebase/Auth
@@ -156,6 +161,7 @@ DEPENDENCIES:
   - Firebase/Storage
   - Gallery
   - NVActivityIndicatorView
+  - SDWebImage
   - SwiftyJSON
   - TinyConstraints
 
@@ -163,6 +169,7 @@ SPEC REPOS:
   https://github.com/cocoapods/specs.git:
     - Bolts
     - BoringSSL
+    - CodableFirebase
     - FacebookCore
     - FacebookLogin
     - FBSDKCoreKit
@@ -188,12 +195,14 @@ SPEC REPOS:
     - nanopb
     - NVActivityIndicatorView
     - Protobuf
+    - SDWebImage
     - SwiftyJSON
     - TinyConstraints
 
 SPEC CHECKSUMS:
   Bolts: ac6567323eac61e203f6a9763667d0f711be34c8
   BoringSSL: e10f92a27043805c01071fe815a5cd98ae8212e7
+  CodableFirebase: 0bf201991eeec35eb9fcd987d271ea463cf34a80
   FacebookCore: 74288d0add931d361b1596beae787ab72c438249
   FacebookLogin: ebcf34714a1cb9f0759d9f071cfb01ed500996cf
   FBSDKCoreKit: 2ab7fdbf600dc6b628ba7a49aa29d357a7b4c74e
@@ -219,9 +228,10 @@ SPEC CHECKSUMS:
   nanopb: 5601e6bca2dbf1ed831b519092ec110f66982ca3
   NVActivityIndicatorView: ec7440a57af2450319d3a4181cca7da6fc127064
   Protobuf: 1eb9700044745f00181c136ef21b8ff3ad5a0fd5
+  SDWebImage: 624d6e296c69b244bcede364c72ae0430ac14681
   SwiftyJSON: c4bcba26dd9ec7a027fc8eade48e2c911f229e96
   TinyConstraints: dbf7519aefc01ea59d62244300c7718aec68e280
 
-PODFILE CHECKSUM: 2c366196ef64b7a73788dded1c7b48a7656772b1
+PODFILE CHECKSUM: 83d8b1a20a76ba7def808f127c34eb0b1bb144f3
 
 COCOAPODS: 1.5.3

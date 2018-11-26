@@ -44,7 +44,7 @@ class NCPageViewController : UIPageViewController{
     //Delegate and Datasource
     self.dataSource = self
     self.delegate = self
-    
+    self.view.backgroundColor = NCColors.white
     
     let view1 = NCSingleHomeController()
     view1.view.backgroundColor = NCColors.white
@@ -92,7 +92,6 @@ class NCPageViewController : UIPageViewController{
     let scrollView = view.subviews.compactMap { $0 as? UIScrollView }.first
     scrollView?.scrollsToTop = false
     scrollView?.delegate = self
-    scrollView?.backgroundColor = UIColor.lightGray
   }
   
 }
@@ -182,7 +181,7 @@ extension NCPageViewController: UIScrollViewDelegate{
        */
       let menuX = scrollX / 4
       
-      guard let homeTop = self.homeTop else { return }
+      //guard let homeTop = self.homeTop else { return }
       if menuX != 0 {
         /*
          Calculating the current point of the menu bar with the
@@ -194,7 +193,7 @@ extension NCPageViewController: UIScrollViewDelegate{
         parentVC?.menuBarXFromPageView = a
         
         //Chaning the offset of collectionview, when swiping backwards to lower index
-        if a <= (UIScreen.main.bounds.width / 4) * 2{
+        if a <= (UIScreen.main.bounds.width / 4) * 2 {
           if previousIndex > currentIndex && currentIndex != 0{
             parentVC?.homeTop?.menuBar?.collectionView?.contentOffset.x = a
           }
@@ -208,8 +207,6 @@ extension NCPageViewController: UIScrollViewDelegate{
 
           }
         }
-        
-        
         
       }
     }

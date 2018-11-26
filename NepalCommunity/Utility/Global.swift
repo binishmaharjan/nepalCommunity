@@ -54,6 +54,7 @@ class DatabaseReference{
   static let DOB = "dob"
   static let ACCOUNT_TYPE = "account_type"
   static let DATE_CREATED = "date_created"
+  static let EMAIL = "email"
 }
 
 class StorageReference{
