@@ -42,6 +42,7 @@ class NCHomeController: NCViewController {
     super.viewDidLoad()
     setup()
     setupConstraints()
+    self.view.backgroundColor = NCColors.white
   }
   
   override func didInit() {

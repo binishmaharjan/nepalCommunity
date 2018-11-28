@@ -131,7 +131,7 @@ extension NCSignUpViewController: NCButtonDelegate, NCSignUpAndSignIn, NCDatabas
         }
         
         //Write the data to the database
-        self.writeEmailUser(userId: userId, username: username, iconUrl: url!, completion: { (error) in
+        self.writeEmailUser(userId: userId, username: username, iconUrl: url!,email : email, completion: { (error) in
           if let error = error{
             NCActivityIndicator.shared.stop()
             NCDropDownNotification.shared.showError(message: LOCALIZE("Error : \(error.localizedDescription)"))

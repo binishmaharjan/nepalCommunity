@@ -81,6 +81,7 @@ extension NCLoginViewController : NCLoginViewDelegate, NCButtonDelegate, NCSignU
         }
         //Login Successful
         NCActivityIndicator.shared.stop()
+        NCSessionManager.shared.userLoggedIn()
         self.dismiss(animated: true, completion: nil)
       }
     }
@@ -114,7 +115,7 @@ extension NCLoginViewController : NCLoginViewDelegate, NCButtonDelegate, NCSignU
             
             guard let name = name,
               let uid = uid,
-              let _ = email,
+              let email = email,
               let image = image else {
                 NCActivityIndicator.shared.stop()
                 NCDropDownNotification.shared.showError(message: "Fetch Error")
@@ -135,13 +136,14 @@ extension NCLoginViewController : NCLoginViewDelegate, NCButtonDelegate, NCSignU
               }
               
               //If save is successful,write the user info to the database
-              self.writeFacebookUser(userId: uid, username: name, iconUrl: url, completion: { (error) in
+              self.writeFacebookUser(userId: uid, username: name, iconUrl: url, email: email, completion: { (error) in
                 if let error = error {
                   NCActivityIndicator.shared.stop()
                   NCDropDownNotification.shared.showError(message: error.localizedDescription)
                   return
                 }
                 NCActivityIndicator.shared.stop()
+                NCSessionManager.shared.userLoggedIn()
                 self.dismiss(animated: true, completion: nil)
               })
             })

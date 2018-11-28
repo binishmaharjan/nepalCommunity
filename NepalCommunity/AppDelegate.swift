@@ -49,6 +49,17 @@ extension AppDelegate{
       FirebaseApp.configure(options: firbaseOptions)
       FBSDKApplicationDelegate.sharedInstance()?.application(application, didFinishLaunchingWithOptions: launchOptions)
     }
+    
+    //Download Session User Data
+    setupSessionUser()
+  }
+  
+  private func setupSessionUser(){
+    if let _ = Auth.auth().currentUser{
+      NCSessionManager.shared.userLoggedIn()
+    }else{
+      Dlog("Not Logged In")
+    }
   }
 }
 

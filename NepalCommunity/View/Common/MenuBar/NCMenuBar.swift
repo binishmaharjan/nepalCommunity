@@ -85,7 +85,12 @@ extension NCMenuBar : UICollectionViewDataSource, UICollectionViewDelegate, UICo
     return CGSize(width: frame.width / 4, height: frame.height)
   }
   
+  //Spacing to Zero
   func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+    return 0
+  }
+  
+  func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
     return 0
   }
   
@@ -102,10 +107,6 @@ extension NCMenuBar : UICollectionViewDataSource, UICollectionViewDelegate, UICo
     //Changing the view of the pageView Controller
     guard let pageView = self.pageView else { return }
     pageView.menuBarMenuWasPresssed(at: indexPath.row)
-  }
-  
-  func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-    return 0
   }
   
   func scrollViewDidScroll(_ scrollView: UIScrollView) {
