@@ -33,7 +33,6 @@ class NCCreateARrticleController: NCViewController{
   
   override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
-    Dlog("Yesssss")
     self.mainView?.titleField?.becomeFirstResponder()
   }
   
@@ -80,7 +79,35 @@ extension NCCreateARrticleController : NCButtonDelegate{
       self.dismiss(animated: true, completion: nil)
     }
     else if view == mainView?.postBtn{
-      Dlog("Post")
+      guard let mainView = self.mainView else {return}
+      //Getting the proper title
+      guard let titleField = mainView.titleField,
+        let titleText = titleField.text,titleText.count > 0,
+             !mainView.isTitlePlaceholder else{
+        NCDropDownNotification.shared.showError(message: LOCALIZE("Enter Title"))
+          return
+      }
+      //Getting the proper description
+      guard let descriptionField = mainView.descriptionField,
+        let descriptionText = descriptionField.text, descriptionText.count > 0 ,
+            !mainView.isDescriptionPlaceholder else {
+          NCDropDownNotification.shared.showError(message: LOCALIZE("Enter Description"))
+          return
+      }
+      
+      //Confirming if the post has image or not
+      let hasImage = mainView.hasImage
+      let category = mainView.categories.rawValue
+      if hasImage{
+        guard let selectImageView = mainView.selectedImageView,
+          let image = selectImageView.image else {
+            NCDropDownNotification.shared.showError(message: LOCALIZE("Error"))
+            return
+        }
+        self.postCreateWithImage(title: titleText, description: descriptionText, image: image, category: category)
+      }else{
+        self.postCreateWithText(title: titleText, description: descriptionText, category: category)
+      }
     }
   }
 }
@@ -130,23 +157,23 @@ extension NCCreateARrticleController{
 extension NCCreateARrticleController : NCCategoriesSelectionDelegate{
   func categoriesSelectionTapped() {
     let categoryAlert = UIAlertController(title: LOCALIZE("Categories"), message: "Select Categories", preferredStyle: .actionSheet)
-    let foodTravelAlert = UIAlertAction(title: "Food & Tarvel", style: .default) { (_) in
+    let foodTravelAlert = UIAlertAction(title: LOCALIZE(NCCategories.food_travel.rawValue), style: .default) { (_) in
       self.mainView?.categories = .food_travel
     }
     
-    let japanLifeAlert = UIAlertAction(title: "Japan Life", style: .default) { (_) in
+    let japanLifeAlert = UIAlertAction(title: LOCALIZE(NCCategories.japanLife.rawValue), style: .default) { (_) in
       self.mainView?.categories = .japanLife
     }
     
-    let schoolVisaAlert = UIAlertAction(title: "School & Visa", style: .default) { (_) in
+    let schoolVisaAlert = UIAlertAction(title: LOCALIZE(NCCategories.school_visa.rawValue), style: .default) { (_) in
       self.mainView?.categories = .school_visa
     }
     
-    let partTimeAlert = UIAlertAction(title: "PartTime", style: .default) { (_) in
+    let partTimeAlert = UIAlertAction(title: LOCALIZE(NCCategories.parttime.rawValue), style: .default) { (_) in
      self.mainView?.categories = .parttime
     }
     
-    let miscellaneousAlert = UIAlertAction(title: "Miscellaneous", style: .default) { (_) in
+    let miscellaneousAlert = UIAlertAction(title: LOCALIZE(NCCategories.miscellaneous.rawValue), style: .default) { (_) in
       self.mainView?.categories = .miscellaneous
     }
     
@@ -205,5 +232,60 @@ extension NCCreateARrticleController : GalleryControllerDelegate, NCImageSelecti
   
   func galleryControllerDidCancel(_ controller: GalleryController) {
     controller.dismiss(animated: true, completion: nil)
+  }
+}
+
+//MARK: Post Article
+extension NCCreateARrticleController : NCDatabaseWrite, NCStorage{
+  //Post With Images
+  private func postCreateWithImage(title : String, description : String, image : UIImage, category : String){
+    //Show Indicator
+    NCActivityIndicator.shared.start(view: self.view)
+    
+    //Saving the image and getting the url
+    saveArticleImageToStorage(image: image) { (imageUrl, error) in
+      if let error = error{
+        Dlog("\(error.localizedDescription)")
+        NCDropDownNotification.shared.showError(message: LOCALIZE(error.localizedDescription))
+        NCActivityIndicator.shared.stop()
+        return
+      }
+      
+      guard let imageUrl = imageUrl else {return}
+      
+      //Posting the article with the image
+      self.postArticle(userId: (NCSessionManager.shared.user?.uid)!, title: title, description: description, category: category, imageURL: imageUrl, hasImage: 1, completion: { (error) in
+        if let error = error{
+          Dlog("\(error.localizedDescription)")
+          NCDropDownNotification.shared.showError(message: LOCALIZE(error.localizedDescription))
+          NCActivityIndicator.shared.stop()
+          return
+        }
+        //Dismissing the view
+        NCDropDownNotification.shared.showSuccess(message: LOCALIZE("Success!!!"))
+        NCActivityIndicator.shared.stop()
+        self.dismiss(animated: true, completion: nil)
+      })
+    }
+  }
+  
+  
+  //Post With Text Only
+  private func postCreateWithText(title: String, description : String, category : String){
+    //Show Indicator
+    NCActivityIndicator.shared.start(view: self.view)
+    //Posting the aritcle with text only
+    self.postArticle(userId: (NCSessionManager.shared.user?.uid)!, title: title, description: description, category: category, imageURL: "", hasImage: 0) { (error) in
+      if let error = error {
+       Dlog("\(error.localizedDescription)")
+        NCDropDownNotification.shared.showError(message: LOCALIZE(error.localizedDescription))
+        NCActivityIndicator.shared.stop()
+        return
+      }
+      //Dismissing the view
+      NCDropDownNotification.shared.showSuccess(message: LOCALIZE("Success!!!"))
+      NCActivityIndicator.shared.stop()
+      self.dismiss(animated: true, completion: nil)
+    }
   }
 }

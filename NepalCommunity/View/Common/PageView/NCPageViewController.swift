@@ -46,37 +46,43 @@ class NCPageViewController : UIPageViewController{
     self.delegate = self
     self.view.backgroundColor = NCColors.white
     
-    let view1 = NCSingleHomeController()
-    view1.view.backgroundColor = NCColors.white
-    view1.view.tag = 0
+    let popular = NCSingleHomeController()
+    popular.view.backgroundColor = NCColors.white
+    popular.referenceTitle = "Popular"
+    popular.view.tag = 0
     
-    let view2 = NCSingleHomeController()
-    view2.view.backgroundColor = NCColors.white
-    view2.view.tag = 1
+    let foodTravel = NCSingleHomeController()
+    foodTravel.view.backgroundColor = NCColors.white
+    foodTravel.referenceTitle = NCCategories.food_travel.rawValue
+    foodTravel.view.tag = 1
     
-    let view3 = NCSingleHomeController()
-    view3.view.backgroundColor = NCColors.white
-    view3.view.tag = 2
+    let japanLife = NCSingleHomeController()
+    japanLife.view.backgroundColor = NCColors.white
+    japanLife.referenceTitle = NCCategories.japanLife.rawValue
+    japanLife.view.tag = 2
     
-    let view4 = NCSingleHomeController()
-    view4.view.backgroundColor = NCColors.white
-    view4.view.tag = 3
+    let schoolVisa = NCSingleHomeController()
+    schoolVisa.view.backgroundColor = NCColors.white
+    schoolVisa.referenceTitle = NCCategories.school_visa.rawValue
+    schoolVisa.view.tag = 3
     
-    let view5 = NCSingleHomeController()
-    view5.view.backgroundColor = NCColors.white
-    view5.view.tag = 4
+    let parttime = NCSingleHomeController()
+    parttime.view.backgroundColor = NCColors.white
+    parttime.referenceTitle = NCCategories.parttime.rawValue
+    parttime.view.tag = 4
     
-    let view6 = NCSingleHomeController()
-    view6.view.backgroundColor = NCColors.white
-    view6.view.tag = 5
+    let miscellaneous = NCSingleHomeController()
+    miscellaneous.view.backgroundColor = NCColors.white
+    miscellaneous.referenceTitle = NCCategories.miscellaneous.rawValue
+    miscellaneous.view.tag = 5
     
     
-    self.pages.append(view1)
-    self.pages.append(view2)
-    self.pages.append(view3)
-    self.pages.append(view4)
-    self.pages.append(view5)
-    self.pages.append(view6)
+    self.pages.append(popular)
+    self.pages.append(foodTravel)
+    self.pages.append(japanLife)
+    self.pages.append(schoolVisa)
+    self.pages.append(parttime)
+    self.pages.append(miscellaneous)
     
     self.setViewControllers([pages[0]], direction: .forward, animated: true, completion: nil)
     

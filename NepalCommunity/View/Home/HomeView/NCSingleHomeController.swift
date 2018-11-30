@@ -19,6 +19,11 @@ class NCSingleHomeController : NCViewController{
 //    }
 //  }
   
+  var referenceTitle :String{
+    set{mainView?.referenceTitle = newValue}
+    get{return mainView?.referenceTitle ?? ""}
+  }
+  
   override func viewDidLoad() {
     super.viewDidLoad()
     self.setup()

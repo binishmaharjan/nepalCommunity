@@ -47,6 +47,7 @@ func LOCALIZE(_ text: String) -> String{
 let appDelegate = UIApplication.shared.delegate as! AppDelegate
 
 class DatabaseReference{
+  //User
   static let USERS_REF = "users"
   static let USER_ID = "uid"
   static let USERNAME = "username"
@@ -55,9 +56,24 @@ class DatabaseReference{
   static let ACCOUNT_TYPE = "account_type"
   static let DATE_CREATED = "date_created"
   static let EMAIL = "email"
+  
+  
+  //Article
+  static let ARTICLE_REF = "article"
+  static let ARTICLE_ID = "article_id"
+  static let LIKE_COUNT = "like_count"
+  static let DISLIKE_COUNT = "dislike_count"
+  static let ARTICLE_TITLE = "article_title"
+  static let ARTICLE_DESCRIPTION = "article_description"
+  static let IMAGE_URL = "image_url"
+  static let HAS_IMAGE = "has_image"
+  static let COMMENT_COUNT = "comment_count"
+  static let ARTICLE_CATEGORY = "article_category"
 }
 
 class StorageReference{
   static let USER_PROFILE = "user_profile"
   static let PROFILE_IMAGE = "profile_image.jpg"
+  
+  static let ARTICLE_IMAGES = "article_images"
 }
