@@ -57,15 +57,15 @@ class NCCreateArticleView : NCBaseView{
   var titleField: UITextView?
   private var titleHeight:CGFloat = 24
   private var titleFieldHeightConstraints: Constraint?
-  private var isTitlePlaceholder: Bool = true
+  var isTitlePlaceholder: Bool = true
   
   private var seperator : UIView?
   private var seperatorTopConstraints: Constraint?
   
-  var descriptionField: UIView?
+  var descriptionField: UITextView?
   private var descriptionHeight:CGFloat = 22
   private var descriptionFieldHeightConstraints: Constraint?
-  private var isDescriptionPlaceholder: Bool = true
+  var isDescriptionPlaceholder: Bool = true
   
   var selectedImageView: UIImageView?
   private var imageSelectionView: UICollectionView?
@@ -541,7 +541,6 @@ extension NCCreateArticleView{
 //MARK :  Image Pressed and Cancel Button Pressed
 extension NCCreateArticleView{
   @objc private func cancelButtonPressed(){
-    Dlog("Cancel")
     hasImage = false
   }
   

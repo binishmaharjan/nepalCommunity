@@ -8,6 +8,8 @@
 
 import UIKit
 import TinyConstraints
+import FirebaseFirestore
+import CodableFirebase
 
 class NCArticleCell : UITableViewCell{
   
@@ -37,6 +39,21 @@ class NCArticleCell : UITableViewCell{
   
   required init?(coder aDecoder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
+  }
+  
+  var article: NCArticle?{
+    didSet{
+      self.relayout()
+    }
+  }
+  
+  var user: NCUser?{
+    didSet{
+      self.topLabel?.text = "\(user?.username)"
+      userImage?.sd_setImage(with: URL(string: user?.iconUrl ?? ""), completed: { (image, error, _, _) in
+        self.userImage?.image = image
+      })
+    }
   }
   
   private func setup(){
@@ -228,4 +245,34 @@ class NCArticleCell : UITableViewCell{
     
     likeIcon.edgesToSuperview()
   }
+  
+  
+  private func relayout(){
+    guard let article = self.article else {
+      Dlog("Error: Article Error")
+      return
+    }
+    self.titleLabel?.text = article.articleTitle
+    
+    Firestore.firestore().collection(DatabaseReference.USERS_REF).whereField(DatabaseReference.USER_ID, isEqualTo: article.uid).getDocuments { (snapshot, error) in
+      
+      if let error = error {
+        Dlog("\(error.localizedDescription)")
+        return
+      }
+     
+        let document = snapshot?.documents.first
+        let data = document?.data()
+      
+      do{
+        let user = try FirebaseDecoder().decode(NCUser.self, from: data)
+        self.user = user
+      }catch{
+        Dlog(error.localizedDescription)
+      }
+      
+    }
+  }
+  
+  
 }
