@@ -17,14 +17,19 @@ class NCArticleCell : UITableViewCell{
   private var container: UIView?
   private var userImageBG : UIView?
   private var userImage: UIImageView?
-  private var topLabel: UILabel?
+  private var nameLabel: UILabel?
+  private var categoryBG: UIView?
+  private var categoryLabel: UILabel?
+  private var dateLabel: UILabel?
   private var titleLabel :UILabel?
   private var likeIconBG: UIView?
   private var likeIcon: NCImageButtonView?
   private var likeLabel: UILabel?
+  private var seperatorOne: UIView?
   private var dislikeIconBG : UIView?
   private var dislikeIcon: NCImageButtonView?
   private var dislikeLabel: UILabel?
+  private var seperatorTwo: UIView?
   private var commentIconBG : UIView?
   private var commentIcon : NCImageButtonView?
   private var commentLabel: UILabel?
@@ -49,7 +54,7 @@ class NCArticleCell : UITableViewCell{
   
   var user: NCUser?{
     didSet{
-      self.topLabel?.text = "\(user?.username)"
+      self.nameLabel?.text = "\(user?.username ?? "")"
       userImage?.sd_setImage(with: URL(string: user?.iconUrl ?? ""), completed: { (image, error, _, _) in
         self.userImage?.image = image
       })
@@ -61,8 +66,9 @@ class NCArticleCell : UITableViewCell{
     let container = UIView()
     self.container = container
     container.backgroundColor = NCColors.white
-    container.dropShadow(opacity: 0.05,radius: 2.0)
+    container.dropShadow(opacity: 0.1,radius: 2.0)
     container.layer.cornerRadius = 5
+    container.layer.zPosition = 5
     self.addSubview(container)
     
     //User Image
@@ -79,14 +85,36 @@ class NCArticleCell : UITableViewCell{
     userImage.layer.cornerRadius = 5.0
     userImage.clipsToBounds = true
     
-    //Top Label
-    let topLabel = UILabel()
-    self.topLabel = topLabel
-    topLabel.text = LOCALIZE("Maharjan Binish | LifeStyle | 2 hours" )
-    topLabel.textColor = NCColors.darKGray
-    topLabel.font = NCFont.normal(size: 12)
-    topLabel.adjustsFontSizeToFitWidth = true
-    container.addSubview(topLabel)
+    //NameLabel Label
+    let nameLabel = UILabel()
+    self.nameLabel = nameLabel
+    nameLabel.text = LOCALIZE("Maharjan Binish" )
+    nameLabel.textColor = NCColors.black
+    nameLabel.font = NCFont.bold(size: 14)
+    nameLabel.adjustsFontSizeToFitWidth = true
+    container.addSubview(nameLabel)
+    
+    //Category Label
+    let categoriesBG = UIView()
+    self.categoryBG = categoriesBG
+    container.addSubview(categoriesBG)
+    categoriesBG.layer.borderWidth = 1.0
+    categoriesBG.layer.cornerRadius = 5.0
+    categoriesBG.layer.borderColor = NCColors.darKGray.cgColor
+    
+    let categoriesLbl = UILabel()
+    self.categoryLabel = categoriesLbl
+    categoriesLbl.text = LOCALIZE(NCCategories.food_travel.rawValue)
+    categoriesLbl.textColor = NCColors.darKGray
+    categoriesLbl.font = NCFont.bold(size: 12)
+    categoriesBG.addSubview(categoriesLbl)
+    
+    let dateLabel = UILabel()
+    self.dateLabel = dateLabel
+    dateLabel.text = LOCALIZE(NCDate.dateToString())
+    container.addSubview(dateLabel)
+    dateLabel.font = NCFont.bold(size: 12)
+    dateLabel.textColor = NCColors.darKGray
     
     //Menu Icon
     let menuIconBG = UIView()
@@ -103,7 +131,7 @@ class NCArticleCell : UITableViewCell{
     self.titleLabel = titleLabel
     titleLabel.text = LOCALIZE("What shoud i cook for dinner?pork or chicken with rice.")
     container.addSubview(titleLabel)
-    titleLabel.font = NCFont.normal(size: 16)
+    titleLabel.font = NCFont.bold(size: 16)
     titleLabel.textColor = NCColors.black
     titleLabel.numberOfLines = 2
     titleLabel.lineBreakMode = .byTruncatingTail
@@ -117,13 +145,14 @@ class NCArticleCell : UITableViewCell{
     let commentIcon = NCImageButtonView()
     self.commentIcon = commentIcon
     commentIcon.image = UIImage(named: "icon_comment")
+    commentIcon.buttonMargin = .zero
     commentIconBG.addSubview(commentIcon)
     
     let commentLabel = UILabel()
     self.commentLabel = commentLabel
-    commentLabel.text = LOCALIZE("12346")
-    commentLabel.textColor = NCColors.darKGray
-    commentLabel.font = NCFont.normal(size: 12)
+    commentLabel.text = LOCALIZE("127")
+    commentLabel.textColor = NCColors.black
+    commentLabel.font = NCFont.bold(size: 12)
     container.addSubview(commentLabel)
     
     //Dislike Lablel
@@ -133,14 +162,15 @@ class NCArticleCell : UITableViewCell{
     
     let dislikeIcon = NCImageButtonView()
     self.dislikeIcon = dislikeIcon
-    dislikeIcon.image = UIImage(named: "icon_thumb_down")
+    dislikeIcon.buttonMargin = .zero
+    dislikeIcon.image = UIImage(named: "icon_dislike_h")
     dislikeIconBG.addSubview(dislikeIcon)
     
     let dislikeLabel = UILabel()
     self.dislikeLabel = dislikeLabel
-    dislikeLabel.text = LOCALIZE("12346")
-    dislikeLabel.textColor = NCColors.darKGray
-    dislikeLabel.font = NCFont.normal(size: 12)
+    dislikeLabel.text = LOCALIZE("1.2K")
+    dislikeLabel.textColor = NCColors.black
+    dislikeLabel.font = NCFont.bold(size: 12)
     container.addSubview(dislikeLabel)
     
     //Like Label
@@ -150,21 +180,36 @@ class NCArticleCell : UITableViewCell{
     
     let likeIcon = NCImageButtonView()
     self.likeIcon = likeIcon
-    likeIcon.image = UIImage(named: "icon_thumb_up")
+    likeIcon.image = UIImage(named: "icon_like")
+    likeIcon.buttonMargin = .zero
     likeIconBG.addSubview(likeIcon)
     
     let likeLabel = UILabel()
     self.likeLabel = likeLabel
-    likeLabel.text = LOCALIZE("12346")
-    likeLabel.textColor = NCColors.darKGray
-    likeLabel.font = NCFont.normal(size: 12)
+    likeLabel.text = LOCALIZE("5.6K")
+    likeLabel.textColor = NCColors.black
+    likeLabel.font = NCFont.bold(size: 12)
     container.addSubview(likeLabel)
+    
+    //Seperator
+    let seperatorOne = UIView()
+    self.seperatorOne = seperatorOne
+    container.addSubview(seperatorOne)
+    seperatorOne.backgroundColor = NCColors.orange
+    
+    let seperatorTwo = UIView()
+    self.seperatorTwo = seperatorTwo
+    container.addSubview(seperatorTwo)
+    seperatorTwo.backgroundColor = NCColors.orange
+    
   }
   
   private func setupConstraints(){
     guard let userImage = self.userImage,
           let userImageBG = self.userImageBG,
-          let topLabel = self.topLabel,
+          let nameLabel = self.nameLabel,
+          let categoryBG = self.categoryBG,
+          let categoryLabel = self.categoryLabel,
           let titleLabel = self.titleLabel,
           let commentIconBG = self.commentIconBG,
           let commentIcon = self.commentIcon,
@@ -177,73 +222,85 @@ class NCArticleCell : UITableViewCell{
           let dislikeLabel = self.dislikeLabel,
           let container = self.container,
           let menuIconBG = self.menuIconBG,
+          let seperatorOne = self.seperatorOne,
+          let seperatorTwo = self.seperatorTwo,
       let menuIcon = self.menuIcon else { return }
     
-    container.topToSuperview(offset : 6)
+    container.topToSuperview(offset : 8)
     container.leftToSuperview(offset : 8)
-    container.bottomToSuperview(offset : -6)
+    container.bottomToSuperview(offset : 0)
     container.rightToSuperview(offset : -8)
     
     
-    userImageBG.topToSuperview(offset : 16)
-    userImageBG.leftToSuperview(offset : 16)
-    userImageBG.width(60)
+    userImageBG.topToSuperview(offset : 8)
+    userImageBG.leftToSuperview(offset : 8)
+    userImageBG.width(42)
     userImageBG.height(to: userImageBG, userImageBG.widthAnchor)
     
     userImage.edgesToSuperview()
     
-    topLabel.topToSuperview(offset: 11)
-    topLabel.leftToRight(of: userImageBG, offset : 16)
-    topLabel.rightToLeft(of: menuIconBG)
+    nameLabel.top(to: userImageBG)
+    nameLabel.leftToRight(of: userImageBG, offset : 8)
+    nameLabel.rightToLeft(of: menuIconBG)
     
-    menuIconBG.rightToSuperview(offset: -16)
-    menuIconBG.centerY(to: topLabel)
+    categoryBG.left(to: nameLabel)
+    categoryBG.bottom(to: userImageBG)
+    categoryBG.right(to: categoryLabel, offset: 8)
+    categoryBG.topToBottom(of: nameLabel, offset: 5)
+    
+    categoryLabel.leftToSuperview(offset:8)
+    categoryLabel.centerYToSuperview()
+    
+    menuIconBG.rightToSuperview(offset: -8)
+    menuIconBG.centerY(to: nameLabel)
     menuIconBG.width(28)
     menuIconBG.height(19)
     
     menuIcon.edgesToSuperview()
     
-    titleLabel.topToBottom(of: topLabel, offset : 8)
-    titleLabel.leftToRight(of: userImageBG, offset:  16)
-    titleLabel.rightToSuperview(offset : -16)
+    titleLabel.topToBottom(of: userImageBG, offset : 8)
+    titleLabel.left(to: userImageBG)
+    titleLabel.rightToSuperview(offset : -8)
     
-    commentLabel.rightToSuperview(offset : -16)
-    commentLabel.bottomToSuperview(offset : -8)
-
-    
-    commentIconBG.rightToLeft(of: commentLabel)
-    commentIconBG.centerY(to: commentLabel)
-    commentIconBG.width(26.25)
-    commentIconBG.height(32.5)
-//    commentLabel.isDrawRectangle = true
-//    commentIconBG.isDrawRectangle = true
+    commentIconBG.left(to: userImageBG)
+    commentIconBG.topToBottom(of: titleLabel, offset: 6)
+    commentIconBG.width(25)
+    commentIconBG.height(25)
     
     commentIcon.edgesToSuperview()
     
+    commentLabel.leftToRight(of: commentIconBG, offset: 12)
+    commentLabel.centerY(to: commentIconBG)
     
-    dislikeLabel.rightToLeft(of: commentIconBG, offset:  -8)
-    dislikeLabel.bottom(to: commentLabel)
+    seperatorOne.leftToRight(of: commentLabel, offset: 12)
+    seperatorOne.centerY(to: commentIconBG)
+    seperatorOne.height(15)
+    seperatorOne.width(1)
     
-    dislikeIconBG.rightToLeft(of: dislikeLabel)
-    dislikeIconBG.centerY(to: dislikeLabel)
-    dislikeIconBG.width(26.25)
-    dislikeIconBG.height(32.5)
-//    dislikeLabel.isDrawRectangle = true
-//    dislikeIconBG.isDrawRectangle = true
+    likeIconBG.leftToRight(of: seperatorOne, offset: 12)
+    likeIconBG.centerY(to: commentIconBG)
+    likeIconBG.width(25)
+    likeIconBG.height(25)
+    
+    likeIcon.edgesToSuperview()
+    
+    likeLabel.leftToRight(of: likeIconBG, offset: 12)
+    likeLabel.centerY(to: commentIconBG)
+    
+    seperatorTwo.leftToRight(of: likeLabel, offset: 12)
+    seperatorTwo.centerY(to: commentIconBG)
+    seperatorTwo.height(15)
+    seperatorTwo.width(1)
+    
+    dislikeIconBG.leftToRight(of: seperatorTwo, offset: 12)
+    dislikeIconBG.centerY(to: commentIconBG)
+    dislikeIconBG.width(25)
+    dislikeIconBG.height(25)
     
     dislikeIcon.edgesToSuperview()
     
-    likeLabel.rightToLeft(of: dislikeIconBG, offset:  -8)
-    likeLabel.bottom(to: commentLabel)
-    
-    likeIconBG.rightToLeft(of: likeLabel)
-    likeIconBG.centerY(to: likeLabel)
-    likeIconBG.width(26.25)
-    likeIconBG.height(32.5)
-//    likeLabel.isDrawRectangle = true
-//    likeIconBG.isDrawRectangle = true
-    
-    likeIcon.edgesToSuperview()
+    dislikeLabel.leftToRight(of: dislikeIconBG, offset: 12)
+    dislikeLabel.centerY(to: commentIconBG)
   }
   
   

@@ -17,6 +17,7 @@ class NCColors: NSObject{
   static let blue : UIColor = UIColor(red: 140/255, green: 206/255, blue: 239/255, alpha: 1.0) /* #8cceef */
   static let gray : UIColor = UIColor(red: 247/255, green: 247/255, blue: 247/255, alpha: 1.0) /* #f7f7f7 */
   static let darKGray : UIColor = UIColor(red: 191/255, green: 187/255, blue: 187/255, alpha: 1.0) /* #bfbbbb */
+  static let orange: UIColor = UIColor(red: 236/255, green: 107/255, blue: 76/255, alpha: 1.0) /* #ec6b4c */
   
   
   
