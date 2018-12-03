@@ -104,7 +104,7 @@ class NCImageButtonView: NCButtonView{
     super.touchDown(contain)
     if isAnimation{
       UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseInOut, animations: {
-        self.imageView?.transform = CGAffineTransform(scaleX: 0.9, y: 0.9)
+        self.imageView?.transform = CGAffineTransform(scaleX: 0.95, y: 0.95)
       })
     }
   }

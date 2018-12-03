@@ -25,7 +25,7 @@ class NCSingleHomeView : NCBaseView{
   //Reference the categories store in the storage
   var referenceTitle : String?{
     didSet{
-      self.loadArticles()
+      //self.loadArticles()
     }
   }
   
@@ -38,6 +38,7 @@ class NCSingleHomeView : NCBaseView{
   private func setup(){
     let tableView = UITableView()
     self.tableView = tableView
+    tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 15, right: 0)
     tableView.delegate = self
     tableView.dataSource = self
     tableView.register(CELL_CLASS, forCellReuseIdentifier: CELL_ID)
@@ -88,20 +89,20 @@ class NCSingleHomeView : NCBaseView{
 //MARK: TableView delegate and datasource
 extension NCSingleHomeView : UITableViewDelegate, UITableViewDataSource{
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return articles.count
+    return 5
   }
   
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     if let cell = tableView.dequeueReusableCell(withIdentifier: CELL_ID, for: indexPath) as? NCArticleCell{
       cell.selectionStyle = .none
-      cell.article = articles[indexPath.row]
+      //cell.article = articles[indexPath.row]
       return cell
     }
     return UITableViewCell()
   }
   
   func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-    return 113
+    return 142
   }
  
 }
