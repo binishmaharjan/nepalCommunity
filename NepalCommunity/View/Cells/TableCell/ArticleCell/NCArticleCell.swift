@@ -62,6 +62,8 @@ class NCArticleCell : UITableViewCell{
   }
   
   private func setup(){
+    self.backgroundColor = NCColors.white
+    
     //Container
     let container = UIView()
     self.container = container
@@ -88,7 +90,7 @@ class NCArticleCell : UITableViewCell{
     //NameLabel Label
     let nameLabel = UILabel()
     self.nameLabel = nameLabel
-    nameLabel.text = LOCALIZE("Maharjan Binish" )
+    nameLabel.text = LOCALIZE("Fullname" )
     nameLabel.textColor = NCColors.black
     nameLabel.font = NCFont.bold(size: 14)
     nameLabel.adjustsFontSizeToFitWidth = true
@@ -163,7 +165,7 @@ class NCArticleCell : UITableViewCell{
     let dislikeIcon = NCImageButtonView()
     self.dislikeIcon = dislikeIcon
     dislikeIcon.buttonMargin = .zero
-    dislikeIcon.image = UIImage(named: "icon_dislike_h")
+    dislikeIcon.image = UIImage(named: "icon_dislike")
     dislikeIconBG.addSubview(dislikeIcon)
     
     let dislikeLabel = UILabel()
@@ -226,9 +228,9 @@ class NCArticleCell : UITableViewCell{
           let seperatorTwo = self.seperatorTwo,
       let menuIcon = self.menuIcon else { return }
     
-    container.topToSuperview(offset : 8)
+    container.topToSuperview(offset : 4)
     container.leftToSuperview(offset : 8)
-    container.bottomToSuperview(offset : 0)
+    container.bottomToSuperview(offset : -4)
     container.rightToSuperview(offset : -8)
     
     
@@ -260,6 +262,7 @@ class NCArticleCell : UITableViewCell{
     
     titleLabel.topToBottom(of: userImageBG, offset : 8)
     titleLabel.left(to: userImageBG)
+    titleLabel.height(40)
     titleLabel.rightToSuperview(offset : -8)
     
     commentIconBG.left(to: userImageBG)
@@ -310,17 +313,22 @@ class NCArticleCell : UITableViewCell{
       return
     }
     self.titleLabel?.text = article.articleTitle
+    self.commentLabel?.text = String(article.commentCount)
+    self.likeLabel?.text = String(article.likeCount)
+    self.dislikeLabel?.text = String(article.dislikeCount)
+    self.categoryLabel?.text = article.articleCategory
     
-    Firestore.firestore().collection(DatabaseReference.USERS_REF).whereField(DatabaseReference.USER_ID, isEqualTo: article.uid).getDocuments { (snapshot, error) in
-      
+    Firestore.firestore().collection(DatabaseReference.USERS_REF)
+      .whereField(DatabaseReference.USER_ID, isEqualTo: article.uid)
+      .getDocuments { (snapshot, error) in
       if let error = error {
         Dlog("\(error.localizedDescription)")
         return
       }
      
-        let document = snapshot?.documents.first
-        let data = document?.data()
-      
+        guard let snapshot = snapshot,
+          let first =  snapshot.documents.first else {return}
+        let data = first.data()
       do{
         let user = try FirebaseDecoder().decode(NCUser.self, from: data)
         self.user = user
