@@ -82,10 +82,15 @@ class NCSingleHomeView : NCBaseView{
     
     //Data loading in global thread
     DispatchQueue.global(qos: .default).async {
-      Firestore.firestore().collection(DatabaseReference.ARTICLE_REF)
-        .whereField(DatabaseReference.ARTICLE_CATEGORY, isEqualTo: referenceTitle)
-        .order(by: DatabaseReference.DATE_CREATED, descending: true)
-        .getDocuments { (snapshot, error) in
+      var articleRefrence = Firestore.firestore().collection(DatabaseReference.ARTICLE_REF).order(by: DatabaseReference.DATE_CREATED, descending: true)
+      
+      if referenceTitle != NCCategories.popular.rawValue{
+        articleRefrence = Firestore.firestore().collection(DatabaseReference.ARTICLE_REF)
+          .whereField(DatabaseReference.ARTICLE_CATEGORY, isEqualTo: referenceTitle)
+          .order(by: DatabaseReference.DATE_CREATED, descending: true)
+      }
+      //Getting All Documents
+      articleRefrence.getDocuments { (snapshot, error) in
           if let error = error {
             Dlog("Error : \(error.localizedDescription)")
             DispatchQueue.main.async {
