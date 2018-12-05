@@ -15,4 +15,5 @@ enum NCCategories : String {
   case school_visa = "School & Visa"
   case parttime = "PartTime"
   case miscellaneous = "Miscellaneous"
+  case popular = "Popular"
 }

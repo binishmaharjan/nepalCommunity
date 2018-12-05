@@ -48,7 +48,7 @@ class NCPageViewController : UIPageViewController{
     
     let popular = NCSingleHomeController()
     popular.view.backgroundColor = NCColors.white
-    popular.referenceTitle = "Popular"
+    popular.referenceTitle = NCCategories.popular.rawValue
     popular.view.tag = 0
     
     let foodTravel = NCSingleHomeController()
