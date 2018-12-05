@@ -76,7 +76,7 @@ class NCSignUpView : NCBaseView{
     self.iconView = iconView
     contentView.addSubview(iconView)
     iconView.backgroundColor = NCColors.white
-    iconView.image = UIImage(named: "icon_default")
+    iconView.image = UIImage(named: "50")
     iconView.contentMode = .scaleAspectFill
     iconView.layer.borderColor = NCColors.gray.cgColor
     iconView.layer.borderWidth = 5
@@ -242,16 +242,12 @@ class NCSignUpView : NCBaseView{
     iconView.centerXToSuperview()
     iconView.width(SignUpConstants.ICON_WIDTH)
     iconView.height(to:iconView, iconView.widthAnchor)
-    
-    iconView.setNeedsLayout()
-    iconView.layoutIfNeeded()
-    
-    iconView.layer.cornerRadius = iconView.bounds.width / 2
+    iconView.layer.cornerRadius = 5.0
     
     cameraIcon.width(SignUpConstants.CAMERA_ICON_WIDTH)
     cameraIcon.height(to: cameraIcon, cameraIcon.widthAnchor)
-    cameraIcon.right(to: iconView)
-    cameraIcon.bottom(to: iconView)
+    cameraIcon.right(to: iconView, offset : SignUpConstants.CAMERA_ICON_WIDTH / 4)
+    cameraIcon.bottom(to: iconView, offset : SignUpConstants.CAMERA_ICON_WIDTH / 4)
     
     usernameTitle.topToBottom(of: iconView, offset: SignUpConstants.TOP_GRADIENT_BOTTOM_OFF)
     usernameTitle.leftToSuperview(offset : SignUpConstants.SIDE_OFF)

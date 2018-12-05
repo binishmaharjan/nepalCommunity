@@ -14,6 +14,7 @@ class NCSingleHomeView : NCBaseView{
   
   //mainTableView
   private var tableView: UITableView?
+  private var emptyView: NCEmptyTableView?
   
   //TableView Cell
   typealias Cell = NCArticleCell
@@ -25,9 +26,12 @@ class NCSingleHomeView : NCBaseView{
   //Reference the categories store in the storage
   var referenceTitle : String?{
     didSet{
-      //self.loadArticles()
+      self.loadArticles()
     }
   }
+  
+  //Pull Down refresh control
+  private let refreshControl = UIRefreshControl()
   
   override func didInit() {
     super.didInit()
@@ -36,14 +40,27 @@ class NCSingleHomeView : NCBaseView{
   }
   
   private func setup(){
+    //TableView
     let tableView = UITableView()
     self.tableView = tableView
-    tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 15, right: 0)
+    tableView.contentInset = UIEdgeInsets(top: 4, left: 0, bottom: 15, right: 0)
+    tableView.refreshControl = refreshControl
     tableView.delegate = self
     tableView.dataSource = self
     tableView.register(CELL_CLASS, forCellReuseIdentifier: CELL_ID)
     tableView.separatorStyle = .none
     self.addSubview(tableView)
+    
+    let emptyView = NCEmptyTableView()
+    self.emptyView = emptyView
+    tableView.backgroundView = emptyView
+    
+    refreshControl.backgroundColor = NCColors.clear
+    refreshControl.tintColor = NCColors.blue
+    
+    
+    //Refresh Control
+    refreshControl.addTarget(self, action: #selector(refreshControlDragged), for: .valueChanged)
     
   }
   
@@ -58,44 +75,77 @@ class NCSingleHomeView : NCBaseView{
       Dlog("No Reference")
       return
     }
-    Firestore.firestore().collection(DatabaseReference.ARTICLE_REF)
-      .whereField(DatabaseReference.ARTICLE_CATEGORY, isEqualTo: referenceTitle)
-      .order(by: DatabaseReference.DATE_CREATED, descending: true)
-      .getDocuments { (snapshot, error) in
-      if let error = error {
-        Dlog("Error : \(error.localizedDescription)")
-        return
-      }
-        
-      guard let snapshot = snapshot else {
-          Dlog("\(referenceTitle) : No Data")
-          return
-        }
-        
-        for document in snapshot.documents{
-          let data = document.data()
-          do{
-            let article =  try FirebaseDecoder().decode(NCArticle.self, from: data)
-            self.articles.append(article)
-          }catch{
-            Dlog("\(error.localizedDescription)")
-          }
-        }
-        self.tableView?.reloadData()
+    
+    DispatchQueue.main.async {
+      self.emptyView?.startAnimating()
     }
+    
+    //Data loading in global thread
+    DispatchQueue.global(qos: .default).async {
+      Firestore.firestore().collection(DatabaseReference.ARTICLE_REF)
+        .whereField(DatabaseReference.ARTICLE_CATEGORY, isEqualTo: referenceTitle)
+        .order(by: DatabaseReference.DATE_CREATED, descending: true)
+        .getDocuments { (snapshot, error) in
+          if let error = error {
+            Dlog("Error : \(error.localizedDescription)")
+            DispatchQueue.main.async {
+              self.emptyView?.startAnimating()
+            }
+            return
+          }
+          
+          guard let snapshot = snapshot else {
+            Dlog("\(referenceTitle) : No Data")
+            DispatchQueue.main.async {
+              self.emptyView?.startAnimating()
+            }
+            return
+          }
+          
+          self.articles.removeAll()
+          
+          for document in snapshot.documents{
+            let data = document.data()
+            do{
+              let article =  try FirebaseDecoder().decode(NCArticle.self, from: data)
+              self.articles.append(article)
+            }catch{
+              Dlog("\(error.localizedDescription)")
+              DispatchQueue.main.async {
+                self.emptyView?.startAnimating()
+              }
+            }
+          }
+          //UIchange in main thread
+          DispatchQueue.main.async {
+            self.refreshControl.endRefreshing()
+            self.tableView?.reloadData()
+            self.emptyView?.stopAnimating()
+          }
+      }
+    }
+  }
+  
+  @objc private func refreshControlDragged(){
+    loadArticles()
   }
 }
 
 //MARK: TableView delegate and datasource
 extension NCSingleHomeView : UITableViewDelegate, UITableViewDataSource{
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return 5
+    if self.articles.count == 0{
+      tableView.backgroundView?.isHidden = false
+    }else{
+      tableView.backgroundView?.isHidden = true
+    }
+   return self.articles.count
   }
   
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     if let cell = tableView.dequeueReusableCell(withIdentifier: CELL_ID, for: indexPath) as? NCArticleCell{
       cell.selectionStyle = .none
-      //cell.article = articles[indexPath.row]
+      cell.article = articles[indexPath.row]
       return cell
     }
     return UITableViewCell()

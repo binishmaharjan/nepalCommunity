@@ -122,8 +122,6 @@ extension NCPageViewController: UIPageViewControllerDelegate, UIPageViewControll
     if let viewControllerIndex = self.pages.index(of: viewController) {
       if viewControllerIndex < self.pages.count - 1 {
         // go to next page in array
-       
-        
         return self.pages[viewControllerIndex + 1]
       } else {
         // wrap to first page in array
