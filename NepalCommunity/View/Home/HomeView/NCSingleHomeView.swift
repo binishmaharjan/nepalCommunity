@@ -55,6 +55,9 @@ class NCSingleHomeView : NCBaseView{
     self.emptyView = emptyView
     tableView.backgroundView = emptyView
     
+    refreshControl.backgroundColor = NCColors.clear
+    refreshControl.tintColor = NCColors.blue
+    
     
     //Refresh Control
     refreshControl.addTarget(self, action: #selector(refreshControlDragged), for: .valueChanged)
@@ -99,6 +102,8 @@ class NCSingleHomeView : NCBaseView{
             return
           }
           
+          self.articles.removeAll()
+          
           for document in snapshot.documents{
             let data = document.data()
             do{
@@ -113,6 +118,7 @@ class NCSingleHomeView : NCBaseView{
           }
           //UIchange in main thread
           DispatchQueue.main.async {
+            self.refreshControl.endRefreshing()
             self.tableView?.reloadData()
             self.emptyView?.stopAnimating()
           }
@@ -121,9 +127,7 @@ class NCSingleHomeView : NCBaseView{
   }
   
   @objc private func refreshControlDragged(){
-    self.articles.removeAll()
     loadArticles()
-    refreshControl.endRefreshing()
   }
 }
 
