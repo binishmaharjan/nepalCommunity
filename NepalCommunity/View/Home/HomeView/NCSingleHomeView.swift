@@ -120,6 +120,7 @@ class NCSingleHomeView : NCBaseView{
         guard let lastSnapshot = snapshot.documents.last else {
           self.isLoading = false
           self.isLastPage = true
+          self.emptyView?.stopAnimating()
           return
         }
         
