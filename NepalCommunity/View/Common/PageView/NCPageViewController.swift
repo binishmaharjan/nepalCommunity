@@ -208,10 +208,8 @@ extension NCPageViewController: UIScrollViewDelegate{
           if currentIndex >=  3 && previousIndex < currentIndex && currentIndex != 5{
 
             parentVC?.homeTop?.menuBar?.collectionView?.contentOffset.x = (a - (UIScreen.main.bounds.width / 4) * 3)
-
           }
         }
-        
       }
     }
   }
