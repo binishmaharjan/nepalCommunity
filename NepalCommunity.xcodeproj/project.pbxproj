@@ -79,6 +79,7 @@
 		AC1EDCC421829A9E0089C7AF /* NCBaseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCBaseView.swift; sourceTree = "<group>"; };
 		AC1EDCC821829D450089C7AF /* NCViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCViewController.swift; sourceTree = "<group>"; };
 		AC1EDCCC2182A1220089C7AF /* UIView+Draw.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Draw.swift"; sourceTree = "<group>"; };
+		AC58C75B21BA1BD500B3D010 /* d_NepalCommunity.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = d_NepalCommunity.entitlements; sourceTree = "<group>"; };
 		AC69B33B21AB96D8008BE631 /* NCUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCUser.swift; sourceTree = "<group>"; };
 		AC69B33E21ABB259008BE631 /* NCSessionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCSessionManager.swift; sourceTree = "<group>"; };
 		AC69B34121ABBD00008BE631 /* NCImageDownloader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCImageDownloader.swift; sourceTree = "<group>"; };
@@ -490,6 +491,7 @@
 		ACCC08AA2180140100D6391A /* NepalCommunity */ = {
 			isa = PBXGroup;
 			children = (
+				AC58C75B21BA1BD500B3D010 /* d_NepalCommunity.entitlements */,
 				ACCC08AB2180140100D6391A /* AppDelegate.swift */,
 				AC1EDCAC218146850089C7AF /* Controller */,
 				AC1EDCAB2181467D0089C7AF /* View */,
@@ -530,6 +532,7 @@
 				ACCC08A52180140100D6391A /* Frameworks */,
 				ACCC08A62180140100D6391A /* Resources */,
 				B52A19FFD2A0938F94705849 /* [CP] Embed Pods Frameworks */,
+				763B4C0A25132B9B39E4BA4B /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -552,6 +555,11 @@
 				TargetAttributes = {
 					ACCC08A72180140100D6391A = {
 						CreatedOnToolsVersion = 10.0;
+						SystemCapabilities = {
+							com.apple.Keychain = {
+								enabled = 0;
+							};
+						};
 					};
 				};
 			};
@@ -588,6 +596,24 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		763B4C0A25132B9B39E4BA4B /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-NepalCommunity/Pods-NepalCommunity-resources.sh",
+				"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseFirestore/gRPCCertificates-Firestore.bundle",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/gRPCCertificates-Firestore.bundle",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-NepalCommunity/Pods-NepalCommunity-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		B52A19FFD2A0938F94705849 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -610,11 +636,8 @@
 				"${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework",
 				"${BUILT_PRODUCTS_DIR}/TinyConstraints/TinyConstraints.framework",
-				"${BUILT_PRODUCTS_DIR}/gRPC/GRPCClient.framework",
 				"${BUILT_PRODUCTS_DIR}/gRPC-C++/grpcpp.framework",
 				"${BUILT_PRODUCTS_DIR}/gRPC-Core/grpc.framework",
-				"${BUILT_PRODUCTS_DIR}/gRPC-ProtoRPC/ProtoRPC.framework",
-				"${BUILT_PRODUCTS_DIR}/gRPC-RxLibrary/RxLibrary.framework",
 				"${BUILT_PRODUCTS_DIR}/leveldb-library/leveldb.framework",
 				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
 			);
@@ -635,11 +658,8 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImage.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyJSON.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TinyConstraints.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GRPCClient.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/grpcpp.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/grpc.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ProtoRPC.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxLibrary.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/leveldb.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
 			);

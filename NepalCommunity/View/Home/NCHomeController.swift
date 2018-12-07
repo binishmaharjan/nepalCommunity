@@ -45,21 +45,24 @@ class NCHomeController: NCViewController {
     self.view.backgroundColor = NCColors.white
   }
   
-  override func viewDidDisappear(_ animated: Bool) {
-    super.viewDidDisappear(animated)
-    navigationController?.isNavigationBarHidden = true
-  }
-  
   override func didInit() {
     super.didInit()
     outsideSafeAreaTopViewTemp?.backgroundColor = NCColors.blue
     outsideSafeAreaBottomViewTemp?.backgroundColor = NCColors.white
+   
   }
   
   override func viewWillAppear(_ animated: Bool) {
-    super.viewDidAppear(animated)
-    self.navigationController?.navigationBar.isHidden = true
+    super.viewWillAppear(animated)
+     self.navigationController?.navigationBar.isHidden = true
   }
+  
+  override func viewWillDisappear(_ animated: Bool) {
+    super.viewWillDisappear(animated)
+  }
+  
+  
+
   
   override var preferredStatusBarStyle: UIStatusBarStyle{
     return .lightContent

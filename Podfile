@@ -13,10 +13,10 @@ target 'NepalCommunity' do
   pod 'FacebookCore'
   pod 'FacebookLogin'
   
-  pod 'TinyConstraints'
-  pod 'NVActivityIndicatorView'
-  pod 'Gallery'
-  pod 'SwiftyJSON'
-  pod 'CodableFirebase'
-  pod 'SDWebImage'
+  pod 'TinyConstraints', '3.3.1'
+  pod 'NVActivityIndicatorView', '4.4.0'
+  pod 'Gallery', '2.2.0'
+  pod 'SwiftyJSON', '4.2.0'
+  pod 'CodableFirebase', '0.2.1'
+  pod 'SDWebImage', '4.4.2'
 end
