@@ -10,6 +10,7 @@ import UIKit
 import Firebase
 import FacebookCore
 import FacebookLogin
+import FirebaseAuth
 import SwiftyJSON
 
 protocol NCSignUpAndSignIn{
@@ -66,7 +67,7 @@ extension NCSignUpAndSignIn{
         Dlog("Cancelled")
       case .failed(let error):
         completion?(error)
-        Dlog(error.localizedDescription)
+        Dlog(error)
       }
     }
   }

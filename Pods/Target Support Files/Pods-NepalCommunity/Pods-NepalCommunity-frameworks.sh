@@ -158,11 +158,8 @@ if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/TinyConstraints/TinyConstraints.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/gRPC/GRPCClient.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/gRPC-C++/grpcpp.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/gRPC-Core/grpc.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/gRPC-ProtoRPC/ProtoRPC.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/gRPC-RxLibrary/RxLibrary.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/leveldb-library/leveldb.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework"
 fi
@@ -182,11 +179,8 @@ if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/TinyConstraints/TinyConstraints.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/gRPC/GRPCClient.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/gRPC-C++/grpcpp.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/gRPC-Core/grpc.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/gRPC-ProtoRPC/ProtoRPC.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/gRPC-RxLibrary/RxLibrary.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/leveldb-library/leveldb.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework"
 fi
