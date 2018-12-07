@@ -12,6 +12,8 @@ import TinyConstraints
 class NCSingleHomeController : NCViewController{
   
   private var mainView : NCSingleHomeView?
+  var singleToPagerDelegate : NCSingleToPagerDelegate?
+  
 //  var label : UILabel?
 //  var labelText: String = ""{
 //    didSet{
@@ -33,6 +35,7 @@ class NCSingleHomeController : NCViewController{
   private func setup(){
     let mainView  = NCSingleHomeView()
     self.mainView = mainView
+    mainView.homeViewDelegate = self
     self.view.addSubview(mainView)
     
 //    let label  = UILabel()
@@ -48,4 +51,11 @@ class NCSingleHomeController : NCViewController{
     mainView.edgesToSuperview()
   }
   
+}
+
+//Home View Delegate
+extension NCSingleHomeController : NCSingleHomeViewDelegate{
+  func cellWasTapped(article: NCArticle) {
+      singleToPagerDelegate?.passSingleToDelegate(article: article)
+  }
 }

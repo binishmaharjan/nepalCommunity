@@ -15,6 +15,7 @@ class NCSingleHomeView : NCBaseView{
   //mainTableView
   private var tableView: UITableView?
   private var emptyView: NCEmptyTableView?
+  var homeViewDelegate : NCSingleHomeViewDelegate?
   
   //TableView Cell
   typealias Cell = NCArticleCell
@@ -256,6 +257,12 @@ extension NCSingleHomeView : UITableViewDelegate, UITableViewDataSource{
     if !isLoading, indexPath.row >= startLoadingIndex{
       loadMoreArticle()
     }
+  }
+  
+  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    let index = indexPath.row
+    let article = self.articles[index]
+    homeViewDelegate?.cellWasTapped(article: article)
   }
 }
 
