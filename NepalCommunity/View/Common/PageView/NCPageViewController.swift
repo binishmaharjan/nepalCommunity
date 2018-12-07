@@ -28,6 +28,9 @@ class NCPageViewController : UIPageViewController{
   //Flag to scroll the Menu bar
   var shouldScrollMenuBar : Bool = true
   
+  //Delegate
+  var pagerToHomeDelegate : NCPagerToHomeDelegate?
+  
   //MARK: Default Initializers
   override init(transitionStyle style: UIPageViewController.TransitionStyle, navigationOrientation: UIPageViewController.NavigationOrientation, options: [UIPageViewController.OptionsKey : Any]? = nil) {
     super.init(transitionStyle: style, navigationOrientation: navigationOrientation, options: options)
@@ -49,6 +52,7 @@ class NCPageViewController : UIPageViewController{
     let popular = NCSingleHomeController()
     popular.view.backgroundColor = NCColors.white
     popular.referenceTitle = NCCategories.popular.rawValue
+    popular.singleToPagerDelegate = self
     popular.view.tag = 0
     
     let foodTravel = NCSingleHomeController()
@@ -216,6 +220,14 @@ extension NCPageViewController: UIScrollViewDelegate{
   
   func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
     self.shouldScrollMenuBar = true
+  }
+}
+
+
+//MARK
+extension NCPageViewController: NCSingleToPagerDelegate{
+  func passSingleToDelegate(article: NCArticle) {
+    pagerToHomeDelegate?.passPagerToHome(article: article)
   }
 }
 

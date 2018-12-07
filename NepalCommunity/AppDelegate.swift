@@ -14,6 +14,7 @@ import FBSDKCoreKit
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
   var window: UIWindow?
+  var homeBarNavigation: UINavigationController?
 
   func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
     //Firebase Server
@@ -23,7 +24,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     window = UIWindow(frame: UIScreen.main.bounds)
     window?.makeKeyAndVisible()
     let tabBar = NCTabViewController()
-    window?.rootViewController = UINavigationController(rootViewController: tabBar)
+    window?.rootViewController = tabBar
     
     return true
   }

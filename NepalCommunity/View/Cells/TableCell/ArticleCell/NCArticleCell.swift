@@ -338,6 +338,4 @@ class NCArticleCell : UITableViewCell{
       
     }
   }
-  
-  
 }

@@ -26,6 +26,7 @@ class NCTabViewController : UITabBarController{
     homeView.tabBarItem.image = UIImage(named: "icon_home")
     homeView.tabBarItem.imageInsets = UIEdgeInsets(top: TabViewConstants.TAB_ITEM_OFF_V, left: TabViewConstants.TAB_ITEM_OFF_H, bottom: -TabViewConstants.TAB_ITEM_OFF_V, right: TabViewConstants.TAB_ITEM_OFF_H)
     homeView.title = nil
+    appDelegate.homeBarNavigation = homeNav
     
     let categoryView = UIViewController()
     categoryView.view.backgroundColor = .white

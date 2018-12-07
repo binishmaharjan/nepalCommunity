@@ -45,6 +45,11 @@ class NCHomeController: NCViewController {
     self.view.backgroundColor = NCColors.white
   }
   
+  override func viewDidDisappear(_ animated: Bool) {
+    super.viewDidDisappear(animated)
+    navigationController?.isNavigationBarHidden = true
+  }
+  
   override func didInit() {
     super.didInit()
     outsideSafeAreaTopViewTemp?.backgroundColor = NCColors.blue
@@ -53,7 +58,7 @@ class NCHomeController: NCViewController {
   
   override func viewWillAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
-    navigationController?.isNavigationBarHidden = true
+    self.navigationController?.navigationBar.isHidden = true
   }
   
   override var preferredStatusBarStyle: UIStatusBarStyle{
@@ -70,6 +75,7 @@ class NCHomeController: NCViewController {
     self.pageView = pageView
     pageView.homeTop = homeTop
     pageView.parentVC = self
+    pageView.pagerToHomeDelegate = self
      mainView.pageView = pageView
     self.view.addSubview(pageView.view)
     self.addChild(pageView)
@@ -119,5 +125,13 @@ class NCHomeController: NCViewController {
     pageView.view.leftToSuperview()
      pageView.view.rightToSuperview()
     pageView.view.bottomToSuperview()
+  }
+}
+
+
+extension NCHomeController: NCPagerToHomeDelegate{
+  func passPagerToHome(article: NCArticle) {
+    let detailVc = NCDetailViewController()
+    self.navigationController?.pushViewController(detailVc, animated: true)
   }
 }
