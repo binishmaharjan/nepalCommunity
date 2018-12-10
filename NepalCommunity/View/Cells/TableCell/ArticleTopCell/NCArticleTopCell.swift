@@ -1,18 +1,16 @@
 //
-//  ArticleCell.swift
+//  ArticleTopCell.swift
 //  NepalCommunity
 //
-//  Created by guest on 2018/11/19.
+//  Created by guest on 2018/12/07.
 //  Copyright © 2018年 guest. All rights reserved.
 //
 
 import UIKit
 import TinyConstraints
-import FirebaseFirestore
-import CodableFirebase
 
-class NCArticleCell : UITableViewCell, NCDatabaseAccess{
-  
+
+class NCArticleTopCell: UITableViewCell, NCDatabaseAccess {
   //Variables
   private var container: UIView?
   private var userImageBG : UIView?
@@ -22,6 +20,10 @@ class NCArticleCell : UITableViewCell, NCDatabaseAccess{
   private var categoryLabel: UILabel?
   private var dateLabel: UILabel?
   private var titleLabel :UILabel?
+  private var descriptionLabel: UILabel?
+  private var articleImage: UIImageView?
+  private var articleImageHeightConstraints:Constraint?
+  private var articleImageHeight:CGFloat = 200
   private var likeIconBG: UIView?
   private var likeIcon: NCImageButtonView?
   private var likeLabel: UILabel?
@@ -35,6 +37,7 @@ class NCArticleCell : UITableViewCell, NCDatabaseAccess{
   private var commentLabel: UILabel?
   private var menuIconBG: UIView?
   private var menuIcon: NCImageButtonView?
+  private var cellBottomConstraints: Constraint?
   
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -46,12 +49,17 @@ class NCArticleCell : UITableViewCell, NCDatabaseAccess{
     fatalError("init(coder:) has not been implemented")
   }
   
+  //ImageDelagate: Cell To TableView
+  var cellToTableViewDelegate : NCCellToTableViewDelegate?
+  
+  //Article
   var article: NCArticle?{
     didSet{
       self.relayout()
     }
   }
-  
+
+  //User
   var user: NCUser?{
     didSet{
       self.nameLabel?.text = "\(user?.username ?? "")"
@@ -69,8 +77,6 @@ class NCArticleCell : UITableViewCell, NCDatabaseAccess{
     self.container = container
     container.backgroundColor = NCColors.white
     container.dropShadow(opacity: 0.1,radius: 2.0)
-    container.layer.cornerRadius = 5
-    container.layer.zPosition = 5
     self.addSubview(container)
     
     //User Image
@@ -131,13 +137,33 @@ class NCArticleCell : UITableViewCell, NCDatabaseAccess{
     //Title Label
     let titleLabel = UILabel()
     self.titleLabel = titleLabel
-    titleLabel.text = LOCALIZE("What shoud i cook for dinner?pork or chicken with rice.")
+    titleLabel.text = LOCALIZE("Title")
     container.addSubview(titleLabel)
-    titleLabel.font = NCFont.bold(size: 16)
+    titleLabel.font = NCFont.bold(size: 18)
     titleLabel.textColor = NCColors.black
-    titleLabel.numberOfLines = 2
-    titleLabel.lineBreakMode = .byTruncatingTail
-    titleLabel.adjustsFontSizeToFitWidth = false
+    titleLabel.numberOfLines = 0
+    
+    //Description
+    let descriptionLabel = UILabel()
+    self.descriptionLabel = descriptionLabel
+    descriptionLabel.text = LOCALIZE("Description")
+    container.addSubview(descriptionLabel)
+    descriptionLabel.textColor = NCColors.blueBlack
+    descriptionLabel.font = NCFont.normal(size: 14)
+    descriptionLabel.numberOfLines = 0
+    
+    //Image
+    let articleImage = UIImageView()
+    self.articleImage = articleImage
+    articleImage.image = UIImage(named: "51")
+    articleImage.layer.borderWidth = 1
+    articleImage.layer.borderColor = NCColors.darKGray.cgColor
+    articleImage.layer.cornerRadius = 5
+    articleImage.clipsToBounds = true
+    container.addSubview(articleImage)
+    articleImage.isUserInteractionEnabled = true
+    articleImage.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(imageWasTapped(_:))))
+    articleImage.contentMode = .scaleAspectFill
     
     //Comment Label
     let commentIconBG = UIView()
@@ -208,115 +234,130 @@ class NCArticleCell : UITableViewCell, NCDatabaseAccess{
   
   private func setupConstraints(){
     guard let userImage = self.userImage,
-          let userImageBG = self.userImageBG,
-          let nameLabel = self.nameLabel,
-          let categoryBG = self.categoryBG,
-          let categoryLabel = self.categoryLabel,
-          let titleLabel = self.titleLabel,
-          let commentIconBG = self.commentIconBG,
-          let commentIcon = self.commentIcon,
-          let commentLabel = self.commentLabel,
-          let likeIconBG = self.likeIconBG,
-          let likeIcon = self.likeIcon,
-          let likeLabel = self.likeLabel,
-          let dislikeIconBG = self.dislikeIconBG,
-          let dislikeIcon = self.dislikeIcon,
-          let dislikeLabel = self.dislikeLabel,
-          let container = self.container,
-          let menuIconBG = self.menuIconBG,
-          let seperatorOne = self.seperatorOne,
-          let seperatorTwo = self.seperatorTwo,
+      let userImageBG = self.userImageBG,
+      let nameLabel = self.nameLabel,
+      let categoryBG = self.categoryBG,
+      let categoryLabel = self.categoryLabel,
+      let titleLabel = self.titleLabel,
+      let commentIconBG = self.commentIconBG,
+      let commentIcon = self.commentIcon,
+      let commentLabel = self.commentLabel,
+      let likeIconBG = self.likeIconBG,
+      let likeIcon = self.likeIcon,
+      let likeLabel = self.likeLabel,
+      let dislikeIconBG = self.dislikeIconBG,
+      let dislikeIcon = self.dislikeIcon,
+      let dislikeLabel = self.dislikeLabel,
+      let container = self.container,
+      let menuIconBG = self.menuIconBG,
+      let seperatorOne = self.seperatorOne,
+      let seperatorTwo = self.seperatorTwo,
+      let descriptionLabel = self.descriptionLabel,
+      let articleImage = self.articleImage,
       let menuIcon = self.menuIcon else { return }
     
-    container.topToSuperview(offset : 4)
-    container.leftToSuperview(offset : 8)
+    container.topToSuperview(offset : 0)
+    container.leftToSuperview(offset : 0)
     container.bottomToSuperview(offset : -4)
-    container.rightToSuperview(offset : -8)
-    
+    container.rightToSuperview(offset : 0)
     
     userImageBG.topToSuperview(offset : 8)
     userImageBG.leftToSuperview(offset : 8)
     userImageBG.width(42)
     userImageBG.height(to: userImageBG, userImageBG.widthAnchor)
-    
     userImage.edgesToSuperview()
     
+    nameLabel.leftToRight(of: userImageBG, offset: 8)
     nameLabel.top(to: userImageBG)
-    nameLabel.leftToRight(of: userImageBG, offset : 8)
-    nameLabel.rightToLeft(of: menuIconBG)
     
     categoryBG.left(to: nameLabel)
     categoryBG.bottom(to: userImageBG)
     categoryBG.right(to: categoryLabel, offset: 8)
     categoryBG.topToBottom(of: nameLabel, offset: 5)
-    
     categoryLabel.leftToSuperview(offset:8)
     categoryLabel.centerYToSuperview()
     
     menuIconBG.rightToSuperview(offset: -8)
     menuIconBG.centerY(to: nameLabel)
     menuIconBG.width(28)
-    menuIconBG.height(19)
-    
+    menuIcon.height(19)
     menuIcon.edgesToSuperview()
     
-    titleLabel.topToBottom(of: userImageBG, offset : 8)
-    titleLabel.left(to: userImageBG)
-    titleLabel.height(40)
+    titleLabel.leftToSuperview(offset : 8)
     titleLabel.rightToSuperview(offset : -8)
+    titleLabel.topToBottom(of: userImageBG, offset: 6)
     
-    commentIconBG.left(to: userImageBG)
-    commentIconBG.topToBottom(of: titleLabel, offset: 6)
+    descriptionLabel.left(to: titleLabel)
+    descriptionLabel.right(to: titleLabel)
+    descriptionLabel.topToBottom(of: titleLabel, offset: 4)
+    
+    articleImage.topToBottom(of: descriptionLabel, offset: 4)
+    articleImage.left(to: descriptionLabel)
+    articleImage.right(to: descriptionLabel)
+    articleImageHeightConstraints =  articleImage.height(articleImageHeight)
+    
+    commentIconBG.leftToSuperview(offset: 8)
+    commentIconBG.topToBottom(of: articleImage, offset: 6)
     commentIconBG.width(25)
-    commentIconBG.height(25)
-    
+    commentIconBG.height(to: commentIconBG, commentIconBG.widthAnchor)
     commentIcon.edgesToSuperview()
     
-    commentLabel.leftToRight(of: commentIconBG, offset: 12)
     commentLabel.centerY(to: commentIconBG)
+    commentLabel.leftToRight(of: commentIconBG, offset: 6)
     
     seperatorOne.leftToRight(of: commentLabel, offset: 12)
-    seperatorOne.centerY(to: commentIconBG)
     seperatorOne.height(15)
     seperatorOne.width(1)
+    seperatorOne.centerY(to: commentIconBG)
     
     likeIconBG.leftToRight(of: seperatorOne, offset: 12)
-    likeIconBG.centerY(to: commentIconBG)
+    likeIconBG.top(to: commentIconBG)
     likeIconBG.width(25)
-    likeIconBG.height(25)
-    
+    likeIconBG.height(to: likeIconBG, likeIconBG.widthAnchor)
     likeIcon.edgesToSuperview()
     
-    likeLabel.leftToRight(of: likeIconBG, offset: 12)
-    likeLabel.centerY(to: commentIconBG)
+    likeLabel.centerY(to: likeIconBG)
+    likeLabel.leftToRight(of: likeIconBG, offset: 6)
     
     seperatorTwo.leftToRight(of: likeLabel, offset: 12)
-    seperatorTwo.centerY(to: commentIconBG)
     seperatorTwo.height(15)
     seperatorTwo.width(1)
+    seperatorTwo.centerY(to: likeIconBG)
     
     dislikeIconBG.leftToRight(of: seperatorTwo, offset: 12)
-    dislikeIconBG.centerY(to: commentIconBG)
+    dislikeIconBG.top(to: commentIconBG)
     dislikeIconBG.width(25)
-    dislikeIconBG.height(25)
-    
+    dislikeIconBG.height(to: likeIconBG, likeIconBG.widthAnchor)
     dislikeIcon.edgesToSuperview()
     
-    dislikeLabel.leftToRight(of: dislikeIconBG, offset: 12)
-    dislikeLabel.centerY(to: commentIconBG)
+    dislikeLabel.centerY(to: dislikeIconBG)
+    dislikeLabel.leftToRight(of: dislikeIconBG, offset: 6)
+    
+    dislikeIconBG.bottomToSuperview(offset : -4)
+    
   }
   
   
   private func relayout(){
     guard let article = self.article else {
-      Dlog("Error: Article Error")
-      return
-    }
+      Dlog("NO ARTICLE")
+      return}
     self.titleLabel?.text = article.articleTitle
+    self.descriptionLabel?.text = article.articleDescription
     self.commentLabel?.text = String(article.commentCount)
     self.likeLabel?.text = String(article.likeCount)
     self.dislikeLabel?.text = String(article.dislikeCount)
-    self.categoryLabel?.text = article.articleCategory
+    
+    if article.hasImage == 0 {
+      articleImageHeight = 0
+      articleImageHeightConstraints?.constant = articleImageHeight
+    }else{
+      articleImageHeight = 200
+      articleImageHeightConstraints?.constant = articleImageHeight
+      articleImage?.sd_setImage(with: URL(string: article.imageUrl ), completed: { (image, error, _, _) in
+        self.articleImage?.image = image
+      })
+    }
     
     //Download User
     self.downloadUser(uid: article.uid) { (user, error) in
@@ -326,5 +367,16 @@ class NCArticleCell : UITableViewCell, NCDatabaseAccess{
       }
       self.user = user
     }
+  }
+  
+}
+
+//ImagePressed
+extension NCArticleTopCell{
+  @objc func imageWasTapped(_ sender : UITapGestureRecognizer){
+    guard let articleImage = self.articleImage,
+      let image = articleImage.image else {return}
+    
+    cellToTableViewDelegate?.passImageFromCellToTable(image: image)
   }
 }
