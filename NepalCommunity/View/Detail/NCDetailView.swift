@@ -67,7 +67,8 @@ class NCDetailView : NCBaseView{
     
     let titleLabel = UILabel()
     self.titleLbl = titleLabel
-    titleLabel.text = LOCALIZE("Article title")
+    titleLabel.text = LOCALIZE("Title")
+    titleLabel.textAlignment = .center
     titleLabel.font = NCFont.bold(size: 18)
     titleLabel.textColor = NCColors.white
     titleLbl?.adjustsFontSizeToFitWidth = false
