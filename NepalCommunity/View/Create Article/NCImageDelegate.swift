@@ -9,8 +9,16 @@
 import UIKit
 
 
-protocol NCImageSelectionDelegate {
+
+protocol NCImageDelegate{
+  func imagePressed(image : UIImage)
+}
+
+protocol NCCellToTableViewDelegate{
+  func passImageFromCellToTable(image: UIImage)
+}
+
+protocol NCImageSelectionDelegate: NCImageDelegate {
   func showLibrary()
   func openCamera()
-  func imagePressed(image : UIImage)
 }

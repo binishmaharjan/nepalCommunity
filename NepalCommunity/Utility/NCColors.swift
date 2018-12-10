@@ -14,11 +14,12 @@ class NCColors: NSObject{
   static let black: UIColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1.0) /* #000000 */
   static let white: UIColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1.0) /* #ffffff */
   static let fbBlue: UIColor = UIColor(red: 59/255, green: 89/255, blue: 152/255, alpha: 1.0) /* #3b5998 */
-  static let blue : UIColor = UIColor(red: 140/255, green: 206/255, blue: 239/255, alpha: 1.0) /* #8cceef */
+  static let blue : UIColor = UIColor(red: 101/255, green: 155/255, blue: 219/255, alpha: 1.0) /* #659bdb */
   static let gray : UIColor = UIColor(red: 247/255, green: 247/255, blue: 247/255, alpha: 1.0) /* #f7f7f7 */
   static let darKGray : UIColor = UIColor(red: 191/255, green: 187/255, blue: 187/255, alpha: 1.0) /* #bfbbbb */
   static let orange: UIColor = UIColor(red: 236/255, green: 107/255, blue: 76/255, alpha: 1.0) /* #ec6b4c */
   static let darkBlue: UIColor = UIColor(red: 61/255, green: 127/255, blue: 165/255, alpha: 1.0) /* #3d7fa5 */
+  static let blueBlack: UIColor = UIColor(red: 61/255, green: 90/255, blue: 128/255, alpha: 1.0) /* #3d5a80 */
   
   
   

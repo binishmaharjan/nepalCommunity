@@ -23,33 +23,60 @@ class NCTabViewController : UITabBarController{
     let homeView = NCHomeController()
     let homeNav = UINavigationController(rootViewController: homeView)
     homeView.view.backgroundColor = .white
-    homeView.tabBarItem.image = UIImage(named: "icon_home")
-    homeView.tabBarItem.imageInsets = UIEdgeInsets(top: TabViewConstants.TAB_ITEM_OFF_V, left: TabViewConstants.TAB_ITEM_OFF_H, bottom: -TabViewConstants.TAB_ITEM_OFF_V, right: TabViewConstants.TAB_ITEM_OFF_H)
+    homeView.tabBarItem.imageInsets = UIEdgeInsets(top: TabViewConstants.TAB_ITEM_OFF_V,
+                                                   left: TabViewConstants.TAB_ITEM_OFF_H,
+                                                   bottom: -TabViewConstants.TAB_ITEM_OFF_V,
+                                                   right: TabViewConstants.TAB_ITEM_OFF_H)
     homeView.title = nil
+    homeView.tabBarItem.image = UIImage(named:"icon_home")?
+      .withRenderingMode(UIImage.RenderingMode.alwaysOriginal)
+    homeView.tabBarItem.selectedImage = UIImage(named:"icon_home_h")?
+      .withRenderingMode(UIImage.RenderingMode.alwaysOriginal)
     appDelegate.homeBarNavigation = homeNav
     
     let categoryView = UIViewController()
     categoryView.view.backgroundColor = .white
-    categoryView.tabBarItem.imageInsets = UIEdgeInsets(top: TabViewConstants.TAB_ITEM_OFF_V, left: TabViewConstants.TAB_ITEM_OFF_H, bottom: -TabViewConstants.TAB_ITEM_OFF_V, right: TabViewConstants.TAB_ITEM_OFF_H)
+    categoryView.tabBarItem.imageInsets = UIEdgeInsets(top: TabViewConstants.TAB_ITEM_OFF_V,
+                                                       left: TabViewConstants.TAB_ITEM_OFF_H,
+                                                       bottom: -TabViewConstants.TAB_ITEM_OFF_V,
+                                                       right: TabViewConstants.TAB_ITEM_OFF_H)
     categoryView.title = nil
     
     let searchView = UIViewController()
     searchView.view.backgroundColor = .white
-    searchView.tabBarItem.image = UIImage(named: "icon_search")
-    searchView.tabBarItem.imageInsets = UIEdgeInsets(top: TabViewConstants.TAB_ITEM_OFF_V, left: TabViewConstants.TAB_ITEM_OFF_H, bottom: -TabViewConstants.TAB_ITEM_OFF_V, right: TabViewConstants.TAB_ITEM_OFF_H)
+    searchView.tabBarItem.imageInsets = UIEdgeInsets(top: TabViewConstants.TAB_ITEM_OFF_V,
+                                                     left: TabViewConstants.TAB_ITEM_OFF_H,
+                                                     bottom: -TabViewConstants.TAB_ITEM_OFF_V,
+                                                     right: TabViewConstants.TAB_ITEM_OFF_H)
     searchView.title = nil
+    searchView.tabBarItem.image = UIImage(named:"icon_search")?
+      .withRenderingMode(UIImage.RenderingMode.alwaysOriginal)
+    searchView.tabBarItem.selectedImage = UIImage(named:"icon_search_h")?
+      .withRenderingMode(UIImage.RenderingMode.alwaysOriginal)
     
     let notificationView = UIViewController()
     notificationView.view.backgroundColor = .white
-    notificationView.tabBarItem.image = UIImage(named: "icon_bell")
-    notificationView.tabBarItem.imageInsets = UIEdgeInsets(top: TabViewConstants.TAB_ITEM_OFF_V, left: TabViewConstants.TAB_ITEM_OFF_H, bottom: -TabViewConstants.TAB_ITEM_OFF_V, right: TabViewConstants.TAB_ITEM_OFF_H)
+    notificationView.tabBarItem.imageInsets = UIEdgeInsets(top: TabViewConstants.TAB_ITEM_OFF_V,
+                                                           left: TabViewConstants.TAB_ITEM_OFF_H,
+                                                           bottom: -TabViewConstants.TAB_ITEM_OFF_V,
+                                                           right: TabViewConstants.TAB_ITEM_OFF_H)
     notificationView.title = nil
+    notificationView.tabBarItem.image = UIImage(named:"icon_bell")?
+      .withRenderingMode(UIImage.RenderingMode.alwaysOriginal)
+    notificationView.tabBarItem.selectedImage = UIImage(named:"icon_bell_h")?
+      .withRenderingMode(UIImage.RenderingMode.alwaysOriginal)
     
     let meView = UIViewController()
     meView.view.backgroundColor = .white
-    meView.tabBarItem.image = UIImage(named: "icon_user")
-    meView.tabBarItem.imageInsets = UIEdgeInsets(top: TabViewConstants.TAB_ITEM_OFF_V, left: TabViewConstants.TAB_ITEM_OFF_H, bottom: -TabViewConstants.TAB_ITEM_OFF_V, right: TabViewConstants.TAB_ITEM_OFF_H)
+    meView.tabBarItem.imageInsets = UIEdgeInsets(top: TabViewConstants.TAB_ITEM_OFF_V,
+                                                 left: TabViewConstants.TAB_ITEM_OFF_H,
+                                                 bottom: -TabViewConstants.TAB_ITEM_OFF_V,
+                                                 right: TabViewConstants.TAB_ITEM_OFF_H)
     meView.title = nil
+    meView.tabBarItem.image = UIImage(named:"icon_user")?
+      .withRenderingMode(UIImage.RenderingMode.alwaysOriginal)
+    meView.tabBarItem.selectedImage = UIImage(named:"icon_user_h")?
+      .withRenderingMode(UIImage.RenderingMode.alwaysOriginal)
     
     self.tabBar.subviews.forEach { (view) in
       view.removeFromSuperview()

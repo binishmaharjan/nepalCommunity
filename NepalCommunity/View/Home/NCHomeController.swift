@@ -60,13 +60,8 @@ class NCHomeController: NCViewController {
   override func viewWillDisappear(_ animated: Bool) {
     super.viewWillDisappear(animated)
   }
-  
-  
 
-  
-  override var preferredStatusBarStyle: UIStatusBarStyle{
-    return .lightContent
-  }
+ override var preferredStatusBarStyle: UIStatusBarStyle{return .lightContent}
   
   private func setup(){
     let mainView = NCHomeTopView()
@@ -135,6 +130,7 @@ class NCHomeController: NCViewController {
 extension NCHomeController: NCPagerToHomeDelegate{
   func passPagerToHome(article: NCArticle) {
     let detailVc = NCDetailViewController()
+    detailVc.article = article
     self.navigationController?.pushViewController(detailVc, animated: true)
   }
 }
