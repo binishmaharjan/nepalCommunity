@@ -15,17 +15,12 @@ protocol NCDatabaseWrite{
   func writeEmailUser(userId : String, username: String,iconUrl : String,email : String, completion : ((_ error: Error?)->())? )
   func writeFacebookUser(userId: String, username: String, iconUrl: String, email : String, completion: ((Error?) -> ())?)
   
-  func postArticle(userId: String, title: String, description: String, category : String,imageURL : String, hasImage : Int, completion : ((Error?) -> ())?)
+  func postArticle(articleId : String, userId: String, title: String, description: String, category : String,imageURL : String, hasImage : Int, completion : ((Error?) -> ())?)
 
 }
 
 
 extension NCDatabaseWrite{
-  
-  private func randomID(length: Int) -> String {
-    let letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
-    return String((0...length-1).map{ _ in letters.randomElement()! })
-  }
   
   func writeEmailUser(userId: String, username: String, iconUrl: String, email : String, completion: ((Error?) -> ())?) {
     
@@ -61,9 +56,8 @@ extension NCDatabaseWrite{
     }
   }
   
-  func postArticle(userId: String, title: String, description: String, category : String,imageURL : String,hasImage : Int, completion : ((Error?) -> ())?){
+  func postArticle(articleId : String,userId: String, title: String, description: String, category : String,imageURL : String,hasImage : Int, completion : ((Error?) -> ())?){
     
-    let articleId = randomID(length: 20)
     let article = NCArticle.init(articleDescription: description,
                                  articleTitle: title,
                                  commentCount: 0,

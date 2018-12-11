@@ -246,8 +246,11 @@ extension NCCreateARrticleController : NCDatabaseWrite, NCStorage{
     //Show Indicator
     NCActivityIndicator.shared.start(view: self.view)
     
+    //Generating random id
+    let articleId = randomID(length: 25)
+    
     //Saving the image and getting the url
-    saveArticleImageToStorage(image: image) { (imageUrl, error) in
+    saveArticleImageToStorage(articleId: articleId, image: image) { (imageUrl, error) in
       if let error = error{
         Dlog("\(error.localizedDescription)")
         NCDropDownNotification.shared.showError(message: LOCALIZE(error.localizedDescription))
@@ -258,7 +261,7 @@ extension NCCreateARrticleController : NCDatabaseWrite, NCStorage{
       guard let imageUrl = imageUrl else {return}
       
       //Posting the article with the image
-      self.postArticle(userId: (NCSessionManager.shared.user?.uid)!, title: title, description: description, category: category, imageURL: imageUrl, hasImage: 1, completion: { (error) in
+      self.postArticle(articleId: articleId, userId: (NCSessionManager.shared.user?.uid)!, title: title, description: description, category: category, imageURL: imageUrl, hasImage: 1, completion: { (error) in
         if let error = error{
           Dlog("\(error.localizedDescription)")
           NCDropDownNotification.shared.showError(message: LOCALIZE(error.localizedDescription))
@@ -276,10 +279,13 @@ extension NCCreateARrticleController : NCDatabaseWrite, NCStorage{
   
   //Post With Text Only
   private func postCreateWithText(title: String, description : String, category : String){
+    //Generating random id
+     let articleId = randomID(length: 25)
+    
     //Show Indicator
     NCActivityIndicator.shared.start(view: self.view)
     //Posting the aritcle with text only
-    self.postArticle(userId: (NCSessionManager.shared.user?.uid)!, title: title, description: description, category: category, imageURL: "", hasImage: 0) { (error) in
+    self.postArticle(articleId: articleId, userId: (NCSessionManager.shared.user?.uid)!, title: title, description: description, category: category, imageURL: "", hasImage: 0) { (error) in
       if let error = error {
        Dlog("\(error.localizedDescription)")
         NCDropDownNotification.shared.showError(message: LOCALIZE(error.localizedDescription))
