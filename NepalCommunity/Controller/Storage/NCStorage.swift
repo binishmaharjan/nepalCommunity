@@ -13,7 +13,7 @@ import FirebaseStorage
 
 protocol NCStorage{
   func saveImageToStorage(image : UIImage, userId : String,completion: ((String?, Error?) -> ())?)
-  func saveArticleImageToStorage(image : UIImage,completion: ((String?, Error?) -> ())?)
+  func saveArticleImageToStorage(articleId : String,image : UIImage,completion: ((String?, Error?) -> ())?)
 }
 
 
@@ -57,7 +57,7 @@ extension NCStorage{
   }
   
   //Save the article image
-  func saveArticleImageToStorage(image : UIImage,completion: ((String?, Error?) -> ())?){
+  func saveArticleImageToStorage(articleId : String,image : UIImage,completion: ((String?, Error?) -> ())?){
     //Profile Image (Downloaded from facebook or user upploaded)
     let profileImage = image
     let metaData = StorageMetadata()
@@ -68,7 +68,7 @@ extension NCStorage{
     let store = Storage.storage()//Access to the storage
     let user = Auth.auth().currentUser//Current Login User
     if let _ = user{
-      let storeRef = store.reference().child("\(StorageReference.ARTICLE_IMAGES)")//Reference to the article image folder
+      let storeRef = store.reference().child("\(StorageReference.ARTICLE_IMAGES)/\(articleId)")//Reference to the article image folder
       
       //Saving the data to the storage
       DispatchQueue.main.async {

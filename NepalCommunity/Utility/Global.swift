@@ -44,6 +44,12 @@ func LOCALIZE(_ text: String) -> String{
   return NSLocalizedString(text, comment: "")
 }
 
+//Generate Random Number
+func randomID(length: Int) -> String {
+  let letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+  return String((0...length-1).map{ _ in letters.randomElement()! })
+}
+
 let appDelegate = UIApplication.shared.delegate as! AppDelegate
 
 class DatabaseReference{
