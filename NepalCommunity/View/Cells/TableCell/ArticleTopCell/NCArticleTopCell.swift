@@ -98,6 +98,7 @@ class NCArticleTopCell: UITableViewCell, NCDatabaseAccess {
     userImageBG.addSubview(userImage)
     userImage.image = UIImage(named: "50")
     userImage.layer.cornerRadius = 5.0
+    userImage.contentMode = .scaleAspectFill
     userImage.clipsToBounds = true
     
     //NameLabel Label

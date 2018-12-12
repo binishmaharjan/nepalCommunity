@@ -64,9 +64,13 @@ class NCArticleCell : UITableViewCell, NCDatabaseAccess{
   var user: NCUser?{
     didSet{
       self.nameLabel?.text = "\(user?.username ?? "")"
-      userImage?.sd_setImage(with: URL(string: user?.iconUrl ?? ""), completed: { (image, error, _, _) in
-        self.userImage?.image = image
-      })
+      DispatchQueue.global(qos: .default).async {
+        self.userImage?.sd_setImage(with: URL(string: self.user?.iconUrl ?? ""), completed: { (image, error, _, _) in
+          DispatchQueue.main.async {
+            self.userImage?.image = image
+          }
+        })
+      }
     }
   }
   
@@ -97,6 +101,7 @@ class NCArticleCell : UITableViewCell, NCDatabaseAccess{
     userImageBG.addSubview(userImage)
     userImage.image = UIImage(named: "50")
     userImage.layer.cornerRadius = 5.0
+    userImage.contentMode = .scaleAspectFill
     userImage.clipsToBounds = true
     
     //NameLabel Label
@@ -333,14 +338,24 @@ class NCArticleCell : UITableViewCell, NCDatabaseAccess{
     self.dislikeLabel?.text = String(article.dislikeCount)
     self.categoryLabel?.text = article.articleCategory
     
-    //Download User
-    self.downloadUser(uid: article.uid) { (user, error) in
-      if let error = error{
-        Dlog(error.localizedDescription)
-        return
+    // Checking the cache user then downloading if not there
+    if let savedUser = cacheUsers.object(forKey: NSString(string: "\(article.uid)")) as? StructWrapper<NCUser>{
+      let u = savedUser.value
+      self.user = u
+    }else{
+      self.downloadUser(uid: article.uid) { (user, error) in
+        if let error = error{
+          Dlog(error.localizedDescription)
+          return
+        }
+        self.user = user
+        cacheUsers.setObject(StructWrapper<NCUser>(user!), forKey: NSString(string: "\(article.uid)"))
       }
-      self.user = user
     }
+    
+  
+    
+   
   }
 }
 
