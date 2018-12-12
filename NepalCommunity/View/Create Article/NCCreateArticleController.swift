@@ -198,7 +198,7 @@ extension NCCreateARrticleController : NCCategoriesSelectionDelegate{
 //MARK : Image Selection Gallery Delegate
 extension NCCreateARrticleController : GalleryControllerDelegate, NCImageSelectionDelegate{
   func imagePressed(image: UIImage) {
-    let vc = NCFullImageController()
+    let vc = NCImageDetailViewController()
     vc.image = image
     self.present(vc, animated: true, completion: nil)
   }

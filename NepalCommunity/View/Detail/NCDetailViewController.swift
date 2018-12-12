@@ -61,7 +61,7 @@ extension NCDetailViewController : NCButtonDelegate{
 
 extension NCDetailViewController : NCImageDelegate{
   func imagePressed(image: UIImage) {
-    let vc = NCFullImageController()
+    let vc = NCImageDetailViewController()
     vc.image = image
     self.present(vc, animated: true, completion: nil)
   }
