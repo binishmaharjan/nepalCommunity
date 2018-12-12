@@ -17,23 +17,25 @@ protocol NCDatabaseAccess{
 
 extension NCDatabaseAccess{
   func downloadUser(uid: String,completion: (( NCUser?,Error?) -> ())?){
-    Firestore.firestore().collection(DatabaseReference.USERS_REF)
-      .whereField(DatabaseReference.USER_ID, isEqualTo: uid)
-      .getDocuments { (snapshot, error) in
-        if let error = error {
-          completion?(nil,error)
-          return
-        }
-        
-        guard let snapshot = snapshot,
-          let first =  snapshot.documents.first else {return}
-        let data = first.data()
-        do{
-          let user = try FirebaseDecoder().decode(NCUser.self, from: data)
-          completion?(user,nil)
-        }catch{
-          completion?(nil,error)
-        }
+    DispatchQueue.global(qos: .default).async {
+      Firestore.firestore().collection(DatabaseReference.USERS_REF)
+        .whereField(DatabaseReference.USER_ID, isEqualTo: uid)
+        .getDocuments { (snapshot, error) in
+          if let error = error {
+            DispatchQueue.main.async {completion?(nil,error)}
+            return
+          }
+          
+          guard let snapshot = snapshot,
+            let first =  snapshot.documents.first else {return}
+          let data = first.data()
+          do{
+            let user = try FirebaseDecoder().decode(NCUser.self, from: data)
+            DispatchQueue.main.async {completion?(user,nil)}
+          }catch{
+            DispatchQueue.main.async {completion?(nil,error)}
+          }
+      }
     }
   }
 }

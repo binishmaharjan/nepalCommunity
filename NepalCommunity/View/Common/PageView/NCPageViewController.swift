@@ -58,26 +58,31 @@ class NCPageViewController : UIPageViewController{
     let foodTravel = NCSingleHomeController()
     foodTravel.view.backgroundColor = NCColors.white
     foodTravel.referenceTitle = NCCategories.food_travel.rawValue
+    foodTravel.singleToPagerDelegate = self
     foodTravel.view.tag = 1
     
     let japanLife = NCSingleHomeController()
     japanLife.view.backgroundColor = NCColors.white
     japanLife.referenceTitle = NCCategories.japanLife.rawValue
+    japanLife.singleToPagerDelegate = self
     japanLife.view.tag = 2
     
     let schoolVisa = NCSingleHomeController()
     schoolVisa.view.backgroundColor = NCColors.white
     schoolVisa.referenceTitle = NCCategories.school_visa.rawValue
+    schoolVisa.singleToPagerDelegate = self
     schoolVisa.view.tag = 3
     
     let parttime = NCSingleHomeController()
     parttime.view.backgroundColor = NCColors.white
     parttime.referenceTitle = NCCategories.parttime.rawValue
+    parttime.singleToPagerDelegate = self
     parttime.view.tag = 4
     
     let miscellaneous = NCSingleHomeController()
     miscellaneous.view.backgroundColor = NCColors.white
     miscellaneous.referenceTitle = NCCategories.miscellaneous.rawValue
+    miscellaneous.singleToPagerDelegate = self
     miscellaneous.view.tag = 5
     
     
@@ -226,8 +231,8 @@ extension NCPageViewController: UIScrollViewDelegate{
 
 //MARK
 extension NCPageViewController: NCSingleToPagerDelegate{
-  func passSingleToDelegate(article: NCArticle) {
-    pagerToHomeDelegate?.passPagerToHome(article: article)
+  func passSingleToDelegate(article: NCArticle, user: NCUser) {
+    pagerToHomeDelegate?.passPagerToHome(article: article, user: user)
   }
 }
 

@@ -40,6 +40,9 @@ class NCSingleHomeView : NCBaseView{
   //Pull Down refresh control
   private let refreshControl = UIRefreshControl()
   
+  private var userCells : [NCUser]?
+  
+  
   override func didInit() {
     super.didInit()
     self.setup()
@@ -75,6 +78,8 @@ class NCSingleHomeView : NCBaseView{
     guard let tableView = self.tableView else { return }
     tableView.edgesToSuperview()
   }
+  
+  
   
   
   private func loadArticles(){
@@ -243,6 +248,7 @@ extension NCSingleHomeView : UITableViewDelegate, UITableViewDataSource{
     if let cell = tableView.dequeueReusableCell(withIdentifier: CELL_ID, for: indexPath) as? NCArticleCell{
       cell.selectionStyle = .none
       cell.article = articles[indexPath.row]
+      cell.articleCellSingleHomeDelegate = self
       return cell
     }
     return UITableViewCell()
@@ -258,11 +264,11 @@ extension NCSingleHomeView : UITableViewDelegate, UITableViewDataSource{
       loadMoreArticle()
     }
   }
-  
-  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-    let index = indexPath.row
-    let article = self.articles[index]
-    homeViewDelegate?.cellWasTapped(article: article)
+}
+
+extension NCSingleHomeView : NCArticleCellToSingleHomeDelegate{
+  func passArticleAndUser(article: NCArticle, user: NCUser) {
+    homeViewDelegate?.cellWasTapped(article: article, user: user)
   }
 }
 

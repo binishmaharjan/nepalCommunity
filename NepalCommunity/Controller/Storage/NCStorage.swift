@@ -34,25 +34,24 @@ extension NCStorage{
       let storeRef = store.reference().child("\(StorageReference.USER_PROFILE)/\(user.uid)/\(StorageReference.PROFILE_IMAGE)")//Reference to the user profile images file.if file is not available new file will be created
       
       //Saving the data to the storage
-      DispatchQueue.main.async {
+      DispatchQueue.global(qos: .default).async {
         let _ = storeRef.putData(imageData, metadata: metaData) { (metadata, error) in
           guard let _  = metadata else{
-            completion?(nil,error)
+            DispatchQueue.main.async {completion?(nil,error)}
             return
           }
           
           //Getting the url after storing the data to the storage
           storeRef.downloadURL(completion: { (url, error) in
             guard let url = url else {
-              completion?(nil,error)
+              DispatchQueue.main.async {completion?(nil,error)}
               return
             }
             //returning the url to save in the database
-            completion?(url.absoluteString,error)
+            DispatchQueue.main.async {completion?(url.absoluteString,error)}
           })
         }
       }
-     
     }
   }
   
@@ -71,21 +70,21 @@ extension NCStorage{
       let storeRef = store.reference().child("\(StorageReference.ARTICLE_IMAGES)/\(articleId)")//Reference to the article image folder
       
       //Saving the data to the storage
-      DispatchQueue.main.async {
+      DispatchQueue.global(qos: .default).async {
         let _ = storeRef.putData(imageData, metadata: metaData) { (metadata, error) in
           guard let _  = metadata else{
-            completion?(nil,error)
+            DispatchQueue.main.async {completion?(nil,error)}
             return
           }
           
           //Getting the url after storing the data to the storage
           storeRef.downloadURL(completion: { (url, error) in
             guard let url = url else {
-              completion?(nil,error)
+              DispatchQueue.main.async {completion?(nil,error)}
               return
             }
             //returning the url to save in the database
-            completion?(url.absoluteString,error)
+            DispatchQueue.main.async {completion?(url.absoluteString,error)}
           })
         }
       }

@@ -128,9 +128,10 @@ class NCHomeController: NCViewController {
 
 
 extension NCHomeController: NCPagerToHomeDelegate{
-  func passPagerToHome(article: NCArticle) {
+  func passPagerToHome(article: NCArticle, user: NCUser) {
     let detailVc = NCDetailViewController()
     detailVc.article = article
+    detailVc.user = user
     self.navigationController?.pushViewController(detailVc, animated: true)
   }
 }

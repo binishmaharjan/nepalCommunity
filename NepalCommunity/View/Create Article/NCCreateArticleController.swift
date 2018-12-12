@@ -16,6 +16,7 @@ class NCCreateARrticleController: NCViewController{
   //MARK: Variables
   private var mainView : NCCreateArticleView?
   private var mainViewBottomConstraints: Constraint?
+  private var isLoading : Bool = false
   
   //MARK: Override Methods
   override func viewDidLoad() {
@@ -87,14 +88,14 @@ extension NCCreateARrticleController : NCButtonDelegate{
       //Getting the proper title
       guard let titleField = mainView.titleField,
         let titleText = titleField.text,titleText.count > 0,
-             !mainView.isTitlePlaceholder else{
-        NCDropDownNotification.shared.showError(message: LOCALIZE("Enter Title"))
+        !mainView.isTitlePlaceholder else{
+          NCDropDownNotification.shared.showError(message: LOCALIZE("Enter Title"))
           return
       }
       //Getting the proper description
       guard let descriptionField = mainView.descriptionField,
         let descriptionText = descriptionField.text, descriptionText.count > 0 ,
-            !mainView.isDescriptionPlaceholder else {
+        !mainView.isDescriptionPlaceholder else {
           NCDropDownNotification.shared.showError(message: LOCALIZE("Enter Description"))
           return
       }
@@ -174,7 +175,7 @@ extension NCCreateARrticleController : NCCategoriesSelectionDelegate{
     }
     
     let partTimeAlert = UIAlertAction(title: LOCALIZE(NCCategories.parttime.rawValue), style: .default) { (_) in
-     self.mainView?.categories = .parttime
+      self.mainView?.categories = .parttime
     }
     
     let miscellaneousAlert = UIAlertAction(title: LOCALIZE(NCCategories.miscellaneous.rawValue), style: .default) { (_) in
@@ -243,59 +244,71 @@ extension NCCreateARrticleController : GalleryControllerDelegate, NCImageSelecti
 extension NCCreateARrticleController : NCDatabaseWrite, NCStorage{
   //Post With Images
   private func postCreateWithImage(title : String, description : String, image : UIImage, category : String){
-    //Show Indicator
-    NCActivityIndicator.shared.start(view: self.view)
     
-    //Generating random id
-    let articleId = randomID(length: 25)
-    
-    //Saving the image and getting the url
-    saveArticleImageToStorage(articleId: articleId, image: image) { (imageUrl, error) in
-      if let error = error{
-        Dlog("\(error.localizedDescription)")
-        NCDropDownNotification.shared.showError(message: LOCALIZE(error.localizedDescription))
-        NCActivityIndicator.shared.stop()
-        return
-      }
+    if !isLoading{
+      self.isLoading = true
+      //Show Indicator
+      NCActivityIndicator.shared.start(view: self.view)
       
-      guard let imageUrl = imageUrl else {return}
+      //Generating random id
+      let articleId = randomID(length: 25)
       
-      //Posting the article with the image
-      self.postArticle(articleId: articleId, userId: (NCSessionManager.shared.user?.uid)!, title: title, description: description, category: category, imageURL: imageUrl, hasImage: 1, completion: { (error) in
+      //Saving the image and getting the url
+      saveArticleImageToStorage(articleId: articleId, image: image) { (imageUrl, error) in
         if let error = error{
           Dlog("\(error.localizedDescription)")
           NCDropDownNotification.shared.showError(message: LOCALIZE(error.localizedDescription))
           NCActivityIndicator.shared.stop()
+          self.isLoading = false
           return
         }
-        //Dismissing the view
-        NCDropDownNotification.shared.showSuccess(message: LOCALIZE("Success!!!"))
-        NCActivityIndicator.shared.stop()
-        self.dismiss(animated: true, completion: nil)
-      })
+        
+        guard let imageUrl = imageUrl else {return}
+        
+        //Posting the article with the image
+        self.postArticle(articleId: articleId, userId: (NCSessionManager.shared.user?.uid)!, title: title, description: description, category: category, imageURL: imageUrl, hasImage: 1, completion: { (error) in
+          if let error = error{
+            Dlog("\(error.localizedDescription)")
+            NCDropDownNotification.shared.showError(message: LOCALIZE(error.localizedDescription))
+            NCActivityIndicator.shared.stop()
+            self.isLoading = false
+            return
+          }
+          //Dismissing the view
+          NCDropDownNotification.shared.showSuccess(message: LOCALIZE("Success!!!"))
+          NCActivityIndicator.shared.stop()
+          self.isLoading = false
+          self.dismiss(animated: true, completion: nil)
+        })
+      }
     }
   }
   
   
   //Post With Text Only
   private func postCreateWithText(title: String, description : String, category : String){
-    //Generating random id
-     let articleId = randomID(length: 25)
-    
-    //Show Indicator
-    NCActivityIndicator.shared.start(view: self.view)
-    //Posting the aritcle with text only
-    self.postArticle(articleId: articleId, userId: (NCSessionManager.shared.user?.uid)!, title: title, description: description, category: category, imageURL: "", hasImage: 0) { (error) in
-      if let error = error {
-       Dlog("\(error.localizedDescription)")
-        NCDropDownNotification.shared.showError(message: LOCALIZE(error.localizedDescription))
+    if !isLoading{
+      self.isLoading = true
+      //Generating random id
+      let articleId = randomID(length: 25)
+      
+      //Show Indicator
+      NCActivityIndicator.shared.start(view: self.view)
+      //Posting the aritcle with text only
+      self.postArticle(articleId: articleId, userId: (NCSessionManager.shared.user?.uid)!, title: title, description: description, category: category, imageURL: "", hasImage: 0) { (error) in
+        if let error = error {
+          Dlog("\(error.localizedDescription)")
+          NCDropDownNotification.shared.showError(message: LOCALIZE(error.localizedDescription))
+          NCActivityIndicator.shared.stop()
+          self.isLoading = false
+          return
+        }
+        //Dismissing the view
+        NCDropDownNotification.shared.showSuccess(message: LOCALIZE("Success!!!"))
         NCActivityIndicator.shared.stop()
-        return
+        self.isLoading = false
+        self.dismiss(animated: true, completion: nil)
       }
-      //Dismissing the view
-      NCDropDownNotification.shared.showSuccess(message: LOCALIZE("Success!!!"))
-      NCActivityIndicator.shared.stop()
-      self.dismiss(animated: true, completion: nil)
     }
   }
 }

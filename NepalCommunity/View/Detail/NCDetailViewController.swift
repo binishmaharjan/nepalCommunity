@@ -16,6 +16,11 @@ class NCDetailViewController: NCViewController{
   
   //Article
   var article : NCArticle? {didSet{mainView?.article = article}}
+  var user: NCUser? {
+    didSet{
+      mainView?.user = user
+    }
+  }
   
   override var preferredStatusBarStyle: UIStatusBarStyle{return .lightContent}
   

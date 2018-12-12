@@ -45,6 +45,11 @@ class NCDetailView : NCBaseView{
   
   //Article
   var article :NCArticle?{didSet{titleLbl?.text = article?.articleTitle}}
+  var user: NCUser?{
+    didSet{
+      
+    }
+  }
   
   override func didInit() {
     super.didInit()
@@ -90,6 +95,7 @@ class NCDetailView : NCBaseView{
     refreshControl.tintColor = NCColors.blue
     tableView.estimatedRowHeight = 100
     tableView.rowHeight = UITableView.automaticDimension
+    
     refreshControl.addTarget(self, action: #selector(refreshControlDragged), for: .valueChanged)
     
   }
@@ -128,7 +134,9 @@ extension NCDetailView : UITableViewDelegate, UITableViewDataSource{
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     if indexPath.row == 0, let cell = tableView.dequeueReusableCell(withIdentifier: CELL1_ID, for : indexPath)  as? Cell1 {
       cell.article = self.article
+      cell.user = self.user
       cell.cellToTableViewDelegate = self
+      cell.selectionStyle = .none
       return cell
     }
     

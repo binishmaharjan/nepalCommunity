@@ -75,6 +75,9 @@ class DatabaseReference{
   static let HAS_IMAGE = "has_image"
   static let COMMENT_COUNT = "comment_count"
   static let ARTICLE_CATEGORY = "article_category"
+  
+  static let LIKE_ID_REF = "like_ids"
+  static let DISLIKE_ID_REF = "dislike_ids"
 }
 
 class StorageReference{
