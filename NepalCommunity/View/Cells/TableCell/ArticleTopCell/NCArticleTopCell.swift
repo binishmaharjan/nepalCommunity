@@ -55,6 +55,9 @@ class NCArticleTopCell: UITableViewCell, NCDatabaseAccess {
   //Article
   var article: NCArticle?{
     didSet{
+      if let article = article{
+        let uid = article.uid
+      }
       self.relayout()
     }
   }
@@ -63,9 +66,13 @@ class NCArticleTopCell: UITableViewCell, NCDatabaseAccess {
   var user: NCUser?{
     didSet{
       self.nameLabel?.text = "\(user?.username ?? "")"
-      userImage?.sd_setImage(with: URL(string: user?.iconUrl ?? ""), completed: { (image, error, _, _) in
-        self.userImage?.image = image
-      })
+      DispatchQueue.global(qos: .default).async {
+        self.userImage?.sd_setImage(with: URL(string: self.user?.iconUrl ?? ""), completed: { (image, error, _, _) in
+          DispatchQueue.main.async {
+            self.userImage?.image = image
+          }
+        })
+      }
     }
   }
   
@@ -91,6 +98,7 @@ class NCArticleTopCell: UITableViewCell, NCDatabaseAccess {
     userImageBG.addSubview(userImage)
     userImage.image = UIImage(named: "50")
     userImage.layer.cornerRadius = 5.0
+    userImage.contentMode = .scaleAspectFill
     userImage.clipsToBounds = true
     
     //NameLabel Label
@@ -285,13 +293,13 @@ class NCArticleTopCell: UITableViewCell, NCDatabaseAccess {
     
     titleLabel.leftToSuperview(offset : 8)
     titleLabel.rightToSuperview(offset : -8)
-    titleLabel.topToBottom(of: userImageBG, offset: 6)
+    titleLabel.topToBottom(of: userImageBG, offset: 8)
     
     descriptionLabel.left(to: titleLabel)
     descriptionLabel.right(to: titleLabel)
-    descriptionLabel.topToBottom(of: titleLabel, offset: 4)
+    descriptionLabel.topToBottom(of: titleLabel, offset: 8)
     
-    articleImage.topToBottom(of: descriptionLabel, offset: 4)
+    articleImage.topToBottom(of: descriptionLabel, offset: 8)
     articleImage.left(to: descriptionLabel)
     articleImage.right(to: descriptionLabel)
     articleImageHeightConstraints =  articleImage.height(articleImageHeight)
@@ -354,19 +362,15 @@ class NCArticleTopCell: UITableViewCell, NCDatabaseAccess {
     }else{
       articleImageHeight = 200
       articleImageHeightConstraints?.constant = articleImageHeight
-      articleImage?.sd_setImage(with: URL(string: article.imageUrl ), completed: { (image, error, _, _) in
-        self.articleImage?.image = image
-      })
-    }
-    
-    //Download User
-    self.downloadUser(uid: article.uid) { (user, error) in
-      if let error = error{
-        Dlog(error.localizedDescription)
-        return
+      DispatchQueue.global(qos: .default).async {
+        self.articleImage?.sd_setImage(with: URL(string: article.imageUrl ), completed: { (image, error, _, _) in
+          DispatchQueue.main.async {
+            self.articleImage?.image = image
+          }
+        })
       }
-      self.user = user
     }
+
   }
   
 }

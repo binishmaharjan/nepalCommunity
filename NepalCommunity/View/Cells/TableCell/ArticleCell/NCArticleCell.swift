@@ -36,6 +36,12 @@ class NCArticleCell : UITableViewCell, NCDatabaseAccess{
   private var menuIconBG: UIView?
   private var menuIcon: NCImageButtonView?
   
+  
+  private var isLiked : Bool?
+  private var likeListener : ListenerRegistration?
+  
+
+  
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
     self.setup()
@@ -46,6 +52,9 @@ class NCArticleCell : UITableViewCell, NCDatabaseAccess{
     fatalError("init(coder:) has not been implemented")
   }
   
+  //Delegate
+  var articleCellSingleHomeDelegate : NCArticleCellToSingleHomeDelegate?
+  
   var article: NCArticle?{
     didSet{
       self.relayout()
@@ -55,14 +64,21 @@ class NCArticleCell : UITableViewCell, NCDatabaseAccess{
   var user: NCUser?{
     didSet{
       self.nameLabel?.text = "\(user?.username ?? "")"
-      userImage?.sd_setImage(with: URL(string: user?.iconUrl ?? ""), completed: { (image, error, _, _) in
-        self.userImage?.image = image
-      })
+      DispatchQueue.global(qos: .default).async {
+        self.userImage?.sd_setImage(with: URL(string: self.user?.iconUrl ?? ""), completed: { (image, error, _, _) in
+          DispatchQueue.main.async {
+            self.userImage?.image = image
+          }
+        })
+      }
     }
   }
   
   private func setup(){
     self.backgroundColor = NCColors.white
+    
+    //Tap Gesture to the cell
+    self.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(cellWasTapped)))
     
     //Container
     let container = UIView()
@@ -85,6 +101,7 @@ class NCArticleCell : UITableViewCell, NCDatabaseAccess{
     userImageBG.addSubview(userImage)
     userImage.image = UIImage(named: "50")
     userImage.layer.cornerRadius = 5.0
+    userImage.contentMode = .scaleAspectFill
     userImage.clipsToBounds = true
     
     //NameLabel Label
@@ -148,6 +165,7 @@ class NCArticleCell : UITableViewCell, NCDatabaseAccess{
     self.commentIcon = commentIcon
     commentIcon.image = UIImage(named: "icon_comment")
     commentIcon.buttonMargin = .zero
+    commentIcon.delegate = self
     commentIconBG.addSubview(commentIcon)
     
     let commentLabel = UILabel()
@@ -166,6 +184,7 @@ class NCArticleCell : UITableViewCell, NCDatabaseAccess{
     self.dislikeIcon = dislikeIcon
     dislikeIcon.buttonMargin = .zero
     dislikeIcon.image = UIImage(named: "icon_dislike")
+    dislikeIcon.delegate = self
     dislikeIconBG.addSubview(dislikeIcon)
     
     let dislikeLabel = UILabel()
@@ -184,6 +203,7 @@ class NCArticleCell : UITableViewCell, NCDatabaseAccess{
     self.likeIcon = likeIcon
     likeIcon.image = UIImage(named: "icon_like")
     likeIcon.buttonMargin = .zero
+    likeIcon.delegate = self
     likeIconBG.addSubview(likeIcon)
     
     let likeLabel = UILabel()
@@ -318,13 +338,96 @@ class NCArticleCell : UITableViewCell, NCDatabaseAccess{
     self.dislikeLabel?.text = String(article.dislikeCount)
     self.categoryLabel?.text = article.articleCategory
     
-    //Download User
-    self.downloadUser(uid: article.uid) { (user, error) in
-      if let error = error{
-        Dlog(error.localizedDescription)
-        return
+    // Checking the cache user then downloading if not there
+    if let savedUser = cacheUsers.object(forKey: NSString(string: "\(article.uid)")) as? StructWrapper<NCUser>{
+      let u = savedUser.value
+      self.user = u
+    }else{
+      self.downloadUser(uid: article.uid) { (user, error) in
+        if let error = error{
+          Dlog(error.localizedDescription)
+          return
+        }
+        self.user = user
+        cacheUsers.setObject(StructWrapper<NCUser>(user!), forKey: NSString(string: "\(article.uid)"))
       }
-      self.user = user
     }
+    
+  
+    
+   
+  }
+}
+
+extension NCArticleCell{
+  @objc private func cellWasTapped(){
+    guard let article = self.article,
+          let user = self.user
+    else { return}
+    articleCellSingleHomeDelegate?.passArticleAndUser(article: article, user: user)
+  }
+}
+
+//MARK: Likes and Dislikes
+extension NCArticleCell : NCButtonDelegate{
+  func buttonViewTapped(view: NCButtonView) {
+    if view == self.commentIcon{
+      Dlog("Comment")
+    }else if view == self.dislikeIcon{
+      Dlog("Dislike")
+    }else if view == self.likeIcon{
+      Dlog("Like")
+      guard let article = self.article,
+            let user = NCSessionManager.shared.user else {return}
+          let uid = user.uid
+      Firestore.firestore()
+        .collection(DatabaseReference.ARTICLE_REF)
+        .document(article.articleId)
+        .collection(DatabaseReference.LIKE_ID_REF)
+        .document(uid).getDocument { (snapshot, error) in
+        
+          if let error = error {
+            Dlog(error.localizedDescription)
+            return
+          }
+          
+          guard let snapshot = snapshot else {
+            Dlog("No SnapShot")
+            return
+          }
+         
+          let data = snapshot.data()
+          
+          if data == nil{
+            Firestore.firestore()
+              .collection(DatabaseReference.ARTICLE_REF)
+            .document(article.articleId)
+            .collection(DatabaseReference.LIKE_ID_REF)
+              .document(uid).setData(["uid" : "\(uid)"], completion: { (error) in
+                if let error = error { return }
+                Dlog("Like OK")
+              })
+          }else{
+            Firestore.firestore()
+              .collection(DatabaseReference.ARTICLE_REF)
+              .document(article.articleId)
+              .collection(DatabaseReference.LIKE_ID_REF)
+              .document(uid).delete(completion: { (error) in
+                if let error = error { return }
+                Dlog("Like Removed")
+              })
+          }
+      }
+    }
+  }
+}
+
+//Like Listener
+extension NCArticleCell{
+  func observeLike(){
+  }
+  
+  func removeObserverLike(){
+    
   }
 }

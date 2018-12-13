@@ -16,7 +16,7 @@ protocol NCDatabaseWrite{
   func writeFacebookUser(userId: String, username: String, iconUrl: String, email : String, completion: ((Error?) -> ())?)
   
   func postArticle(articleId : String, userId: String, title: String, description: String, category : String,imageURL : String, hasImage : Int, completion : ((Error?) -> ())?)
-
+  
 }
 
 
@@ -27,11 +27,15 @@ extension NCDatabaseWrite{
     let user = NCUser.init(accountType: NCAccountType.email.rawValue, dateCreated: NCDate.dateToString(), iconUrl: iconUrl, uid: userId, username: username, email: email)
     do{
       let data = try FirestoreEncoder().encode(user) as [String : AnyObject]
-    Firestore.firestore().collection(DatabaseReference.USERS_REF).document(userId).setData(data) { (error) in
-        if let error = error{
-          completion?(error)
-        }else{
-          completion?(nil)
+      DispatchQueue.global(qos: .default).async {
+        Firestore.firestore()
+          .collection(DatabaseReference.USERS_REF)
+          .document(userId).setData(data) { (error) in
+            if let error = error{
+              DispatchQueue.main.async {completion?(error)}
+            }else{
+              DispatchQueue.main.async {completion?(nil)}
+            }
         }
       }
     }catch{
@@ -44,11 +48,15 @@ extension NCDatabaseWrite{
     let user = NCUser.init(accountType: NCAccountType.facebook.rawValue, dateCreated: NCDate.dateToString(), iconUrl: iconUrl, uid: userId, username: username, email: email)
     do{
       let data = try FirestoreEncoder().encode(user) as [String : AnyObject]
-      Firestore.firestore().collection(DatabaseReference.USERS_REF).document(userId).setData(data) { (error) in
-        if let error = error{
-          completion?(error)
-        }else{
-          completion?(nil)
+      DispatchQueue.global(qos: .default).async {
+        Firestore.firestore()
+          .collection(DatabaseReference.USERS_REF)
+          .document(userId).setData(data) { (error) in
+            if let error = error{
+              DispatchQueue.main.async {completion?(error)}
+            }else{
+             DispatchQueue.main.async {completion?(nil)}
+            }
         }
       }
     }catch{
@@ -72,11 +80,16 @@ extension NCDatabaseWrite{
     
     do{
       let data = try FirestoreEncoder().encode(article) as [String : AnyObject]
-      Firestore.firestore().collection(DatabaseReference.ARTICLE_REF).document(articleId).setData(data) { (error) in
-        if let error = error{
-          completion?(error)
-        }else{
-          completion?(nil)
+      DispatchQueue.global(qos: .default).async {
+        Firestore.firestore()
+          .collection(DatabaseReference.ARTICLE_REF)
+          .document(articleId)
+          .setData(data) { (error) in
+            if let error = error{
+              DispatchQueue.main.async {completion?(error)}
+            }else{
+               DispatchQueue.main.async {completion?(nil)}
+            }
         }
       }
     }catch{

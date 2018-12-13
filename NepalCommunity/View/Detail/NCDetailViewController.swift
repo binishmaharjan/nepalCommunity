@@ -16,6 +16,11 @@ class NCDetailViewController: NCViewController{
   
   //Article
   var article : NCArticle? {didSet{mainView?.article = article}}
+  var user: NCUser? {
+    didSet{
+      mainView?.user = user
+    }
+  }
   
   override var preferredStatusBarStyle: UIStatusBarStyle{return .lightContent}
   
@@ -56,7 +61,7 @@ extension NCDetailViewController : NCButtonDelegate{
 
 extension NCDetailViewController : NCImageDelegate{
   func imagePressed(image: UIImage) {
-    let vc = NCFullImageController()
+    let vc = NCImageDetailViewController()
     vc.image = image
     self.present(vc, animated: true, completion: nil)
   }
