@@ -26,7 +26,6 @@
 		AC69B33C21AB96D8008BE631 /* NCUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC69B33B21AB96D8008BE631 /* NCUser.swift */; };
 		AC69B33F21ABB259008BE631 /* NCSessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC69B33E21ABB259008BE631 /* NCSessionManager.swift */; };
 		AC69B34221ABBD00008BE631 /* NCImageDownloader.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC69B34121ABBD00008BE631 /* NCImageDownloader.swift */; };
-		AC69B34721ACE2F8008BE631 /* NCFullImageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC69B34621ACE2F8008BE631 /* NCFullImageController.swift */; };
 		AC71844A21A24C360056DF3F /* NCSingleHomeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC71844921A24C360056DF3F /* NCSingleHomeController.swift */; };
 		AC71844C21A24D410056DF3F /* NCSingleHomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC71844B21A24D410056DF3F /* NCSingleHomeView.swift */; };
 		AC71845021A2528D0056DF3F /* NCArticleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC71844F21A2528D0056DF3F /* NCArticleCell.swift */; };
@@ -93,7 +92,6 @@
 		AC69B33B21AB96D8008BE631 /* NCUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCUser.swift; sourceTree = "<group>"; };
 		AC69B33E21ABB259008BE631 /* NCSessionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCSessionManager.swift; sourceTree = "<group>"; };
 		AC69B34121ABBD00008BE631 /* NCImageDownloader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCImageDownloader.swift; sourceTree = "<group>"; };
-		AC69B34621ACE2F8008BE631 /* NCFullImageController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCFullImageController.swift; sourceTree = "<group>"; };
 		AC71844921A24C360056DF3F /* NCSingleHomeController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCSingleHomeController.swift; sourceTree = "<group>"; };
 		AC71844B21A24D410056DF3F /* NCSingleHomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCSingleHomeView.swift; sourceTree = "<group>"; };
 		AC71844F21A2528D0056DF3F /* NCArticleCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCArticleCell.swift; sourceTree = "<group>"; };
@@ -225,7 +223,6 @@
 				AC2FC9D821C0D20600052D1F /* ImageDetailView */,
 				AC9727A121B8E09000F265FD /* Detail */,
 				ACD4FE7B21AE239300C1F534 /* Cells */,
-				AC69B34521ACE2BE008BE631 /* FullImageView */,
 				AC9F2566219C062C0090A77E /* Home */,
 				ACA50A8A2186AA8000B2040A /* Common */,
 				AC1EDCC321829A8E0089C7AF /* BaseView */,
@@ -312,14 +309,6 @@
 				AC69B34121ABBD00008BE631 /* NCImageDownloader.swift */,
 			);
 			path = ImageDownloader;
-			sourceTree = "<group>";
-		};
-		AC69B34521ACE2BE008BE631 /* FullImageView */ = {
-			isa = PBXGroup;
-			children = (
-				AC69B34621ACE2F8008BE631 /* NCFullImageController.swift */,
-			);
-			path = FullImageView;
 			sourceTree = "<group>";
 		};
 		AC71844821A247840056DF3F /* HomeView */ = {
@@ -738,7 +727,6 @@
 				AC9F2568219C06530090A77E /* NCHomeController.swift in Sources */,
 				AC2FC9DA21C0D28100052D1F /* NCImageDetailViewController.swift in Sources */,
 				ACA50A812185F88900B2040A /* NCGradientView.swift in Sources */,
-				AC69B34721ACE2F8008BE631 /* NCFullImageController.swift in Sources */,
 				AC9F2575219D12BC0090A77E /* NCMenuCell.swift in Sources */,
 				AC1EDCC921829D450089C7AF /* NCViewController.swift in Sources */,
 				AC71845921A6510B0056DF3F /* NCImageSelectionCell.swift in Sources */,
