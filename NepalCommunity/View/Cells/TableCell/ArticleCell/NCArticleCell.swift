@@ -39,18 +39,18 @@ class NCArticleCell : UITableViewCell, NCDatabaseAccess{
   
   private var isLiked : Bool = false{
     didSet{
-      likeIcon?.image = isLiked ? UIImage(named: "icon_like_h") : UIImage(named: "icon_like")
+      self.setLikeImage()
     }
   }
   private var isDisliked : Bool = false{
     didSet{
-      dislikeIcon?.image = isDisliked ? UIImage(named: "icon_dislike_h") : UIImage(named: "icon_dislike")
+     self.setDislikeImage()
     }
   }
   private var likeListener : ListenerRegistration?
   private var disLikeListener : ListenerRegistration?
   
-
+  
   
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -67,7 +67,6 @@ class NCArticleCell : UITableViewCell, NCDatabaseAccess{
   
   var article: NCArticle?{
     didSet{
-      guard let article = article else {return}
       self.checkLiked()
       self.checkDislike()
       self.observeLike()
@@ -188,11 +187,13 @@ class NCArticleCell : UITableViewCell, NCDatabaseAccess{
     commentLabel.text = LOCALIZE("127")
     commentLabel.textColor = NCColors.black
     commentLabel.font = NCFont.bold(size: 12)
-    container.addSubview(commentLabel)
+    commentIconBG.addSubview(commentLabel)
     
     //Dislike Lablel
     let dislikeIconBG = UIView()
     self.dislikeIconBG = dislikeIconBG
+    dislikeIconBG.isUserInteractionEnabled = true
+    dislikeIconBG.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(dislikeButtonPressed)))
     container.addSubview(dislikeIconBG)
     
     let dislikeIcon = NCImageButtonView()
@@ -207,11 +208,15 @@ class NCArticleCell : UITableViewCell, NCDatabaseAccess{
     dislikeLabel.text = LOCALIZE("1.2K")
     dislikeLabel.textColor = NCColors.black
     dislikeLabel.font = NCFont.bold(size: 12)
-    container.addSubview(dislikeLabel)
+    dislikeLabel.isUserInteractionEnabled = true
+    dislikeLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(dislikeButtonPressed)))
+    dislikeIconBG.addSubview(dislikeLabel)
     
     //Like Label
     let likeIconBG = UIView()
     self.likeIconBG = likeIconBG
+    likeIconBG.isUserInteractionEnabled = true
+    likeIconBG.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(likeButtonPressed)))
     container.addSubview(likeIconBG)
     
     let likeIcon = NCImageButtonView()
@@ -226,7 +231,9 @@ class NCArticleCell : UITableViewCell, NCDatabaseAccess{
     likeLabel.text = LOCALIZE("5.6K")
     likeLabel.textColor = NCColors.black
     likeLabel.font = NCFont.bold(size: 12)
-    container.addSubview(likeLabel)
+    likeLabel.isUserInteractionEnabled = true
+    likeLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(likeButtonPressed)))
+    likeIconBG.addSubview(likeLabel)
     
     //Seperator
     let seperatorOne = UIView()
@@ -243,24 +250,24 @@ class NCArticleCell : UITableViewCell, NCDatabaseAccess{
   
   private func setupConstraints(){
     guard let userImage = self.userImage,
-          let userImageBG = self.userImageBG,
-          let nameLabel = self.nameLabel,
-          let categoryBG = self.categoryBG,
-          let categoryLabel = self.categoryLabel,
-          let titleLabel = self.titleLabel,
-          let commentIconBG = self.commentIconBG,
-          let commentIcon = self.commentIcon,
-          let commentLabel = self.commentLabel,
-          let likeIconBG = self.likeIconBG,
-          let likeIcon = self.likeIcon,
-          let likeLabel = self.likeLabel,
-          let dislikeIconBG = self.dislikeIconBG,
-          let dislikeIcon = self.dislikeIcon,
-          let dislikeLabel = self.dislikeLabel,
-          let container = self.container,
-          let menuIconBG = self.menuIconBG,
-          let seperatorOne = self.seperatorOne,
-          let seperatorTwo = self.seperatorTwo,
+      let userImageBG = self.userImageBG,
+      let nameLabel = self.nameLabel,
+      let categoryBG = self.categoryBG,
+      let categoryLabel = self.categoryLabel,
+      let titleLabel = self.titleLabel,
+      let commentIconBG = self.commentIconBG,
+      let commentIcon = self.commentIcon,
+      let commentLabel = self.commentLabel,
+      let likeIconBG = self.likeIconBG,
+      let likeIcon = self.likeIcon,
+      let likeLabel = self.likeLabel,
+      let dislikeIconBG = self.dislikeIconBG,
+      let dislikeIcon = self.dislikeIcon,
+      let dislikeLabel = self.dislikeLabel,
+      let container = self.container,
+      let menuIconBG = self.menuIconBG,
+      let seperatorOne = self.seperatorOne,
+      let seperatorTwo = self.seperatorTwo,
       let menuIcon = self.menuIcon else { return }
     
     container.topToSuperview(offset : 4)
@@ -302,14 +309,18 @@ class NCArticleCell : UITableViewCell, NCDatabaseAccess{
     
     commentIconBG.left(to: userImageBG)
     commentIconBG.topToBottom(of: titleLabel, offset: 6)
-    commentIconBG.width(25)
     commentIconBG.height(25)
     
-    commentIcon.edgesToSuperview()
+    commentIcon.topToSuperview()
+    commentIcon.leftToSuperview()
+    commentIcon.width(25)
+    commentIcon.height(25)
     
-    commentLabel.leftToRight(of: commentIconBG, offset: 12)
+    commentLabel.leftToRight(of: commentIcon, offset: 12)
     commentLabel.centerY(to: commentIconBG)
     commentLabel.width(25)
+    commentLabel.height(to: commentIconBG)
+    commentIconBG.right(to: commentLabel)
     
     seperatorOne.leftToRight(of: commentLabel, offset: 12)
     seperatorOne.centerY(to: commentIconBG)
@@ -318,14 +329,18 @@ class NCArticleCell : UITableViewCell, NCDatabaseAccess{
     
     likeIconBG.leftToRight(of: seperatorOne, offset: 12)
     likeIconBG.centerY(to: commentIconBG)
-    likeIconBG.width(25)
     likeIconBG.height(25)
     
-    likeIcon.edgesToSuperview()
+    likeIcon.topToSuperview()
+    likeIcon.leftToSuperview()
+    likeIcon.width(25)
+    likeIcon.height(25)
     
-    likeLabel.leftToRight(of: likeIconBG, offset: 12)
+    likeLabel.leftToRight(of: likeIcon, offset: 12)
     likeLabel.centerY(to: commentIconBG)
-    likeLabel.width(15)
+    likeLabel.width(25)
+    likeLabel.height(to: likeIconBG)
+    likeIconBG.right(to: likeLabel)
     
     seperatorTwo.leftToRight(of: likeLabel, offset: 12)
     seperatorTwo.centerY(to: commentIconBG)
@@ -334,14 +349,19 @@ class NCArticleCell : UITableViewCell, NCDatabaseAccess{
     
     dislikeIconBG.leftToRight(of: seperatorTwo, offset: 12)
     dislikeIconBG.centerY(to: commentIconBG)
-    dislikeIconBG.width(25)
     dislikeIconBG.height(25)
     
-    dislikeIcon.edgesToSuperview()
+    dislikeIcon.topToSuperview()
+    dislikeIcon.leftToSuperview()
+    dislikeIcon.width(25)
+    dislikeIcon.height(25)
     
-    dislikeLabel.leftToRight(of: dislikeIconBG, offset: 12)
+    dislikeLabel.leftToRight(of: dislikeIcon, offset: 12)
     dislikeLabel.centerY(to: commentIconBG)
     dislikeLabel.width(25)
+    dislikeLabel.height(to: dislikeIconBG)
+    
+    dislikeIconBG.right(to: dislikeLabel)
   }
   
   
@@ -370,105 +390,118 @@ class NCArticleCell : UITableViewCell, NCDatabaseAccess{
         cacheUsers.setObject(StructWrapper<NCUser>(user!), forKey: NSString(string: "\(article.uid)"))
       }
     }
-    
-  
-    
-   
   }
 }
 
 extension NCArticleCell{
   @objc private func cellWasTapped(){
     guard let article = self.article,
-          let user = self.user
-    else { return}
+      let user = self.user
+      else { return}
     articleCellSingleHomeDelegate?.passArticleAndUser(article: article, user: user)
   }
 }
 
 //MARK: Likes and Dislikes
 extension NCArticleCell : NCButtonDelegate{
+  @objc private func likeButtonPressed(){
+    self.likeFunction()
+  }
+  
+  @objc private func dislikeButtonPressed(){
+    self.dislikeFunction()
+  }
+  
+  private func setLikeImage(){
+    self.likeIcon?.image = self.isLiked ? UIImage(named: "icon_like_h") : UIImage(named: "icon_like")
+  }
+  
+  private func setDislikeImage(){
+    self.dislikeIcon?.image = self.isDisliked ? UIImage(named: "icon_dislike_h") : UIImage(named: "icon_dislike")
+  }
+  
+  private func likeFunction(){
+    guard let article = self.article,
+      let user = NCSessionManager.shared.user else {return}
+    let uid = user.uid
+    
+    if !isLiked{
+      self.isLiked = true
+      DispatchQueue.global(qos: .default).async {
+        Firestore.firestore()
+          .collection(DatabaseReference.ARTICLE_REF)
+          .document(article.articleId)
+          .collection(DatabaseReference.LIKE_ID_REF)
+          .document(uid).setData(["uid" : "\(uid)"], completion: { (error) in
+            if let error = error {
+              DispatchQueue.main.async {Dlog("\(error.localizedDescription)")}
+              return
+            }
+          })
+      }
+    }else{
+      self.isLiked = false
+      DispatchQueue.global(qos: .default).async {
+        Firestore.firestore()
+          .collection(DatabaseReference.ARTICLE_REF)
+          .document(article.articleId)
+          .collection(DatabaseReference.LIKE_ID_REF)
+          .document(uid).delete(completion: { (error) in
+            if let error = error {
+              DispatchQueue.main.async {Dlog("\(error.localizedDescription)")}
+              return
+            }
+          })
+      }
+    }
+  }
+  
+  private func dislikeFunction(){
+    guard let article  = self.article,
+      let user = NCSessionManager.shared.user else {return}
+    let uid = user.uid
+    
+    if !isDisliked{
+      self.isDisliked = true
+      DispatchQueue.global(qos: .default).async {
+        Firestore.firestore()
+          .collection(DatabaseReference.ARTICLE_REF)
+          .document(article.articleId)
+          .collection(DatabaseReference.DISLIKE_ID_REF)
+          .document(uid).setData(["uid" : "\(uid)"], completion: { (error) in
+            if let error = error {
+              DispatchQueue.main.async {Dlog("\(error.localizedDescription)")}
+              return
+            }
+          })
+      }
+    }else{
+      self.isDisliked = false
+      DispatchQueue.global(qos: .default).async {
+        Firestore.firestore()
+          .collection(DatabaseReference.ARTICLE_REF)
+          .document(article.articleId)
+          .collection(DatabaseReference.DISLIKE_ID_REF)
+          .document(uid).delete(completion: { (error) in
+            if let error = error {
+              DispatchQueue.main.async {Dlog("\(error.localizedDescription)")}
+              return
+            }
+          })
+      }
+    }
+  }
+  
   func buttonViewTapped(view: NCButtonView) {
     if view == self.commentIcon{
       Dlog("Comment")
     }else if view == self.dislikeIcon{
-      Dlog("Dislike")
-      guard let article  = self.article,
-        let user = NCSessionManager.shared.user else {return}
-        let uid = user.uid
-      
-      if !isDisliked{
-        self.isDisliked = true
-        DispatchQueue.global(qos: .default).async {
-          Firestore.firestore()
-            .collection(DatabaseReference.ARTICLE_REF)
-            .document(article.articleId)
-            .collection(DatabaseReference.DISLIKE_ID_REF)
-            .document(uid).setData(["uid" : "\(uid)"], completion: { (error) in
-              if let error = error {
-                DispatchQueue.main.async {Dlog("\(error.localizedDescription)")}
-                return
-              }
-              DispatchQueue.main.async {Dlog("Like OK")}
-            })
-        }
-      }else{
-        self.isDisliked = false
-        DispatchQueue.global(qos: .default).async {
-          Firestore.firestore()
-            .collection(DatabaseReference.ARTICLE_REF)
-            .document(article.articleId)
-            .collection(DatabaseReference.DISLIKE_ID_REF)
-            .document(uid).delete(completion: { (error) in
-              if let error = error {
-                DispatchQueue.main.async {Dlog("\(error.localizedDescription)")}
-                return
-              }
-              DispatchQueue.main.async {Dlog("Dislike removed")}
-            })
-        }
-      }
-      
+      self.dislikeFunction()
     }else if view == self.likeIcon{
-      Dlog("Like")
-      guard let article = self.article,
-        let user = NCSessionManager.shared.user else {return}
-      let uid = user.uid
-      
-      if !isLiked{
-        self.isLiked = true
-        DispatchQueue.global(qos: .default).async {
-          Firestore.firestore()
-            .collection(DatabaseReference.ARTICLE_REF)
-            .document(article.articleId)
-            .collection(DatabaseReference.LIKE_ID_REF)
-            .document(uid).setData(["uid" : "\(uid)"], completion: { (error) in
-              if let error = error {
-                DispatchQueue.main.async {Dlog("\(error.localizedDescription)")}
-                return
-              }
-              DispatchQueue.main.async {Dlog("Like OK")}
-            })
-        }
-      }else{
-        self.isLiked = false
-        DispatchQueue.global(qos: .default).async {
-          Firestore.firestore()
-            .collection(DatabaseReference.ARTICLE_REF)
-            .document(article.articleId)
-            .collection(DatabaseReference.LIKE_ID_REF)
-            .document(uid).delete(completion: { (error) in
-              if let error = error {
-                DispatchQueue.main.async {Dlog("\(error.localizedDescription)")}
-                return
-              }
-              DispatchQueue.main.async {Dlog("Dislike removed")}
-            })
-        }
-      }
-      
+      self.likeFunction()
     }
   }
+  
 }
 
 //Like Listener
@@ -525,6 +558,7 @@ extension NCArticleCell{
           
           DispatchQueue.main.async {
             self.likeLabel?.text = String(documentCounts)
+            self.setLikeImage()
             Dlog("Like Counts : \(documentCounts)")
           }
         })
@@ -539,7 +573,7 @@ extension NCArticleCell{
   func observeDislike(){
     Dlog("Observing Dislike")
     guard let article = self.article else {return}
-    if disLikeListener != nil{self.removeObserveDisLike()}
+    if disLikeListener != nil {self.removeObserveDisLike()}
     DispatchQueue.global(qos: .default).async {
       self.disLikeListener = Firestore.firestore()
         .collection(DatabaseReference.ARTICLE_REF)
@@ -557,11 +591,12 @@ extension NCArticleCell{
           
           DispatchQueue.main.async {
             self.dislikeLabel?.text = String(documentCounts)
+            self.setDislikeImage()
             Dlog("Dislike Counts : \(documentCounts)")
           }
         })
     }
-   
+    
   }
   
   func removeObserveDisLike(){
