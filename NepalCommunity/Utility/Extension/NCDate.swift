@@ -2,14 +2,14 @@
 //  NCDate.swift
 //  NepalCommunity
 //
-//  Created by guest on 2018/11/30.
+//  Created by guest on 2018/12/14.
 //  Copyright © 2018年 guest. All rights reserved.
 //
 
 import Foundation
 
 class NCDate{
-
+  
   static func dateToString()->String{
     let formatter = DateFormatter()
     formatter.timeZone = TimeZone(secondsFromGMT: 0)
