@@ -23,6 +23,7 @@
 		AC2FC9DA21C0D28100052D1F /* NCImageDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC2FC9D921C0D28100052D1F /* NCImageDetailViewController.swift */; };
 		AC2FC9DC21C0D28E00052D1F /* NCimageDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC2FC9DB21C0D28E00052D1F /* NCimageDetailView.swift */; };
 		AC2FC9DE21C0D29F00052D1F /* NCDraggableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC2FC9DD21C0D29F00052D1F /* NCDraggableView.swift */; };
+		AC2FC9E721C33AC500052D1F /* NCDate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC2FC9E621C33AC500052D1F /* NCDate.swift */; };
 		AC69B33C21AB96D8008BE631 /* NCUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC69B33B21AB96D8008BE631 /* NCUser.swift */; };
 		AC69B33F21ABB259008BE631 /* NCSessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC69B33E21ABB259008BE631 /* NCSessionManager.swift */; };
 		AC69B34221ABBD00008BE631 /* NCImageDownloader.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC69B34121ABBD00008BE631 /* NCImageDownloader.swift */; };
@@ -64,7 +65,6 @@
 		ACCC08B62180140500D6391A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = ACCC08B42180140500D6391A /* LaunchScreen.storyboard */; };
 		ACCC08BE218018DC00D6391A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = ACCC08BD218018DC00D6391A /* GoogleService-Info.plist */; };
 		ACD4FE7D21AE5DC000C1F534 /* NCArticle.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACD4FE7C21AE5DC000C1F534 /* NCArticle.swift */; };
-		ACD4FE7F21B0C12700C1F534 /* NCDate.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACD4FE7E21B0C12700C1F534 /* NCDate.swift */; };
 		ACDEACDC219E4C5B009964AE /* NCPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACDEACDB219E4C5B009964AE /* NCPageViewController.swift */; };
 		D0D2F491D22460BBF516816D /* Pods_NepalCommunity.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 702D276B339B5FD20876420C /* Pods_NepalCommunity.framework */; };
 /* End PBXBuildFile section */
@@ -88,6 +88,7 @@
 		AC2FC9D921C0D28100052D1F /* NCImageDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCImageDetailViewController.swift; sourceTree = "<group>"; };
 		AC2FC9DB21C0D28E00052D1F /* NCimageDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCimageDetailView.swift; sourceTree = "<group>"; };
 		AC2FC9DD21C0D29F00052D1F /* NCDraggableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCDraggableView.swift; sourceTree = "<group>"; };
+		AC2FC9E621C33AC500052D1F /* NCDate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCDate.swift; sourceTree = "<group>"; };
 		AC58C75B21BA1BD500B3D010 /* d_NepalCommunity.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = d_NepalCommunity.entitlements; sourceTree = "<group>"; };
 		AC69B33B21AB96D8008BE631 /* NCUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCUser.swift; sourceTree = "<group>"; };
 		AC69B33E21ABB259008BE631 /* NCSessionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCSessionManager.swift; sourceTree = "<group>"; };
@@ -132,7 +133,6 @@
 		ACCC08B72180140500D6391A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		ACCC08BD218018DC00D6391A /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		ACD4FE7C21AE5DC000C1F534 /* NCArticle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCArticle.swift; sourceTree = "<group>"; };
-		ACD4FE7E21B0C12700C1F534 /* NCDate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCDate.swift; sourceTree = "<group>"; };
 		ACDEACDB219E4C5B009964AE /* NCPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCPageViewController.swift; sourceTree = "<group>"; };
 		B302AD8A90610761900FB03F /* Pods-NepalCommunity.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NepalCommunity.debug.xcconfig"; path = "Pods/Target Support Files/Pods-NepalCommunity/Pods-NepalCommunity.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -253,7 +253,6 @@
 				AC1EDCB0218147C60089C7AF /* NCFont.swift */,
 				AC1EDCB2218148AC0089C7AF /* NCColors.swift */,
 				AC1EDCB421814F380089C7AF /* NCNotificationManager.swift */,
-				ACD4FE7E21B0C12700C1F534 /* NCDate.swift */,
 			);
 			path = Utility;
 			sourceTree = "<group>";
@@ -281,6 +280,7 @@
 				AC1EDCCC2182A1220089C7AF /* UIView+Draw.swift */,
 				ACA50A7C2182B8CB00B2040A /* UIButton+Animation.swift */,
 				ACA50A922186AF4100B2040A /* Array+extension.swift */,
+				AC2FC9E621C33AC500052D1F /* NCDate.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -730,10 +730,10 @@
 				AC9F2575219D12BC0090A77E /* NCMenuCell.swift in Sources */,
 				AC1EDCC921829D450089C7AF /* NCViewController.swift in Sources */,
 				AC71845921A6510B0056DF3F /* NCImageSelectionCell.swift in Sources */,
-				ACD4FE7F21B0C12700C1F534 /* NCDate.swift in Sources */,
 				AC71845221A4F41A0056DF3F /* NCCreateArticleController.swift in Sources */,
 				ACB2491E21896956008B510E /* NCDropDownNotification.swift in Sources */,
 				ACA50A8F2186AB0B00B2040A /* NCImageButtonView.swift in Sources */,
+				AC2FC9E721C33AC500052D1F /* NCDate.swift in Sources */,
 				AC1EDCB521814F380089C7AF /* NCNotificationManager.swift in Sources */,
 				AC2FC9DC21C0D28E00052D1F /* NCimageDetailView.swift in Sources */,
 				AC71845521A4F7610056DF3F /* NCCreateArticleView.swift in Sources */,

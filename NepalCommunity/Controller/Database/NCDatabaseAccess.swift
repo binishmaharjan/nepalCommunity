@@ -13,6 +13,8 @@ import CodableFirebase
 
 protocol NCDatabaseAccess{
   func downloadUser(uid: String,completion: (( NCUser?,Error?) -> ())?)
+  func checkedLike(uid:String, articleId: String, completion: (( Bool?,Error?) -> ())?)
+  func checkedDislike(uid:String, articleId:String,completion: ((Bool?,Error?) -> ())?)
 }
 
 extension NCDatabaseAccess{
@@ -36,6 +38,67 @@ extension NCDatabaseAccess{
             DispatchQueue.main.async {completion?(nil,error)}
           }
       }
+    }
+  }
+  
+  func checkedLike(uid:String, articleId: String, completion: (( Bool?,Error?) -> ())?){
+    DispatchQueue.global(qos: .default).async {
+      Firestore.firestore()
+        .collection(DatabaseReference.ARTICLE_REF)
+        .document(articleId)
+        .collection(DatabaseReference.LIKE_ID_REF)
+        .document(uid).getDocument { (snapshot, error) in
+          
+          if let error = error {
+            DispatchQueue.main.async {completion?(nil,error)}
+            return
+          }
+          
+          guard let snapshot = snapshot else {
+            DispatchQueue.main.async {
+              completion?(nil,NSError.init(domain: "No SnapShot", code: -1, userInfo: nil))
+            }
+            return
+          }
+          
+          let data = snapshot.data()
+          
+          if data == nil{
+            DispatchQueue.main.async {completion?(false,nil)}
+          }else{
+            DispatchQueue.main.async {completion?(true,nil)}
+          }
+      }
+    }
+  }
+  
+  func checkedDislike(uid:String, articleId:String,completion: ((Bool?,Error?) -> ())?){
+    DispatchQueue.global(qos: .default).async {
+      Firestore.firestore()
+              .collection(DatabaseReference.ARTICLE_REF)
+              .document(articleId)
+              .collection(DatabaseReference.DISLIKE_ID_REF)
+        .document(uid).getDocument(completion: { (snapshot, error) in
+          if let error = error{
+            DispatchQueue.main.async {completion?(nil,error)}
+            return
+          }
+          
+          guard let snapshot = snapshot else {
+            DispatchQueue.main.async {
+               completion?(nil,NSError.init(domain: "No SnapShot", code: -1, userInfo: nil))
+            }
+            return
+          }
+          
+          let data = snapshot.data()
+          
+          if data == nil{
+            DispatchQueue.main.async { completion?(false, nil)}
+          }else{
+            DispatchQueue.main.async { completion?(true, nil)}
+          }
+        })
     }
   }
 }

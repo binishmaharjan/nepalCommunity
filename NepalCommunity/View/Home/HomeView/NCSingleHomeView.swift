@@ -264,6 +264,13 @@ extension NCSingleHomeView : UITableViewDelegate, UITableViewDataSource{
       loadMoreArticle()
     }
   }
+  
+  func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+    guard let cell = cell as? NCArticleCell else {
+      return
+    }
+    cell.removeObserverLike()
+  }
 }
 
 extension NCSingleHomeView : NCArticleCellToSingleHomeDelegate{

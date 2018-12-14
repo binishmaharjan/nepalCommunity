@@ -37,8 +37,18 @@ class NCArticleCell : UITableViewCell, NCDatabaseAccess{
   private var menuIcon: NCImageButtonView?
   
   
-  private var isLiked : Bool?
+  private var isLiked : Bool = false{
+    didSet{
+      likeIcon?.image = isLiked ? UIImage(named: "icon_like_h") : UIImage(named: "icon_like")
+    }
+  }
+  private var isDisliked : Bool = false{
+    didSet{
+      dislikeIcon?.image = isDisliked ? UIImage(named: "icon_dislike_h") : UIImage(named: "icon_dislike")
+    }
+  }
   private var likeListener : ListenerRegistration?
+  private var disLikeListener : ListenerRegistration?
   
 
   
@@ -57,6 +67,11 @@ class NCArticleCell : UITableViewCell, NCDatabaseAccess{
   
   var article: NCArticle?{
     didSet{
+      guard let article = article else {return}
+      self.checkLiked()
+      self.checkDislike()
+      self.observeLike()
+      self.observeDislike()
       self.relayout()
     }
   }
@@ -294,6 +309,7 @@ class NCArticleCell : UITableViewCell, NCDatabaseAccess{
     
     commentLabel.leftToRight(of: commentIconBG, offset: 12)
     commentLabel.centerY(to: commentIconBG)
+    commentLabel.width(25)
     
     seperatorOne.leftToRight(of: commentLabel, offset: 12)
     seperatorOne.centerY(to: commentIconBG)
@@ -309,10 +325,11 @@ class NCArticleCell : UITableViewCell, NCDatabaseAccess{
     
     likeLabel.leftToRight(of: likeIconBG, offset: 12)
     likeLabel.centerY(to: commentIconBG)
+    likeLabel.width(15)
     
     seperatorTwo.leftToRight(of: likeLabel, offset: 12)
     seperatorTwo.centerY(to: commentIconBG)
-    seperatorTwo.height(15)
+    seperatorTwo.height(25)
     seperatorTwo.width(1)
     
     dislikeIconBG.leftToRight(of: seperatorTwo, offset: 12)
@@ -324,6 +341,7 @@ class NCArticleCell : UITableViewCell, NCDatabaseAccess{
     
     dislikeLabel.leftToRight(of: dislikeIconBG, offset: 12)
     dislikeLabel.centerY(to: commentIconBG)
+    dislikeLabel.width(25)
   }
   
   
@@ -375,59 +393,179 @@ extension NCArticleCell : NCButtonDelegate{
       Dlog("Comment")
     }else if view == self.dislikeIcon{
       Dlog("Dislike")
+      guard let article  = self.article,
+        let user = NCSessionManager.shared.user else {return}
+        let uid = user.uid
+      
+      if !isDisliked{
+        self.isDisliked = true
+        DispatchQueue.global(qos: .default).async {
+          Firestore.firestore()
+            .collection(DatabaseReference.ARTICLE_REF)
+            .document(article.articleId)
+            .collection(DatabaseReference.DISLIKE_ID_REF)
+            .document(uid).setData(["uid" : "\(uid)"], completion: { (error) in
+              if let error = error {
+                DispatchQueue.main.async {Dlog("\(error.localizedDescription)")}
+                return
+              }
+              DispatchQueue.main.async {Dlog("Like OK")}
+            })
+        }
+      }else{
+        self.isDisliked = false
+        DispatchQueue.global(qos: .default).async {
+          Firestore.firestore()
+            .collection(DatabaseReference.ARTICLE_REF)
+            .document(article.articleId)
+            .collection(DatabaseReference.DISLIKE_ID_REF)
+            .document(uid).delete(completion: { (error) in
+              if let error = error {
+                DispatchQueue.main.async {Dlog("\(error.localizedDescription)")}
+                return
+              }
+              DispatchQueue.main.async {Dlog("Dislike removed")}
+            })
+        }
+      }
+      
     }else if view == self.likeIcon{
       Dlog("Like")
       guard let article = self.article,
-            let user = NCSessionManager.shared.user else {return}
-          let uid = user.uid
-      Firestore.firestore()
-        .collection(DatabaseReference.ARTICLE_REF)
-        .document(article.articleId)
-        .collection(DatabaseReference.LIKE_ID_REF)
-        .document(uid).getDocument { (snapshot, error) in
-        
-          if let error = error {
-            Dlog(error.localizedDescription)
-            return
-          }
-          
-          guard let snapshot = snapshot else {
-            Dlog("No SnapShot")
-            return
-          }
-         
-          let data = snapshot.data()
-          
-          if data == nil{
-            Firestore.firestore()
-              .collection(DatabaseReference.ARTICLE_REF)
+        let user = NCSessionManager.shared.user else {return}
+      let uid = user.uid
+      
+      if !isLiked{
+        self.isLiked = true
+        DispatchQueue.global(qos: .default).async {
+          Firestore.firestore()
+            .collection(DatabaseReference.ARTICLE_REF)
             .document(article.articleId)
             .collection(DatabaseReference.LIKE_ID_REF)
-              .document(uid).setData(["uid" : "\(uid)"], completion: { (error) in
-                if let error = error { return }
-                Dlog("Like OK")
-              })
-          }else{
-            Firestore.firestore()
-              .collection(DatabaseReference.ARTICLE_REF)
-              .document(article.articleId)
-              .collection(DatabaseReference.LIKE_ID_REF)
-              .document(uid).delete(completion: { (error) in
-                if let error = error { return }
-                Dlog("Like Removed")
-              })
-          }
+            .document(uid).setData(["uid" : "\(uid)"], completion: { (error) in
+              if let error = error {
+                DispatchQueue.main.async {Dlog("\(error.localizedDescription)")}
+                return
+              }
+              DispatchQueue.main.async {Dlog("Like OK")}
+            })
+        }
+      }else{
+        self.isLiked = false
+        DispatchQueue.global(qos: .default).async {
+          Firestore.firestore()
+            .collection(DatabaseReference.ARTICLE_REF)
+            .document(article.articleId)
+            .collection(DatabaseReference.LIKE_ID_REF)
+            .document(uid).delete(completion: { (error) in
+              if let error = error {
+                DispatchQueue.main.async {Dlog("\(error.localizedDescription)")}
+                return
+              }
+              DispatchQueue.main.async {Dlog("Dislike removed")}
+            })
+        }
       }
+      
     }
   }
 }
 
 //Like Listener
 extension NCArticleCell{
+  
+  private func checkLiked(){
+    guard let article = self.article,
+      let user = NCSessionManager.shared.user else {return}
+    let uid = user.uid
+    self.checkedLike(uid: uid, articleId: article.articleId) { (isLiked, error) in
+      if let error = error{
+        Dlog("\(error.localizedDescription)")
+        return
+      }
+      
+      guard let isLiked = isLiked else { return }
+      self.isLiked = isLiked
+    }
+  }
+  
+  private func checkDislike(){
+    guard let article = self.article,
+      let user = NCSessionManager.shared.user else {return}
+    let uid = user.uid
+    self.checkedDislike(uid: uid, articleId: article.articleId) { (isDisliked, error) in
+      if let error = error{
+        Dlog("\(error.localizedDescription)")
+        return
+      }
+      
+      guard let isDisliked = isDisliked else {return}
+      self.isDisliked = isDisliked
+    }
+  }
+  
   func observeLike(){
+    Dlog("Observing Like")
+    guard let article = self.article else {return}
+    if likeListener != nil {self.removeObserverLike()}
+    DispatchQueue.global(qos: .default).async {
+      self.likeListener = Firestore.firestore()
+        .collection(DatabaseReference.ARTICLE_REF)
+        .document(article.articleId)
+        .collection(DatabaseReference.LIKE_ID_REF)
+        .addSnapshotListener({ (snapshotListerner, error) in
+          if let error = error  {
+            Dlog("\(error.localizedDescription)")
+            return
+          }
+          
+          guard let snapshot = snapshotListerner else{ return }
+          let documents = snapshot.documents
+          let documentCounts = documents.count
+          
+          DispatchQueue.main.async {
+            self.likeLabel?.text = String(documentCounts)
+            Dlog("Like Counts : \(documentCounts)")
+          }
+        })
+    }
   }
   
   func removeObserverLike(){
-    
+    guard  let likeListener = self.likeListener else {return}
+    likeListener.remove()
+  }
+  
+  func observeDislike(){
+    Dlog("Observing Dislike")
+    guard let article = self.article else {return}
+    if disLikeListener != nil{self.removeObserveDisLike()}
+    DispatchQueue.global(qos: .default).async {
+      self.disLikeListener = Firestore.firestore()
+        .collection(DatabaseReference.ARTICLE_REF)
+        .document(article.articleId)
+        .collection(DatabaseReference.DISLIKE_ID_REF)
+        .addSnapshotListener({ (snapshotListerner, error) in
+          if let error = error{
+            Dlog("\(error.localizedDescription)")
+            return
+          }
+          
+          guard let snapshot = snapshotListerner else {return}
+          let documents = snapshot.documents
+          let documentCounts = documents.count
+          
+          DispatchQueue.main.async {
+            self.dislikeLabel?.text = String(documentCounts)
+            Dlog("Dislike Counts : \(documentCounts)")
+          }
+        })
+    }
+   
+  }
+  
+  func removeObserveDisLike(){
+    guard let disLikeListener = self.disLikeListener else {return}
+    disLikeListener.remove()
   }
 }
