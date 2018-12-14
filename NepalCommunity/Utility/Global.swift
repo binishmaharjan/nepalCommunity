@@ -53,6 +53,8 @@ func randomID(length: Int) -> String {
 let appDelegate = UIApplication.shared.delegate as! AppDelegate
 
 let cacheUsers = NSCache<NSString, AnyObject>()
+let cacheLike = NSCache<NSString, AnyObject>()
+let cacheDislike = NSCache<NSString,AnyObject>()
 
 class DatabaseReference{
   //User

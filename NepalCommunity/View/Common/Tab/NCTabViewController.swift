@@ -32,7 +32,6 @@ class NCTabViewController : UITabBarController{
       .withRenderingMode(UIImage.RenderingMode.alwaysOriginal)
     homeView.tabBarItem.selectedImage = UIImage(named:"icon_home_h")?
       .withRenderingMode(UIImage.RenderingMode.alwaysOriginal)
-    appDelegate.homeBarNavigation = homeNav
     
     let categoryView = UIViewController()
     categoryView.view.backgroundColor = .white
