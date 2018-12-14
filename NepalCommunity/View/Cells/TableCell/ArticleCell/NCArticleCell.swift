@@ -427,6 +427,8 @@ extension NCArticleCell : NCButtonDelegate{
     
     if !isLiked{
       self.isLiked = true
+      //Saving the cache and changing the ui
+      cacheLike.setObject(BoolWrapper(self.isLiked), forKey: NSString(string: "\(article.articleId)"))
       DispatchQueue.global(qos: .default).async {
         Firestore.firestore()
           .collection(DatabaseReference.ARTICLE_REF)
@@ -440,6 +442,8 @@ extension NCArticleCell : NCButtonDelegate{
           })
       }
     }else{
+      //Saving the cache and changing the ui
+      cacheLike.setObject(BoolWrapper(self.isLiked), forKey: NSString(string: "\(article.articleId)"))
       self.isLiked = false
       DispatchQueue.global(qos: .default).async {
         Firestore.firestore()
@@ -462,7 +466,9 @@ extension NCArticleCell : NCButtonDelegate{
     let uid = user.uid
     
     if !isDisliked{
+      //Saving the cache and changing the ui
       self.isDisliked = true
+       cacheDislike.setObject(BoolWrapper(self.isDisliked), forKey: NSString(string: "\(article.articleId)"))
       DispatchQueue.global(qos: .default).async {
         Firestore.firestore()
           .collection(DatabaseReference.ARTICLE_REF)
@@ -477,6 +483,7 @@ extension NCArticleCell : NCButtonDelegate{
       }
     }else{
       self.isDisliked = false
+       cacheDislike.setObject(BoolWrapper(self.isDisliked), forKey: NSString(string: "\(article.articleId)"))
       DispatchQueue.global(qos: .default).async {
         Firestore.firestore()
           .collection(DatabaseReference.ARTICLE_REF)
@@ -538,7 +545,6 @@ extension NCArticleCell{
   }
   
   func observeLike(){
-    Dlog("Observing Like")
     guard let article = self.article else {return}
     if likeListener != nil {self.removeObserverLike()}
     DispatchQueue.global(qos: .default).async {
@@ -559,7 +565,6 @@ extension NCArticleCell{
           DispatchQueue.main.async {
             self.likeLabel?.text = String(documentCounts)
             self.setLikeImage()
-            Dlog("Like Counts : \(documentCounts)")
           }
         })
     }
