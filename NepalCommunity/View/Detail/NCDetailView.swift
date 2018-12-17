@@ -8,6 +8,7 @@
 
 import UIKit
 import TinyConstraints
+import FirebaseFirestore
 
 class NCDetailView : NCBaseView{
 
@@ -42,7 +43,6 @@ class NCDetailView : NCBaseView{
   }
   
   var imageDelegate : NCImageDelegate?
-  
   //Article
   var article :NCArticle?{didSet{titleLbl?.text = article?.articleTitle}}
   var user: NCUser?{
@@ -147,7 +147,13 @@ extension NCDetailView : UITableViewDelegate, UITableViewDataSource{
     return UITableViewCell()
   }
   
-  
+  func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+    guard let cell = cell as? Cell1 else {
+      return
+    }
+    cell.removeObserverLike()
+    cell.removeObserveDisLike()
+  }
 }
 
 
