@@ -8,6 +8,7 @@
 
 import UIKit
 import TinyConstraints
+import FirebaseFirestore
 
 class NCDetailView : NCBaseView{
 
@@ -42,7 +43,6 @@ class NCDetailView : NCBaseView{
   }
   
   var imageDelegate : NCImageDelegate?
-  
   //Article
   var article :NCArticle?{didSet{titleLbl?.text = article?.articleTitle}}
   var user: NCUser?{
