@@ -576,7 +576,6 @@ extension NCArticleCell{
   }
   
   func observeDislike(){
-    Dlog("Observing Dislike")
     guard let article = self.article else {return}
     if disLikeListener != nil {self.removeObserveDisLike()}
     DispatchQueue.global(qos: .default).async {
@@ -597,7 +596,6 @@ extension NCArticleCell{
           DispatchQueue.main.async {
             self.dislikeLabel?.text = String(documentCounts)
             self.setDislikeImage()
-            Dlog("Dislike Counts : \(documentCounts)")
           }
         })
     }
