@@ -590,6 +590,7 @@ extension NCArticleTopCell{
   }
   
   func removeObserverLike(){
+    Dlog("Remove Like")
     guard  let likeListener = self.likeListener else {return}
     likeListener.remove()
   }
@@ -622,6 +623,7 @@ extension NCArticleTopCell{
   }
   
   func removeObserveDisLike(){
+     Dlog("remove disLike")
     guard let disLikeListener = self.disLikeListener else {return}
     disLikeListener.remove()
   }

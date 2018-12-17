@@ -147,7 +147,13 @@ extension NCDetailView : UITableViewDelegate, UITableViewDataSource{
     return UITableViewCell()
   }
   
-  
+  func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+    guard let cell = cell as? Cell1 else {
+      return
+    }
+    cell.removeObserverLike()
+    cell.removeObserveDisLike()
+  }
 }
 
 
