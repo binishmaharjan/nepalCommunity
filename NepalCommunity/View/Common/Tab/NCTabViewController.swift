@@ -19,6 +19,7 @@ class NCTabViewController : UITabBarController{
     super.viewDidLoad()
     
     self.setupTabBar()
+    delegate  = self
     
     let homeView = NCHomeController()
     let homeNav = UINavigationController(rootViewController: homeView)
@@ -33,7 +34,8 @@ class NCTabViewController : UITabBarController{
     homeView.tabBarItem.selectedImage = UIImage(named:"icon_home_h")?
       .withRenderingMode(UIImage.RenderingMode.alwaysOriginal)
     
-    let categoryView = UIViewController()
+    let categoryView = NCDummyViewController()
+    categoryView.tabBarItem.image = UIImage(named: "icon_plus")?.withRenderingMode(.alwaysOriginal)
     categoryView.view.backgroundColor = .white
     categoryView.tabBarItem.imageInsets = UIEdgeInsets(top: TabViewConstants.TAB_ITEM_OFF_V,
                                                        left: TabViewConstants.TAB_ITEM_OFF_H,
@@ -108,8 +110,21 @@ class NCTabViewController : UITabBarController{
     shadowLayer.shadowOpacity = TabViewConstants.SHADOW_OPACITY
     
     //Middle Button
-    self.setupMiddleButton()
+//    self.setupMiddleButton()
     
+  }
+  
+  func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
+    
+    if viewController is NCDummyViewController{
+      let createPostVC = NCCreateARrticleController()
+      self.present(createPostVC, animated: true, completion: nil)
+      return false
+    }else{
+      return true
+    }
+    
+    return true
   }
   
   //Setting Up Middle Bar

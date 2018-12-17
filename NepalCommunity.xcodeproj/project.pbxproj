@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		AC00BCDF21C36A4600984F9D /* StructWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC00BCDE21C36A4600984F9D /* StructWrapper.swift */; };
 		AC00BCE121C36A7800984F9D /* BoolWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC00BCE021C36A7800984F9D /* BoolWrapper.swift */; };
+		AC0322D021C74C6000E13780 /* NCDummyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC0322CF21C74C6000E13780 /* NCDummyViewController.swift */; };
 		AC06048B21801D5A006582B9 /* GoogleService-Info-dev.plist in Resources */ = {isa = PBXBuildFile; fileRef = AC06048A21801D5A006582B9 /* GoogleService-Info-dev.plist */; };
 		AC06048E21801F69006582B9 /* Global.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC06048D21801F69006582B9 /* Global.swift */; };
 		AC17189A21BA388D00E3E118 /* NCArticleTopCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC17189921BA388D00E3E118 /* NCArticleTopCell.swift */; };
@@ -76,6 +77,7 @@
 		702D276B339B5FD20876420C /* Pods_NepalCommunity.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_NepalCommunity.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		AC00BCDE21C36A4600984F9D /* StructWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StructWrapper.swift; sourceTree = "<group>"; };
 		AC00BCE021C36A7800984F9D /* BoolWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoolWrapper.swift; sourceTree = "<group>"; };
+		AC0322CF21C74C6000E13780 /* NCDummyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCDummyViewController.swift; sourceTree = "<group>"; };
 		AC06048A21801D5A006582B9 /* GoogleService-Info-dev.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info-dev.plist"; sourceTree = "<group>"; };
 		AC06048D21801F69006582B9 /* Global.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Global.swift; sourceTree = "<group>"; };
 		AC17189921BA388D00E3E118 /* NCArticleTopCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCArticleTopCell.swift; sourceTree = "<group>"; };
@@ -182,6 +184,7 @@
 		AC06048921801A55006582B9 /* Resourses */ = {
 			isa = PBXGroup;
 			children = (
+				ACA50A782182AC2C00B2040A /* Assets.xcassets */,
 				ACCC08B42180140500D6391A /* LaunchScreen.storyboard */,
 			);
 			path = Resourses;
@@ -215,6 +218,7 @@
 			isa = PBXGroup;
 			children = (
 				AC1D2F162195182C0073AC9A /* NCTabViewController.swift */,
+				AC0322CF21C74C6000E13780 /* NCDummyViewController.swift */,
 			);
 			path = Tab;
 			sourceTree = "<group>";
@@ -356,7 +360,6 @@
 		AC71845321A4F41F0056DF3F /* Create Article */ = {
 			isa = PBXGroup;
 			children = (
-				ACA50A782182AC2C00B2040A /* Assets.xcassets */,
 				AC71845121A4F41A0056DF3F /* NCCreateArticleController.swift */,
 				AC71845421A4F7610056DF3F /* NCCreateArticleView.swift */,
 				ACBBBA0F21AB88F50077C6E4 /* NCCategoriesSelectionDelegate.swift */,
@@ -741,6 +744,7 @@
 				AC9F2568219C06530090A77E /* NCHomeController.swift in Sources */,
 				AC2FC9DA21C0D28100052D1F /* NCImageDetailViewController.swift in Sources */,
 				ACA50A812185F88900B2040A /* NCGradientView.swift in Sources */,
+				AC0322D021C74C6000E13780 /* NCDummyViewController.swift in Sources */,
 				AC9F2575219D12BC0090A77E /* NCMenuCell.swift in Sources */,
 				AC1EDCC921829D450089C7AF /* NCViewController.swift in Sources */,
 				AC71845921A6510B0056DF3F /* NCImageSelectionCell.swift in Sources */,
