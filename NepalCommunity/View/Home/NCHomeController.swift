@@ -131,6 +131,7 @@ extension NCHomeController: NCPagerToHomeDelegate{
   func passPagerToHome(article: NCArticle, user: NCUser) {
     let detailVc = NCDetailViewController()
     detailVc.article = article
+    detailVc.hidesBottomBarWhenPushed = true
     detailVc.user = user
     self.navigationController?.pushViewController(detailVc, animated: true)
   }

@@ -34,6 +34,10 @@ class NCDetailView : NCBaseView{
   
   //Pull Down refresh control
   private let refreshControl = UIRefreshControl()
+  private var commentFieldView : UIView?
+  private var commentFieldBG : UIView?
+  private var commentField : UITextView?
+  private var commentBtn : NCImageButtonView?
   
   //Delegate
   var delegate: NCButtonDelegate?{
@@ -98,13 +102,46 @@ class NCDetailView : NCBaseView{
     
     refreshControl.addTarget(self, action: #selector(refreshControlDragged), for: .valueChanged)
     
+    
+    let commentFieldView = UIView()
+    self.commentFieldView = commentFieldView
+    commentFieldView.backgroundColor = NCColors.white
+    self.addSubview(commentFieldView)
+    
+    let shadowLayer: CALayer = commentFieldView.layer
+    shadowLayer.shadowColor = NCColors.black.cgColor
+    shadowLayer.shadowOffset = CGSize(width: 0.0, height: -1.0)
+    shadowLayer.shadowRadius = 1.0
+    shadowLayer.shadowOpacity = 0.1
+    
+    let commentFieldBG = UIView()
+    self.commentFieldBG = commentFieldBG
+    commentFieldBG.backgroundColor = NCColors.gray
+    commentFieldBG.layer.borderColor = NCColors.blue.cgColor
+    commentFieldBG.layer.borderWidth = 1
+    commentFieldBG.layer.cornerRadius = 5
+    commentFieldView.addSubview(commentFieldBG)
+    
+    let commentField = UITextView()
+    self.commentField = commentField
+    commentFieldBG.addSubview(commentField)
+    
+    let commentBtn = NCImageButtonView()
+    self.commentBtn = commentBtn
+    commentBtn.image = UIImage(named: "icon_plus_comment")
+    //commentBtn.buttonMargin = .zero
+    commentFieldView.addSubview(commentBtn)
   }
   
   private func setupConstraints(){
     guard let tableView = self.tableView,
           let header = self.header,
           let backBtn = self.backBtn,
-          let titleLbl = self.titleLbl
+          let titleLbl = self.titleLbl,
+          let commentFieldView = self.commentFieldView,
+          let commentFieldBG = self.commentFieldBG,
+          let commentField = self.commentField,
+          let commentBtn = self.commentBtn
     else { return }
     header.topToSuperview()
     header.leftToSuperview()
@@ -117,12 +154,27 @@ class NCDetailView : NCBaseView{
     titleLbl.centerInSuperview()
     titleLbl.width(200)
     
-    tableView.edgesToSuperview(excluding:.top)
+    tableView.leftToSuperview()
+    tableView.rightToSuperview()
     tableView.topToBottom(of: header)
+    tableView.bottomToTop(of: commentFieldView)
+    
+    commentFieldView.edgesToSuperview(excluding: .top)
+    commentFieldView.height(44)
+    
+    commentFieldBG.edgesToSuperview(excluding: .right, insets: UIEdgeInsets(top: 4, left: 8, bottom: 4, right: 4))
+    commentFieldBG.rightToLeft(of: commentBtn, offset: -4)
+    
+    commentBtn.rightToSuperview(offset : -4)
+    commentBtn.topToSuperview(offset : 4)
+    commentBtn.bottomToSuperview(offset : -4)
+    commentBtn.width(36)
+    
+    commentField.edgesToSuperview()
   }
   
   @objc private func refreshControlDragged(){
-    
+    refreshControl.endRefreshing()
   }
 }
 
