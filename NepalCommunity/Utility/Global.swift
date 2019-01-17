@@ -89,6 +89,11 @@ class DatabaseReference{
   static let COMMENT_REF = "comment"
   static let COMMENT_ID = "comment_id"
   static let COMMENT_STRING = "comment_string"
+  
+  //Report
+  static let REPORT_REF = "reports"
+  static let REPORT_IDS = "report_ids"
+  static let REPORT_TYPE = "report_type"
 }
 
 class StorageReference{

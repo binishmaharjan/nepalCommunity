@@ -83,15 +83,64 @@ extension NCDetailViewController : NCImageDelegate{
 }
 
 //MARK : KEyboard
-extension NCDetailViewController{
+extension NCDetailViewController : NCDatabaseWrite{
   private func setupNotification(){
     self.tearDownNotification()
     NCNotificationManager.receive(keyboardWillHide: self, selector: #selector(keyboardWillHide(_:)))
     NCNotificationManager.receive(keyboardWillShow: self, selector: #selector(keyboardWilShow(_:)))
+    NCNotificationManager.receive(menuButtonPressed: self, selector: #selector(menuButtonPressed(_:)))
   }
   
   private func tearDownNotification(){
     NCNotificationManager.remove(self)
+  }
+  
+  @objc func menuButtonPressed(_ notification : Notification){
+    //Getting the important data form the notification
+    if let userInfo = notification.object as? [AnyHashable : Any]{
+      let id = userInfo["id"] as! String
+      let type = userInfo["type"] as! String
+      let uid = userInfo["uid"] as! String
+      
+      //Displaying the alert
+      let menuAlert = UIAlertController(title: "Menu", message: "Select An Option", preferredStyle: .actionSheet)
+      //Delete Option
+      let deleteMenu = UIAlertAction(title: "Delete", style: .default) { (_) in
+        Dlog("Delete")
+      }
+      
+      //Report Option
+      let reportMenu = UIAlertAction(title: "Report", style: .default) { (_) in
+        
+        let confirmationAlert = UIAlertController(title: "Report", message: "Do you really want to report", preferredStyle: .alert)
+        
+        let yesMenu = UIAlertAction(title: "Report", style: .default) { (_) in
+          self.report(id: id, type: type, uid: uid, completion: { (error) in
+            if let error = error {
+              NCDropDownNotification.shared.showError(message: "Error : \(error.localizedDescription)")
+              return
+            }
+            NCDropDownNotification.shared.showSuccess(message: "Reported Successfully")
+          })
+        }
+        
+        //Cancel Option
+        let cancelMenu = UIAlertAction(title: "Cancel", style: .cancel) { (_) in
+        }
+        
+        confirmationAlert.addAction(yesMenu)
+        confirmationAlert.addAction(cancelMenu)
+        self.present(confirmationAlert, animated: true, completion: nil)
+        
+      }
+      let cancelMenu = UIAlertAction(title: "Cancel", style: .cancel) { (_) in
+        Dlog("Cancel")
+      }
+      menuAlert.addAction(deleteMenu)
+      menuAlert.addAction(reportMenu)
+      menuAlert.addAction(cancelMenu)
+      self.present(menuAlert, animated: true, completion: nil)
+    }
   }
   
   @objc func keyboardWilShow(_ notification : Notification){

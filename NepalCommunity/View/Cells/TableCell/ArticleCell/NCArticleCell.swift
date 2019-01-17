@@ -159,6 +159,7 @@ class NCArticleCell : UITableViewCell, NCDatabaseAccess{
     let menuIcon = NCImageButtonView()
     self.menuIcon = menuIcon
     menuIconBG.addSubview(menuIcon)
+    menuIcon.delegate = self
     menuIcon.image = UIImage(named: "icon_menu")
     
     //Title Label
@@ -502,13 +503,18 @@ extension NCArticleCell : NCButtonDelegate{
   }
   
   func buttonViewTapped(view: NCButtonView) {
-    if view == self.commentIcon{
-      Dlog("Comment")
+    if view == self.menuIcon{
+      self.menuButtonPressed()
     }else if view == self.dislikeIcon{
       self.dislikeFunction()
     }else if view == self.likeIcon{
       self.likeFunction()
     }
+  }
+  
+  //MARK : Menu Button Pressed
+  private func menuButtonPressed(){
+    articleCellSingleHomeDelegate?.menuButtonWasPressed(articleId: (article?.articleId)!)
   }
   
 }

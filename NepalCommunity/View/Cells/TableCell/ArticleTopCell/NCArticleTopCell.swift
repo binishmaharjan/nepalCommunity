@@ -158,6 +158,7 @@ class NCArticleTopCell: UITableViewCell, NCDatabaseAccess {
     let menuIcon = NCImageButtonView()
     self.menuIcon = menuIcon
     menuIconBG.addSubview(menuIcon)
+    menuIcon.delegate = self
     menuIcon.image = UIImage(named: "icon_menu")
     
     //Title Label
@@ -435,6 +436,11 @@ extension NCArticleTopCell : NCButtonDelegate{
       self.dislikeFunction()
     }else if view == likeIcon{
       self.likeFunction()
+    }else if view == menuIcon{
+      guard let article = self.article,
+            let user  = self.user
+        else {return}
+      NCNotificationManager.post(menuButtonPressed: article.articleId, type: DatabaseReference.ARTICLE_REF, uid: user.uid)
     }
   }
 }

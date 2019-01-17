@@ -127,7 +127,48 @@ class NCHomeController: NCViewController {
 }
 
 
-extension NCHomeController: NCPagerToHomeDelegate{
+extension NCHomeController: NCPagerToHomeDelegate, NCDatabaseWrite{
+  func menuButtonWasPressed(articleId: String) {
+    let menuAlert = UIAlertController(title: "Menu", message: "Select An Option", preferredStyle: .actionSheet)
+    //Delete Option
+    let deleteMenu = UIAlertAction(title: "Delete", style: .default) { (_) in
+      Dlog("Delete")
+    }
+    
+    //Report Option
+    let reportMenu = UIAlertAction(title: "Report", style: .default) { (_) in
+      
+      let confirmationAlert = UIAlertController(title: "Report", message: "Do you really want to report", preferredStyle: .alert)
+      
+      let yesMenu = UIAlertAction(title: "Report", style: .default) { (_) in
+        guard let user = NCSessionManager.shared.user else { return }
+        self.report(id: articleId, type: DatabaseReference.ARTICLE_REF, uid: user.uid, completion: { (error) in
+          if let error = error {
+            NCDropDownNotification.shared.showError(message: "Error : \(error.localizedDescription)")
+            return
+          }
+          NCDropDownNotification.shared.showSuccess(message: "Reported Successfully")
+        })
+      }
+      
+      //Cancel Option
+      let cancelMenu = UIAlertAction(title: "Cancel", style: .cancel) { (_) in
+      }
+      
+      confirmationAlert.addAction(yesMenu)
+      confirmationAlert.addAction(cancelMenu)
+      self.present(confirmationAlert, animated: true, completion: nil)
+      
+    }
+    let cancelMenu = UIAlertAction(title: "Cancel", style: .cancel) { (_) in
+      Dlog("Cancel")
+    }
+    menuAlert.addAction(deleteMenu)
+    menuAlert.addAction(reportMenu)
+    menuAlert.addAction(cancelMenu)
+    self.present(menuAlert, animated: true, completion: nil)
+  }
+  
   func passPagerToHome(article: NCArticle, user: NCUser) {
     let detailVc = NCDetailViewController()
     detailVc.article = article

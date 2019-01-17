@@ -266,6 +266,7 @@ class NCCreateArticleView : NCBaseView{
     collectionView.register(CELL_CLASS, forCellWithReuseIdentifier: CELL_ID)
     collectionView.delegate = self
     collectionView.dataSource = self
+    collectionView.contentInsetAdjustmentBehavior = .never
     collectionView.showsHorizontalScrollIndicator = false
     self.addSubview(collectionView)
     
