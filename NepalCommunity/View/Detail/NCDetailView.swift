@@ -9,6 +9,7 @@
 import UIKit
 import TinyConstraints
 import FirebaseFirestore
+import CodableFirebase
 
 class NCDetailView : NCBaseView{
 
@@ -32,12 +33,17 @@ class NCDetailView : NCBaseView{
   let CELL2_CLASS = Cell2.self
   let CELL2_ID = NSStringFromClass(Cell2.self)
   
+  typealias  Cell3 = NCTitleCell
+  let CELL3_CLASS = Cell3.self
+  let CELL3_ID = NSStringFromClass(Cell3.self)
+  
   //Pull Down refresh control
   private let refreshControl = UIRefreshControl()
   private var commentFieldView : UIView?
   private var commentFieldBG : UIView?
-  private var commentField : UITextView?
+  private var commentField : GrowingTextView?
   private var commentBtn : NCImageButtonView?
+  private var commentFieldHeight: Constraint?
   
   //Delegate
   var delegate: NCButtonDelegate?{
@@ -48,18 +54,23 @@ class NCDetailView : NCBaseView{
   
   var imageDelegate : NCImageDelegate?
   //Article
-  var article :NCArticle?{didSet{titleLbl?.text = article?.articleTitle}}
-  var user: NCUser?{
+  var article :NCArticle?{
     didSet{
-      
+      titleLbl?.text = article?.articleTitle
+      self.loadComments()
     }
   }
+  var user: NCUser?
+  
+  //Comment
+  var comments : [NCComment] = [NCComment]()
   
   override func didInit() {
     super.didInit()
     self.backgroundColor = NCColors.white
     self.setup()
     self.setupConstraints()
+    self.loadComments()
   }
   
   private func setup(){
@@ -87,12 +98,13 @@ class NCDetailView : NCBaseView{
     
     let tableView = UITableView()
     self.tableView = tableView
-    tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: -50, right: 0)
+    tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 5, right: 0)
     tableView.refreshControl = refreshControl
     tableView.delegate = self
     tableView.dataSource = self
     tableView.register(CELL1_CLASS, forCellReuseIdentifier: CELL1_ID)
     tableView.register(CELL2_CLASS, forCellReuseIdentifier: CELL2_ID)
+    tableView.register(CELL3_CLASS, forCellReuseIdentifier: CELL3_ID)
     tableView.separatorStyle = .none
     self.addSubview(tableView)
     refreshControl.backgroundColor = NCColors.clear
@@ -103,6 +115,14 @@ class NCDetailView : NCBaseView{
     refreshControl.addTarget(self, action: #selector(refreshControlDragged), for: .valueChanged)
     
     
+    /*
+     When creating the constraints for the growing view like this one
+     size increases when the number of line is entered
+     dont fix all four constraints or give the view height
+     let the child constraints decide the height of the view
+     if you fix the constraints then that would br priotized and the height wont
+     increase in the desired way.x
+     */
     let commentFieldView = UIView()
     self.commentFieldView = commentFieldView
     commentFieldView.backgroundColor = NCColors.white
@@ -122,14 +142,19 @@ class NCDetailView : NCBaseView{
     commentFieldBG.layer.cornerRadius = 5
     commentFieldView.addSubview(commentFieldBG)
     
-    let commentField = UITextView()
+    let commentField = GrowingTextView()
     self.commentField = commentField
     commentFieldBG.addSubview(commentField)
+    commentField.minHeight = 25.0
+    commentField.maxHeight = 70.0
+    commentField.textContainerInset = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
+    commentField.font = NCFont.normal(size: 14)
+    
     
     let commentBtn = NCImageButtonView()
     self.commentBtn = commentBtn
     commentBtn.image = UIImage(named: "icon_plus_comment")
-    //commentBtn.buttonMargin = .zero
+    commentBtn.delegate = self
     commentFieldView.addSubview(commentBtn)
   }
   
@@ -159,16 +184,21 @@ class NCDetailView : NCBaseView{
     tableView.topToBottom(of: header)
     tableView.bottomToTop(of: commentFieldView)
     
-    commentFieldView.edgesToSuperview(excluding: .top)
-    commentFieldView.height(44)
-    
-    commentFieldBG.edgesToSuperview(excluding: .right, insets: UIEdgeInsets(top: 4, left: 8, bottom: 4, right: 4))
+    commentFieldView.leftToSuperview()
+    commentFieldView.rightToSuperview()
+    commentFieldView.bottomToSuperview()
+//    commentFieldHeight = commentFieldView.height(44)
+
     commentFieldBG.rightToLeft(of: commentBtn, offset: -4)
+    commentFieldBG.topToSuperview(offset : 4)
+    commentFieldBG.bottomToSuperview(offset : -4)
+    commentFieldBG.leftToSuperview(offset : 8)
     
     commentBtn.rightToSuperview(offset : -4)
-    commentBtn.topToSuperview(offset : 4)
+//    commentBtn.topToSuperview(offset : 4)
     commentBtn.bottomToSuperview(offset : -4)
     commentBtn.width(36)
+    commentBtn.height(to: commentBtn,commentBtn.widthAnchor)
     
     commentField.edgesToSuperview()
   }
@@ -180,7 +210,7 @@ class NCDetailView : NCBaseView{
 
 extension NCDetailView : UITableViewDelegate, UITableViewDataSource{
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return 10
+    return 2 + comments.count
   }
   
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -192,19 +222,37 @@ extension NCDetailView : UITableViewDelegate, UITableViewDataSource{
       return cell
     }
     
-    if indexPath.row > 0, let cell = tableView.dequeueReusableCell(withIdentifier: CELL2_ID, for: indexPath) as? Cell2{
+    if indexPath.row == 1, let cell = tableView.dequeueReusableCell(withIdentifier: CELL3_ID, for: indexPath) as? Cell3{
+      cell.title = "Comments"
+    return cell
+    }
+    
+    if indexPath.row > 1, let cell = tableView.dequeueReusableCell(withIdentifier: CELL2_ID, for: indexPath) as? Cell2{
+      cell.selectionStyle = .none
+      cell.comment =  comments[indexPath.row - 2]
       return cell
     }
     
     return UITableViewCell()
   }
+
   
   func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-    guard let cell = cell as? Cell1 else {
-      return
+    if let cell = cell as? Cell1{
+      cell.removeObserverLike()
+      cell.removeObserveDisLike()
+      cell.removeObserveComment()
     }
-    cell.removeObserverLike()
-    cell.removeObserveDisLike()
+    
+    if let cell = cell as? Cell2{
+      cell.removeObserverLike()
+      cell.removeObserveDisLike()
+    }
+   
+  }
+  
+  func scrollViewDidScroll(_ scrollView: UIScrollView) {
+    commentField?.resignFirstResponder()
   }
 }
 
@@ -215,3 +263,94 @@ extension NCDetailView : NCCellToTableViewDelegate{
     imageDelegate?.imagePressed(image: image)
   }
 }
+
+
+//MARK: Comment Button
+extension NCDetailView: NCButtonDelegate{
+  func buttonViewTapped(view: NCButtonView) {
+    guard let commentTextField = self.commentField,
+      let comment = commentTextField.text else {return}
+    if comment.isEmpty{
+     NCDropDownNotification.shared.showError(message: "Error")
+    }else{
+      self.uploadComment(comment: comment)
+      commentTextField.resignFirstResponder()
+      commentTextField.text = ""
+    }
+  }
+}
+
+
+//MARK: Text Field Delegate
+extension NCDetailView: UITextViewDelegate{
+}
+
+//MARK: Upload comment to the server
+extension NCDetailView : NCDatabaseWrite{
+  
+  private func uploadComment(comment : String){
+    
+    guard let article = self.article,
+      let user = NCSessionManager.shared.user else {
+        return
+    }
+    
+    let commentId = randomID(length: 25)
+    let articleId = article.articleId
+    let userId = user.uid
+    
+    self.postComment(commentId: commentId, uid: userId, articleId: articleId, commentString: comment) { (error) in
+      if let error = error{
+        NCDropDownNotification.shared.showError(message: "Error")
+        Dlog(error.localizedDescription)
+        return
+      }
+      NCDropDownNotification.shared.showSuccess(message: "Comment Done")
+      Dlog("Comment Posted")
+    }
+  }
+  
+  private func loadComments(){
+    
+    guard let article = self.article else {
+      return
+    }
+    
+    DispatchQueue.global(qos: .default).async {
+      let commentRef = Firestore.firestore().collection(DatabaseReference.ARTICLE_REF)
+        .document(article.articleId)
+        .collection(DatabaseReference.COMMENT_REF)
+        .order(by: DatabaseReference.DATE_CREATED, descending: true)
+      
+      commentRef.getDocuments { (snapshot, error) in
+        if let error = error {
+          Dlog(error.localizedDescription)
+          return
+        }
+        
+        guard let snapshot = snapshot else {
+          Dlog("No Data")
+          return
+        }
+        
+        self.comments.removeAll()
+        
+        for document in snapshot.documents{
+          let data = document.data()
+          do{
+            let article =  try FirebaseDecoder().decode(NCComment.self, from: data)
+            self.comments.append(article)
+          }catch{
+            Dlog("\(error.localizedDescription)")
+          }
+        }
+        
+        DispatchQueue.main.async {
+          self.tableView?.reloadData()
+        }
+        
+      }
+    }
+  }
+}
+

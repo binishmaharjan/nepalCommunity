@@ -96,4 +96,35 @@ extension NCDatabaseWrite{
       completion?(error)
     }
   }
+  
+  
+  func postComment(commentId : String, uid:String, articleId: String, commentString: String,completion : ((Error?) -> ())?){
+    
+    let comment = NCComment.init(commentId: commentId,
+                                 comment: commentString,
+                                 dateCreated: NCDate.dateToString(),
+                                 likeCount: 0,
+                                 dislikeCount: 0,
+                                 uid: uid,
+                                 articleId: articleId)
+    
+    do{
+      let data = try FirestoreEncoder().encode(comment) as [String : AnyObject]
+      DispatchQueue.global(qos: .default).async {
+        Firestore.firestore().collection(DatabaseReference.ARTICLE_REF).document(articleId).collection(DatabaseReference.COMMENT_REF).document(commentId).setData(data, completion: { (error) in
+          if let error = error{
+            DispatchQueue.main.async {
+              completion?(error)
+            }
+          }else{
+            DispatchQueue.main.async {
+              completion?(nil)
+            }
+          }
+        })
+      }
+    }catch{
+      completion?(error)
+    }
+  }
 }

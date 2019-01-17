@@ -117,4 +117,86 @@ extension NCDatabaseAccess{
       }
     }
   }
+  
+  func checkedCommentLike(uid:String, articleId: String,commentId : String, completion: (( Bool?,Error?) -> ())?){
+    
+    if let savedLike = cacheCommentLike.object(forKey: NSString(string: "\(commentId)")) as? BoolWrapper{
+      let b = savedLike.value
+      completion?(b,nil)
+    }else{
+      DispatchQueue.global(qos: .default).async {
+        Firestore.firestore()
+          .collection(DatabaseReference.ARTICLE_REF)
+          .document(articleId)
+          .collection(DatabaseReference.COMMENT_REF)
+          .document(commentId)
+          .collection(DatabaseReference.LIKE_ID_REF)
+          .document(uid).getDocument { (snapshot, error) in
+            
+            if let error = error {
+              DispatchQueue.main.async {completion?(nil,error)}
+              return
+            }
+            
+            guard let snapshot = snapshot else {
+              DispatchQueue.main.async {
+                completion?(nil,NSError.init(domain: "No SnapShot", code: -1, userInfo: nil))
+              }
+              return
+            }
+            
+            let data = snapshot.data()
+            
+            if data == nil{
+              cacheCommentLike.setObject(BoolWrapper(false), forKey: NSString(string: "\(commentId)"))
+              DispatchQueue.main.async {completion?(false,nil)}
+            }else{
+              cacheCommentLike.setObject(BoolWrapper(true), forKey: NSString(string: "\(commentId)"))
+              DispatchQueue.main.async {completion?(true,nil)}
+            }
+        }
+      }
+    }
+  }
+  
+  func checkedCommentDislike(uid:String, articleId: String,commentId : String, completion: (( Bool?,Error?) -> ())?){
+    
+    if let savedLike = cacheCommentDislike.object(forKey: NSString(string: "\(commentId)")) as? BoolWrapper{
+      let b = savedLike.value
+      completion?(b,nil)
+    }else{
+      DispatchQueue.global(qos: .default).async {
+        Firestore.firestore()
+          .collection(DatabaseReference.ARTICLE_REF)
+          .document(articleId)
+          .collection(DatabaseReference.COMMENT_REF)
+          .document(commentId)
+          .collection(DatabaseReference.DISLIKE_ID_REF)
+          .document(uid).getDocument { (snapshot, error) in
+            
+            if let error = error {
+              DispatchQueue.main.async {completion?(nil,error)}
+              return
+            }
+            
+            guard let snapshot = snapshot else {
+              DispatchQueue.main.async {
+                completion?(nil,NSError.init(domain: "No SnapShot", code: -1, userInfo: nil))
+              }
+              return
+            }
+            
+            let data = snapshot.data()
+            
+            if data == nil{
+              cacheCommentDislike.setObject(BoolWrapper(false), forKey: NSString(string: "\(commentId)"))
+              DispatchQueue.main.async {completion?(false,nil)}
+            }else{
+              cacheCommentDislike.setObject(BoolWrapper(true), forKey: NSString(string: "\(commentId)"))
+              DispatchQueue.main.async {completion?(true,nil)}
+            }
+        }
+      }
+    }
+  }
 }
