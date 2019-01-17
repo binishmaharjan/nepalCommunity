@@ -231,6 +231,10 @@ extension NCPageViewController: UIScrollViewDelegate{
 
 //MARK
 extension NCPageViewController: NCSingleToPagerDelegate{
+  func menuButtonWasPressed(articleId: String) {
+    pagerToHomeDelegate?.menuButtonWasPressed(articleId: articleId)
+  }
+  
   func passSingleToDelegate(article: NCArticle, user: NCUser) {
     pagerToHomeDelegate?.passPagerToHome(article: article, user: user)
   }

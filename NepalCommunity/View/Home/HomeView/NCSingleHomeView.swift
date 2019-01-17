@@ -276,6 +276,10 @@ extension NCSingleHomeView : UITableViewDelegate, UITableViewDataSource{
 }
 
 extension NCSingleHomeView : NCArticleCellToSingleHomeDelegate{
+  func menuButtonWasPressed(articleId: String) {
+    homeViewDelegate?.menuButtonWasPressed(articleId: articleId)
+  }
+  
   func passArticleAndUser(article: NCArticle, user: NCUser) {
     homeViewDelegate?.cellWasTapped(article: article, user: user)
   }

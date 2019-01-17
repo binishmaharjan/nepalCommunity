@@ -13,18 +13,22 @@ import UIKit
 //Single Home View
 protocol NCSingleHomeViewDelegate{
   func cellWasTapped(article : NCArticle, user: NCUser)
+  func menuButtonWasPressed(articleId : String)
 }
 
 protocol NCSingleToPagerDelegate{
   func passSingleToDelegate(article:NCArticle, user : NCUser)
+  func menuButtonWasPressed(articleId : String)
 }
 
 protocol NCPagerToHomeDelegate{
   func passPagerToHome(article:NCArticle, user :NCUser)
+  func menuButtonWasPressed(articleId : String)
 }
 
 protocol NCArticleCellToSingleHomeDelegate{
   func passArticleAndUser(article: NCArticle, user: NCUser)
+  func menuButtonWasPressed(articleId : String)
 }
 
 

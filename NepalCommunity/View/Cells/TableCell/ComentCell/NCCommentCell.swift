@@ -127,6 +127,7 @@ class NCCommentCell : UITableViewCell, NCDatabaseAccess{
     let menuIcon = NCImageButtonView()
     self.menuIcon = menuIcon
     menuIconBG.addSubview(menuIcon)
+    menuIcon.delegate = self
     menuIcon.image = UIImage(named: "icon_menu")
     
     //Title Label
@@ -315,6 +316,11 @@ extension NCCommentCell: NCButtonDelegate{
       self.likeFunction()
     }else if view == self.dislikeIcon{
       self.dislikeFunction()
+    }else if view == self.menuIcon{
+      guard let comment = self.comment,
+        let user  = self.user
+        else {return}
+      NCNotificationManager.post(menuButtonPressed: comment.commentId, type: DatabaseReference.COMMENT_REF, uid: user.uid)
     }
   }
   

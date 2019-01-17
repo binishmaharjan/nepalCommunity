@@ -57,4 +57,19 @@ extension NCNotificationManager{
     let name = UIResponder.keyboardWillShowNotification
     self.receive(notificationName: name, observer: observer, selector: selector)
   }
+  
+  //MARK:- Menu Button Pressed
+  
+  
+  private static let N_MENU_BUTTON_PRESSED = "N_MENU_BUTTON_PRESSED"
+  static func post(menuButtonPressed id: String, type :String, uid : String){
+    var userInfo : [AnyHashable : Any] = [AnyHashable : Any]()
+    userInfo["id"] = id
+    userInfo["type"] = type
+    userInfo["uid"] = uid
+    self.post(name: N_MENU_BUTTON_PRESSED, object: userInfo)
+  }
+  static func receive(menuButtonPressed observer :Any, selector :Selector){
+    receive(name: N_MENU_BUTTON_PRESSED, observer: observer, selector: selector)
+  }
 }

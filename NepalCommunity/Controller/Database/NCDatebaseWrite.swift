@@ -127,4 +127,29 @@ extension NCDatabaseWrite{
       completion?(error)
     }
   }
+  
+  func report(id: String, type : String,uid:String, completion : ((Error?) -> ())?){
+    DispatchQueue.global(qos: .default).async {
+    Firestore.firestore()
+      .collection(DatabaseReference.REPORT_REF)
+      .document(id)
+      .collection(DatabaseReference.REPORT_IDS)
+      .document(uid)
+      .setData([
+        DatabaseReference.DATE_CREATED : NCDate.dateToString(),
+        DatabaseReference.REPORT_TYPE : type
+      ]) { (error) in
+        if let error = error{
+          DispatchQueue.main.async {
+            completion?(error)
+          }
+        }else{
+          DispatchQueue.main.async {
+            completion?(nil)
+          }
+        }
+      }
+    }
+    
+  }
 }
