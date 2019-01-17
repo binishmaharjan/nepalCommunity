@@ -60,6 +60,7 @@ class NCArticleTopCell: UITableViewCell, NCDatabaseAccess {
       self.checkDislike()
       self.observeLike()
       self.observeDislike()
+      self.observeComment()
       self.relayout()
     }
   }
@@ -91,6 +92,7 @@ class NCArticleTopCell: UITableViewCell, NCDatabaseAccess {
   }
   private var likeListener : ListenerRegistration?
   private var disLikeListener : ListenerRegistration?
+  private var commentListener : ListenerRegistration?
   
   private func setup(){
     self.backgroundColor = NCColors.white
@@ -99,7 +101,7 @@ class NCArticleTopCell: UITableViewCell, NCDatabaseAccess {
     let container = UIView()
     self.container = container
     container.backgroundColor = NCColors.white
-    container.dropShadow(opacity: 0.1,radius: 2.0)
+    container.dropShadow(opacity: 0.3,offset: CGSize(width: 1, height: 1), radius: 2.0)
     self.addSubview(container)
     
     //User Image
@@ -336,7 +338,7 @@ class NCArticleTopCell: UITableViewCell, NCDatabaseAccess {
     
     commentLabel.leftToRight(of: commentIcon, offset: 12)
     commentLabel.centerY(to: commentIconBG)
-    commentLabel.width(25)
+    commentLabel.width(30)
     commentLabel.height(to: commentIconBG)
     commentIconBG.right(to: commentLabel)
     
@@ -356,7 +358,7 @@ class NCArticleTopCell: UITableViewCell, NCDatabaseAccess {
     
     likeLabel.leftToRight(of: likeIcon, offset: 12)
     likeLabel.centerY(to: likeIconBG)
-    likeLabel.width(25)
+    likeLabel.width(30)
     likeLabel.height(to: likeIconBG)
     likeIconBG.right(to: likeLabel)
     
@@ -377,7 +379,7 @@ class NCArticleTopCell: UITableViewCell, NCDatabaseAccess {
     
     dislikeLabel.leftToRight(of: dislikeIcon, offset: 12)
     dislikeLabel.centerY(to: dislikeIconBG)
-    dislikeLabel.width(25)
+    dislikeLabel.width(30)
     dislikeLabel.height(to: dislikeIconBG)
     dislikeIconBG.right(to: dislikeLabel)
     
@@ -391,6 +393,7 @@ class NCArticleTopCell: UITableViewCell, NCDatabaseAccess {
       Dlog("NO ARTICLE")
       return}
     self.titleLabel?.text = article.articleTitle
+    self.categoryLabel?.text = article.articleCategory
     self.descriptionLabel?.text = article.articleDescription
     self.commentLabel?.text = String(article.commentCount)
     self.likeLabel?.text = String(article.likeCount)
@@ -468,9 +471,9 @@ extension NCArticleTopCell{
           })
       }
     }else{
+      self.isLiked = false
       //Saving the cache and changing the ui
       cacheLike.setObject(BoolWrapper(self.isLiked), forKey: NSString(string: "\(article.articleId)"))
-      self.isLiked = false
       DispatchQueue.global(qos: .default).async {
         Firestore.firestore()
           .collection(DatabaseReference.ARTICLE_REF)
@@ -590,7 +593,6 @@ extension NCArticleTopCell{
   }
   
   func removeObserverLike(){
-    Dlog("Remove Like")
     guard  let likeListener = self.likeListener else {return}
     likeListener.remove()
   }
@@ -623,8 +625,33 @@ extension NCArticleTopCell{
   }
   
   func removeObserveDisLike(){
-     Dlog("remove disLike")
     guard let disLikeListener = self.disLikeListener else {return}
     disLikeListener.remove()
+  }
+  
+  func observeComment(){
+    guard let article = self.article else {return}
+    if commentListener != nil{self.removeObserveComment()}
+    DispatchQueue.global(qos: .default).async {
+      self.commentListener = Firestore.firestore().collection(DatabaseReference.ARTICLE_REF).document(article.articleId).collection(DatabaseReference.COMMENT_REF).addSnapshotListener({ (snapshotListener, error) in
+        if let error = error{
+          Dlog("\(error.localizedDescription)")
+          return
+        }
+        
+        guard let snapshot = snapshotListener else {return}
+        let documents = snapshot.documents
+        let documentsCount = documents.count
+        
+        DispatchQueue.main.async {
+          self.commentLabel?.text = String(documentsCount)
+        }
+      })
+    }
+  }
+  
+  func removeObserveComment(){
+    guard let commentListener = self.commentListener else {return}
+    commentListener.remove()
   }
 }

@@ -10,6 +10,7 @@
 		AC00BCDF21C36A4600984F9D /* StructWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC00BCDE21C36A4600984F9D /* StructWrapper.swift */; };
 		AC00BCE121C36A7800984F9D /* BoolWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC00BCE021C36A7800984F9D /* BoolWrapper.swift */; };
 		AC0322D021C74C6000E13780 /* NCDummyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC0322CF21C74C6000E13780 /* NCDummyViewController.swift */; };
+		AC0322D221C88E9300E13780 /* NCTitleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC0322D121C88E9300E13780 /* NCTitleCell.swift */; };
 		AC06048B21801D5A006582B9 /* GoogleService-Info-dev.plist in Resources */ = {isa = PBXBuildFile; fileRef = AC06048A21801D5A006582B9 /* GoogleService-Info-dev.plist */; };
 		AC06048E21801F69006582B9 /* Global.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC06048D21801F69006582B9 /* Global.swift */; };
 		AC17189A21BA388D00E3E118 /* NCArticleTopCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC17189921BA388D00E3E118 /* NCArticleTopCell.swift */; };
@@ -27,6 +28,8 @@
 		AC2FC9DC21C0D28E00052D1F /* NCimageDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC2FC9DB21C0D28E00052D1F /* NCimageDetailView.swift */; };
 		AC2FC9DE21C0D29F00052D1F /* NCDraggableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC2FC9DD21C0D29F00052D1F /* NCDraggableView.swift */; };
 		AC2FC9E721C33AC500052D1F /* NCDate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC2FC9E621C33AC500052D1F /* NCDate.swift */; };
+		AC423AB921ED8A12008B81AA /* NCComment.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC423AB821ED8A12008B81AA /* NCComment.swift */; };
+		AC594E4621ED6E3400C584C5 /* GrowingTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC594E4521ED6E3300C584C5 /* GrowingTextView.swift */; };
 		AC69B33C21AB96D8008BE631 /* NCUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC69B33B21AB96D8008BE631 /* NCUser.swift */; };
 		AC69B33F21ABB259008BE631 /* NCSessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC69B33E21ABB259008BE631 /* NCSessionManager.swift */; };
 		AC69B34221ABBD00008BE631 /* NCImageDownloader.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC69B34121ABBD00008BE631 /* NCImageDownloader.swift */; };
@@ -78,6 +81,7 @@
 		AC00BCDE21C36A4600984F9D /* StructWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StructWrapper.swift; sourceTree = "<group>"; };
 		AC00BCE021C36A7800984F9D /* BoolWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoolWrapper.swift; sourceTree = "<group>"; };
 		AC0322CF21C74C6000E13780 /* NCDummyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCDummyViewController.swift; sourceTree = "<group>"; };
+		AC0322D121C88E9300E13780 /* NCTitleCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCTitleCell.swift; sourceTree = "<group>"; };
 		AC06048A21801D5A006582B9 /* GoogleService-Info-dev.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info-dev.plist"; sourceTree = "<group>"; };
 		AC06048D21801F69006582B9 /* Global.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Global.swift; sourceTree = "<group>"; };
 		AC17189921BA388D00E3E118 /* NCArticleTopCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCArticleTopCell.swift; sourceTree = "<group>"; };
@@ -95,7 +99,9 @@
 		AC2FC9DB21C0D28E00052D1F /* NCimageDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCimageDetailView.swift; sourceTree = "<group>"; };
 		AC2FC9DD21C0D29F00052D1F /* NCDraggableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCDraggableView.swift; sourceTree = "<group>"; };
 		AC2FC9E621C33AC500052D1F /* NCDate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCDate.swift; sourceTree = "<group>"; };
+		AC423AB821ED8A12008B81AA /* NCComment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCComment.swift; sourceTree = "<group>"; };
 		AC58C75B21BA1BD500B3D010 /* d_NepalCommunity.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = d_NepalCommunity.entitlements; sourceTree = "<group>"; };
+		AC594E4521ED6E3300C584C5 /* GrowingTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GrowingTextView.swift; sourceTree = "<group>"; };
 		AC69B33B21AB96D8008BE631 /* NCUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCUser.swift; sourceTree = "<group>"; };
 		AC69B33E21ABB259008BE631 /* NCSessionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCSessionManager.swift; sourceTree = "<group>"; };
 		AC69B34121ABBD00008BE631 /* NCImageDownloader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCImageDownloader.swift; sourceTree = "<group>"; };
@@ -181,6 +187,14 @@
 			path = WrapperClass;
 			sourceTree = "<group>";
 		};
+		AC0322D321C88E9800E13780 /* TitleCell */ = {
+			isa = PBXGroup;
+			children = (
+				AC0322D121C88E9300E13780 /* NCTitleCell.swift */,
+			);
+			path = TitleCell;
+			sourceTree = "<group>";
+		};
 		AC06048921801A55006582B9 /* Resourses */ = {
 			isa = PBXGroup;
 			children = (
@@ -231,6 +245,7 @@
 				AC1EDCCA2182A0F40089C7AF /* AccountType */,
 				AC69B33B21AB96D8008BE631 /* NCUser.swift */,
 				ACD4FE7C21AE5DC000C1F534 /* NCArticle.swift */,
+				AC423AB821ED8A12008B81AA /* NCComment.swift */,
 			);
 			path = Modal;
 			sourceTree = "<group>";
@@ -345,6 +360,7 @@
 				AC17189821BA387000E3E118 /* ComentCell */,
 				AC71844E21A252470056DF3F /* ArticleCell */,
 				AC17189B21BA389300E3E118 /* ArticleTopCell */,
+				AC0322D321C88E9800E13780 /* TitleCell */,
 			);
 			path = TableCell;
 			sourceTree = "<group>";
@@ -474,6 +490,7 @@
 				AC9F2572219D07A10090A77E /* ActivityIndicator */,
 				ACA50A8B2186AA8800B2040A /* Button */,
 				AC9F2573219D07B40090A77E /* DropDownNotification */,
+				AC594E4521ED6E3300C584C5 /* GrowingTextView.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -753,11 +770,13 @@
 				ACA50A8F2186AB0B00B2040A /* NCImageButtonView.swift in Sources */,
 				AC2FC9E721C33AC500052D1F /* NCDate.swift in Sources */,
 				AC1EDCB521814F380089C7AF /* NCNotificationManager.swift in Sources */,
+				AC0322D221C88E9300E13780 /* NCTitleCell.swift in Sources */,
 				AC2FC9DC21C0D28E00052D1F /* NCimageDetailView.swift in Sources */,
 				AC71845521A4F7610056DF3F /* NCCreateArticleView.swift in Sources */,
 				ACB249162187F2C3008B510E /* NCSignUpAndSignIn.swift in Sources */,
 				AC71844A21A24C360056DF3F /* NCSingleHomeController.swift in Sources */,
 				ACA50A8D2186AA9A00B2040A /* NCButtonView.swift in Sources */,
+				AC594E4621ED6E3400C584C5 /* GrowingTextView.swift in Sources */,
 				ACA50A892186A32F00B2040A /* NCLoginViewDelegate.swift in Sources */,
 				AC2FC9DE21C0D29F00052D1F /* NCDraggableView.swift in Sources */,
 				AC06048E21801F69006582B9 /* Global.swift in Sources */,
@@ -777,6 +796,7 @@
 				AC9727A521B8E11500F265FD /* NCDetailView.swift in Sources */,
 				ACB2491A2187F77B008B510E /* NCDatebaseWrite.swift in Sources */,
 				ACA50A7D2182B8CB00B2040A /* UIButton+Animation.swift in Sources */,
+				AC423AB921ED8A12008B81AA /* NCComment.swift in Sources */,
 				AC9F256E219D061D0090A77E /* NCHomeTopView.swift in Sources */,
 				ACA50A912186AD7F00B2040A /* NCTextButton.swift in Sources */,
 				ACBBBA0E21AB7FCE0077C6E4 /* NCCategories.swift in Sources */,

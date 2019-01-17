@@ -271,6 +271,7 @@ extension NCSingleHomeView : UITableViewDelegate, UITableViewDataSource{
     }
     cell.removeObserverLike()
     cell.removeObserveDisLike()
+    cell.removeObserveComment()
   }
 }
 

@@ -55,6 +55,8 @@ let appDelegate = UIApplication.shared.delegate as! AppDelegate
 let cacheUsers = NSCache<NSString, AnyObject>()
 let cacheLike = NSCache<NSString, AnyObject>()
 let cacheDislike = NSCache<NSString,AnyObject>()
+let cacheCommentLike = NSCache<NSString,AnyObject>()
+let cacheCommentDislike = NSCache<NSString,AnyObject>()
 
 class DatabaseReference{
   //User
@@ -82,6 +84,11 @@ class DatabaseReference{
   
   static let LIKE_ID_REF = "like_ids"
   static let DISLIKE_ID_REF = "dislike_ids"
+  
+  //Comment
+  static let COMMENT_REF = "comment"
+  static let COMMENT_ID = "comment_id"
+  static let COMMENT_STRING = "comment_string"
 }
 
 class StorageReference{

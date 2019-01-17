@@ -60,7 +60,7 @@ class NCDetailViewController: NCViewController{
     mainView.topToSuperview(usingSafeArea : true)
     mainView.leftToSuperview(usingSafeArea : true)
     mainView.rightToSuperview(usingSafeArea : true)
-    mainViewBottomConstraints = mainView.bottomToSuperview()
+    mainViewBottomConstraints = mainView.bottomToSuperview(usingSafeArea : true)
   }
 }
 
