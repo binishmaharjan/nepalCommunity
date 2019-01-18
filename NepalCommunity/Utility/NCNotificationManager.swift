@@ -62,11 +62,12 @@ extension NCNotificationManager{
   
   
   private static let N_MENU_BUTTON_PRESSED = "N_MENU_BUTTON_PRESSED"
-  static func post(menuButtonPressed id: String, type :String, uid : String){
+  static func post(menuButtonPressed id: String, type :String, uid : String,ouid : String){
     var userInfo : [AnyHashable : Any] = [AnyHashable : Any]()
     userInfo["id"] = id
     userInfo["type"] = type
     userInfo["uid"] = uid
+    userInfo["owner_uid"] = ouid
     self.post(name: N_MENU_BUTTON_PRESSED, object: userInfo)
   }
   static func receive(menuButtonPressed observer :Any, selector :Selector){

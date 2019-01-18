@@ -318,9 +318,9 @@ extension NCCommentCell: NCButtonDelegate{
       self.dislikeFunction()
     }else if view == self.menuIcon{
       guard let comment = self.comment,
-        let user  = self.user
+        let user  = NCSessionManager.shared.user
         else {return}
-      NCNotificationManager.post(menuButtonPressed: comment.commentId, type: DatabaseReference.COMMENT_REF, uid: user.uid)
+      NCNotificationManager.post(menuButtonPressed: comment.commentId, type: DatabaseReference.COMMENT_REF, uid: user.uid, ouid: comment.uid)
     }
   }
   

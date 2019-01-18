@@ -514,7 +514,7 @@ extension NCArticleCell : NCButtonDelegate{
   
   //MARK : Menu Button Pressed
   private func menuButtonPressed(){
-    articleCellSingleHomeDelegate?.menuButtonWasPressed(articleId: (article?.articleId)!)
+    articleCellSingleHomeDelegate?.menuButtonWasPressed(article:article!)
   }
   
 }

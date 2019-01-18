@@ -128,7 +128,10 @@ class NCHomeController: NCViewController {
 
 
 extension NCHomeController: NCPagerToHomeDelegate, NCDatabaseWrite{
-  func menuButtonWasPressed(articleId: String) {
+  func menuButtonWasPressed(article: NCArticle) {
+    guard let user = NCSessionManager.shared.user else { return }
+    let articleId = article.articleId
+    
     let menuAlert = UIAlertController(title: "Menu", message: "Select An Option", preferredStyle: .actionSheet)
     //Delete Option
     let deleteMenu = UIAlertAction(title: "Delete", style: .default) { (_) in
@@ -141,7 +144,6 @@ extension NCHomeController: NCPagerToHomeDelegate, NCDatabaseWrite{
       let confirmationAlert = UIAlertController(title: "Report", message: "Do you really want to report", preferredStyle: .alert)
       
       let yesMenu = UIAlertAction(title: "Report", style: .default) { (_) in
-        guard let user = NCSessionManager.shared.user else { return }
         self.report(id: articleId, type: DatabaseReference.ARTICLE_REF, uid: user.uid, completion: { (error) in
           if let error = error {
             NCDropDownNotification.shared.showError(message: "Error : \(error.localizedDescription)")
@@ -163,8 +165,11 @@ extension NCHomeController: NCPagerToHomeDelegate, NCDatabaseWrite{
     let cancelMenu = UIAlertAction(title: "Cancel", style: .cancel) { (_) in
       Dlog("Cancel")
     }
-    menuAlert.addAction(deleteMenu)
-    menuAlert.addAction(reportMenu)
+    if article.uid == user.uid{
+       menuAlert.addAction(deleteMenu)
+    }else{
+      menuAlert.addAction(reportMenu)
+    }
     menuAlert.addAction(cancelMenu)
     self.present(menuAlert, animated: true, completion: nil)
   }
