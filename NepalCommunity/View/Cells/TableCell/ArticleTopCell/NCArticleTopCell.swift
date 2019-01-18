@@ -438,9 +438,9 @@ extension NCArticleTopCell : NCButtonDelegate{
       self.likeFunction()
     }else if view == menuIcon{
       guard let article = self.article,
-            let user  = self.user
+            let user  = NCSessionManager.shared.user
         else {return}
-      NCNotificationManager.post(menuButtonPressed: article.articleId, type: DatabaseReference.ARTICLE_REF, uid: user.uid)
+      NCNotificationManager.post(menuButtonPressed: article.articleId, type: DatabaseReference.ARTICLE_REF, uid: user.uid, ouid: article.uid)
     }
   }
 }

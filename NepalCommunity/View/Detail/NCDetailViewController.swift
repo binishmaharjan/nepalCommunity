@@ -101,6 +101,7 @@ extension NCDetailViewController : NCDatabaseWrite{
       let id = userInfo["id"] as! String
       let type = userInfo["type"] as! String
       let uid = userInfo["uid"] as! String
+      let ouid = userInfo["owner_uid"] as! String
       
       //Displaying the alert
       let menuAlert = UIAlertController(title: "Menu", message: "Select An Option", preferredStyle: .actionSheet)
@@ -136,8 +137,11 @@ extension NCDetailViewController : NCDatabaseWrite{
       let cancelMenu = UIAlertAction(title: "Cancel", style: .cancel) { (_) in
         Dlog("Cancel")
       }
-      menuAlert.addAction(deleteMenu)
-      menuAlert.addAction(reportMenu)
+      if uid == ouid{
+         menuAlert.addAction(deleteMenu)
+      }else{
+        menuAlert.addAction(reportMenu)
+      }
       menuAlert.addAction(cancelMenu)
       self.present(menuAlert, animated: true, completion: nil)
     }

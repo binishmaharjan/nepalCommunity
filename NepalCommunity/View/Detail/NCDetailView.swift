@@ -10,6 +10,7 @@ import UIKit
 import TinyConstraints
 import FirebaseFirestore
 import CodableFirebase
+import SDWebImage
 
 class NCDetailView : NCBaseView{
 
@@ -44,6 +45,8 @@ class NCDetailView : NCBaseView{
   private var commentField : GrowingTextView?
   private var commentBtn : NCImageButtonView?
   private var commentFieldHeight: Constraint?
+  private var userImageBG : UIView?
+  private var userImage: UIImageView?
   
   //Delegate
   var delegate: NCButtonDelegate?{
@@ -156,6 +159,24 @@ class NCDetailView : NCBaseView{
     commentBtn.image = UIImage(named: "icon_plus_comment")
     commentBtn.delegate = self
     commentFieldView.addSubview(commentBtn)
+    
+    //User Image
+    let userImageBG = UIView()
+    self.userImageBG = userImageBG
+    commentFieldView.addSubview(userImageBG)
+    userImageBG.layer.cornerRadius = 5.0
+    userImageBG.dropShadow(opacity : 0.3)
+    
+    let userImage = UIImageView()
+    self.userImage = userImage
+    userImageBG.addSubview(userImage)
+    userImage.image = UIImage(named: "50")
+    userImage.sd_setImage(with: URL(string: (NCSessionManager.shared.user?.iconUrl)!)) { (image, error, _, _) in
+      userImage.image = image
+    }
+    userImage.layer.cornerRadius = 5.0
+    userImage.contentMode = .scaleAspectFill
+    userImage.clipsToBounds = true
   }
   
   private func setupConstraints(){
@@ -166,7 +187,9 @@ class NCDetailView : NCBaseView{
           let commentFieldView = self.commentFieldView,
           let commentFieldBG = self.commentFieldBG,
           let commentField = self.commentField,
-          let commentBtn = self.commentBtn
+          let commentBtn = self.commentBtn,
+          let userImageBG = self.userImageBG,
+          let userImage = self.userImage
     else { return }
     header.topToSuperview()
     header.leftToSuperview()
@@ -188,11 +211,18 @@ class NCDetailView : NCBaseView{
     commentFieldView.rightToSuperview()
     commentFieldView.bottomToSuperview()
 //    commentFieldHeight = commentFieldView.height(44)
+    
+    userImageBG.leftToSuperview(offset : 4)
+    userImageBG.bottomToSuperview(offset : -4)
+    userImageBG.width(32)
+    userImageBG.height(to: userImageBG,userImageBG.widthAnchor)
+    
+    userImage.edgesToSuperview()
 
     commentFieldBG.rightToLeft(of: commentBtn, offset: -4)
     commentFieldBG.topToSuperview(offset : 4)
     commentFieldBG.bottomToSuperview(offset : -4)
-    commentFieldBG.leftToSuperview(offset : 8)
+    commentFieldBG.leftToRight(of: userImageBG, offset: 4)
     
     commentBtn.rightToSuperview(offset : -4)
 //    commentBtn.topToSuperview(offset : 4)
@@ -204,7 +234,7 @@ class NCDetailView : NCBaseView{
   }
   
   @objc private func refreshControlDragged(){
-    refreshControl.endRefreshing()
+    self.loadComments()
   }
 }
 
@@ -306,7 +336,6 @@ extension NCDetailView : NCDatabaseWrite{
         return
       }
       NCDropDownNotification.shared.showSuccess(message: "Comment Done")
-      Dlog("Comment Posted")
     }
   }
   
@@ -325,11 +354,13 @@ extension NCDetailView : NCDatabaseWrite{
       commentRef.getDocuments { (snapshot, error) in
         if let error = error {
           Dlog(error.localizedDescription)
+          self.refreshControl.endRefreshing()
           return
         }
         
         guard let snapshot = snapshot else {
           Dlog("No Data")
+          self.refreshControl.endRefreshing()
           return
         }
         
@@ -342,11 +373,13 @@ extension NCDetailView : NCDatabaseWrite{
             self.comments.append(article)
           }catch{
             Dlog("\(error.localizedDescription)")
+            self.refreshControl.endRefreshing()
           }
         }
         
         DispatchQueue.main.async {
           self.tableView?.reloadData()
+          self.refreshControl.endRefreshing()
         }
         
       }
