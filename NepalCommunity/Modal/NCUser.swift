@@ -17,6 +17,8 @@ struct NCUser : Codable{
   let uid: String
   let username:String
   let email:String
+  let followers :Int?
+  let following :Int?
   
   private enum CodingKeys: String, CodingKey {
     case accountType = "account_type"
@@ -25,6 +27,8 @@ struct NCUser : Codable{
     case uid
     case username
     case email
+    case followers
+    case following
   }
 }
 

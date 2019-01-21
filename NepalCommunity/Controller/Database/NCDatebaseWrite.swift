@@ -24,7 +24,14 @@ extension NCDatabaseWrite{
   
   func writeEmailUser(userId: String, username: String, iconUrl: String, email : String, completion: ((Error?) -> ())?) {
     
-    let user = NCUser.init(accountType: NCAccountType.email.rawValue, dateCreated: NCDate.dateToString(), iconUrl: iconUrl, uid: userId, username: username, email: email)
+    let user = NCUser.init(accountType: NCAccountType.email.rawValue,
+                           dateCreated: NCDate.dateToString(),
+                           iconUrl: iconUrl,
+                           uid: userId,
+                           username: username,
+                           email: email,
+                           followers:0,
+                           following :0)
     do{
       let data = try FirestoreEncoder().encode(user) as [String : AnyObject]
       DispatchQueue.global(qos: .default).async {
@@ -45,7 +52,14 @@ extension NCDatabaseWrite{
   
   func writeFacebookUser(userId: String, username: String, iconUrl: String,email: String, completion: ((Error?) -> ())?) {
     
-    let user = NCUser.init(accountType: NCAccountType.facebook.rawValue, dateCreated: NCDate.dateToString(), iconUrl: iconUrl, uid: userId, username: username, email: email)
+    let user = NCUser.init(accountType: NCAccountType.facebook.rawValue,
+                           dateCreated: NCDate.dateToString(),
+                           iconUrl: iconUrl,
+                           uid: userId,
+                           username: username,
+                           email: email,
+                           followers:0,
+                           following :0)
     do{
       let data = try FirestoreEncoder().encode(user) as [String : AnyObject]
       DispatchQueue.global(qos: .default).async {

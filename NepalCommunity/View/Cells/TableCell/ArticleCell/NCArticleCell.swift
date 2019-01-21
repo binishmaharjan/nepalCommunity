@@ -248,6 +248,7 @@ class NCArticleCell : UITableViewCell, NCDatabaseAccess{
     self.seperatorTwo = seperatorTwo
     container.addSubview(seperatorTwo)
     seperatorTwo.backgroundColor = NCColors.orange
+    container.bottom(to: commentIcon, offset : 4)
     
   }
   
