@@ -22,7 +22,7 @@ class NCTabViewController : UITabBarController{
     delegate  = self
     
     let homeView = NCHomeController()
-    let homeNav = UINavigationController(rootViewController: homeView)
+    let homeNav = NCNaviagtionController(rootViewController: homeView)
     homeView.view.backgroundColor = .white
     homeView.tabBarItem.imageInsets = UIEdgeInsets(top: TabViewConstants.TAB_ITEM_OFF_V,
                                                    left: TabViewConstants.TAB_ITEM_OFF_H,
@@ -67,7 +67,7 @@ class NCTabViewController : UITabBarController{
     notificationView.tabBarItem.selectedImage = UIImage(named:"icon_bell_h")?
       .withRenderingMode(UIImage.RenderingMode.alwaysOriginal)
     
-    let meView = UIViewController()
+    let meView =  NCNaviagtionController(rootViewController: NCProfileController())
     meView.view.backgroundColor = .white
     meView.tabBarItem.imageInsets = UIEdgeInsets(top: TabViewConstants.TAB_ITEM_OFF_V,
                                                  left: TabViewConstants.TAB_ITEM_OFF_H,
@@ -123,8 +123,6 @@ class NCTabViewController : UITabBarController{
     }else{
       return true
     }
-    
-    return true
   }
   
   //Setting Up Middle Bar
