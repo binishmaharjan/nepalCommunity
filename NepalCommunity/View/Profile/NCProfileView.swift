@@ -148,6 +148,7 @@ extension NCProfileView : UITableViewDelegate, UITableViewDataSource{
 
     if indexPath.row == 0, let cell = tableView.dequeueReusableCell(withIdentifier: CELL1_ID, for: indexPath) as? Cell1{
       cell.user = NCSessionManager.shared.user
+      cell.selectionStyle = .none
       return cell
     }
     
