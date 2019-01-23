@@ -254,9 +254,9 @@ extension NCSingleHomeView : UITableViewDelegate, UITableViewDataSource{
     return UITableViewCell()
   }
   
-  func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-    return 142
-  }
+//  func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+//    return 142
+//  }
   
   func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
     let startLoadingIndex = self.articles.count - LAST_COUNT

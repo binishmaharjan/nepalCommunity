@@ -2,6 +2,9 @@
 <Workspace
    version = "1.0">
    <FileRef
+      location = "group:/Users/guest/Documents/iOSApps/NepalCommunity/NepalCommunity/View/Search/NCSearchView.swift">
+   </FileRef>
+   <FileRef
       location = "group:NepalCommunity.xcodeproj">
    </FileRef>
    <FileRef

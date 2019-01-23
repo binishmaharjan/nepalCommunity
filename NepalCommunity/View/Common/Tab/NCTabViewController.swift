@@ -43,7 +43,7 @@ class NCTabViewController : UITabBarController{
                                                        right: TabViewConstants.TAB_ITEM_OFF_H)
     categoryView.title = nil
     
-    let searchView = UIViewController()
+    let searchView = NCSearchController()
     searchView.view.backgroundColor = .white
     searchView.tabBarItem.imageInsets = UIEdgeInsets(top: TabViewConstants.TAB_ITEM_OFF_V,
                                                      left: TabViewConstants.TAB_ITEM_OFF_H,

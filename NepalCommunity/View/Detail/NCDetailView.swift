@@ -212,7 +212,7 @@ class NCDetailView : NCBaseView{
     commentFieldView.bottomToSuperview()
 //    commentFieldHeight = commentFieldView.height(44)
     
-    userImageBG.leftToSuperview(offset : 4)
+    userImageBG.leftToSuperview(offset : 8)
     userImageBG.bottomToSuperview(offset : -4)
     userImageBG.width(32)
     userImageBG.height(to: userImageBG,userImageBG.widthAnchor)
@@ -222,7 +222,7 @@ class NCDetailView : NCBaseView{
     commentFieldBG.rightToLeft(of: commentBtn, offset: -4)
     commentFieldBG.topToSuperview(offset : 4)
     commentFieldBG.bottomToSuperview(offset : -4)
-    commentFieldBG.leftToRight(of: userImageBG, offset: 4)
+    commentFieldBG.leftToRight(of: userImageBG, offset: 8)
     
     commentBtn.rightToSuperview(offset : -4)
 //    commentBtn.topToSuperview(offset : 4)
