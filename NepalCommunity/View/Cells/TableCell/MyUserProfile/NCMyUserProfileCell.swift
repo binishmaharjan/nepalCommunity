@@ -9,7 +9,7 @@
 import UIKit
 import TinyConstraints
 
-class NCProfileUserDetailCell : UITableViewCell{
+class NCMyUserProfileCell : UITableViewCell{
   
   private var container : UIView?
   private var userImageBG : UIView?

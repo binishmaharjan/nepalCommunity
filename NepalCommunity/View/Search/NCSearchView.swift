@@ -7,6 +7,13 @@
 
 import UIKit
 import TinyConstraints
+import FirebaseFirestore
+import CodableFirebase
+
+
+protocol NCSearchDelegate : NSObjectProtocol{
+  func cellWasTapped(user :NCUser)
+}
 
 class NCSearchView : NCBaseView{
   //Header
@@ -19,7 +26,7 @@ class NCSearchView : NCBaseView{
   private var searchArea : UIView?
   private var searchBG : UIView?
   private var searchIcon : UIImageView?
-  private var searchTextField : UIView?
+  private var searchTextField : UITextField?
   private var cancelBtn : UIButton?
   private var cancelBtnWidth : CGFloat = 0
   private var cancelBtnWidthConstraints : Constraint?
@@ -27,9 +34,13 @@ class NCSearchView : NCBaseView{
   private var tableView : UITableView?
   private let refreshControl = UIRefreshControl()
   
+  var searchDelegate : NCSearchDelegate?
+  
   typealias Cell1 = NCUserCell
   let CELL1_CLASS = Cell1.self
   let CELL1_ID = NSStringFromClass(Cell1.self)
+  
+  var users : [NCUser] = [NCUser]()
   
   
   override func didInit() {
@@ -89,17 +100,19 @@ class NCSearchView : NCBaseView{
     searchTextField.delegate = self
     searchTextField.returnKeyType = .search
     searchTextField.font = NCFont.normal(size: 14)
+    searchTextField.addTarget(self, action: #selector(textDidChange(_:)), for: .editingChanged)
     
     let cancelBtn = UIButton()
     self.cancelBtn = cancelBtn
     cancelBtn.setTitle("Cancel", for: .normal)
     cancelBtn.tintColor = NCColors.white
+    cancelBtn.addTarget(self, action: #selector(canceButtonPressed), for: .touchUpInside)
     searchArea.addSubview(cancelBtn)
     
     let tableView = UITableView()
     self.tableView = tableView
     tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 5, right: 0)
-    tableView.refreshControl = refreshControl
+//    tableView.refreshControl = refreshControl
     tableView.delegate = self
     tableView.dataSource = self
     tableView.register(CELL1_CLASS, forCellReuseIdentifier: CELL1_ID)
@@ -163,8 +176,51 @@ class NCSearchView : NCBaseView{
   }
   
   @objc private func refreshControlDragged(){
-   Dlog("Refreshed")
+    Dlog("Refreshed")
     refreshControl.endRefreshing()
+  }
+  
+  
+  private func loadUser(searchText : String){
+    Dlog(searchText)
+    let searchRef = Firestore.firestore()
+      .collection(DatabaseReference.USERS_REF)
+    
+    DispatchQueue.global(qos: .default).async {
+      searchRef.getDocuments(completion: { (snapshot, error) in
+        if let error = error  {
+          Dlog("\(error.localizedDescription)")
+          return
+        }
+        
+        guard let snapshot = snapshot else {
+          Dlog("No Snapshot")
+          return
+        }
+        
+        self.users.removeAll()
+        
+        for document in snapshot.documents{
+          let data = document.data()
+          do{
+            let user = try FirebaseDecoder().decode(NCUser.self, from: data)
+            
+            let username = user.username
+            
+            if username.contains(searchText){
+              self.users.append(user)
+            }
+          }catch{
+            Dlog("\(error.localizedDescription)")
+          }
+        }
+        
+        DispatchQueue.main.async {
+          self.tableView?.reloadData()
+          self.refreshControl.endRefreshing()
+        }
+      })
+    }
   }
   
 }
@@ -182,7 +238,6 @@ extension NCSearchView : UITextFieldDelegate{
     UIView.animate(withDuration: 0.2) {
       self.layoutIfNeeded()
     }
-    
   }
   
   func textFieldDidEndEditing(_ textField: UITextField, reason: UITextField.DidEndEditingReason) {
@@ -192,21 +247,42 @@ extension NCSearchView : UITextFieldDelegate{
       self.layoutIfNeeded()
     }
   }
+  
+  func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+    
+    return true
+  }
+  
+  @objc func textDidChange(_ textField : UITextField){
+    guard let searchText = textField.text else {return}
+    self.loadUser(searchText: searchText)
+  }
+  
+  @objc func canceButtonPressed(){
+    self.searchTextField?.text = ""
+    self.users.removeAll()
+    self.tableView?.reloadData()
+    self.searchTextField?.resignFirstResponder()
+  }
 }
 
 //MARK : TableView Delegate and Datasource
 extension NCSearchView : UITableViewDelegate, UITableViewDataSource{
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return 10
+    return users.count
   }
   
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     if let cell = tableView.dequeueReusableCell(withIdentifier: CELL1_ID, for: indexPath) as? Cell1{
+      cell.user = users[indexPath.row]
+      cell.selectionStyle = .none
       return cell
     }
     
     return UITableViewCell()
   }
   
-  
+  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    searchDelegate?.cellWasTapped(user: self.users[indexPath.row])
+  }
 }
