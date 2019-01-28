@@ -159,12 +159,17 @@ extension NCUserProfileView : UITableViewDelegate, UITableViewDataSource{
   }
   
   func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-    guard let cell = cell as? NCArticleCell else {
-      return
+    
+    if let cell = cell as? NCArticleCell{
+      cell.removeObserverLike()
+      cell.removeObserveDisLike()
+      cell.removeObserveComment()
     }
-    cell.removeObserverLike()
-    cell.removeObserveDisLike()
-    cell.removeObserveComment()
+    
+    if let cell = cell as? Cell1{
+      cell.removeObserveFollower()
+      cell.removeObserveFollowing()
+    }
   }
   
 }

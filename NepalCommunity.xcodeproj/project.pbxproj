@@ -388,8 +388,8 @@
 			isa = PBXGroup;
 			children = (
 				ACB5289921FE9DC600A4E98E /* UserProfileCell */,
-				AC72845821F8158800638FC4 /* UserCell */,
 				ACA12F0921F16D7100E56664 /* MyUserProfile */,
+				AC72845821F8158800638FC4 /* UserCell */,
 				AC17189821BA387000E3E118 /* ComentCell */,
 				AC71844E21A252470056DF3F /* ArticleCell */,
 				AC17189B21BA389300E3E118 /* ArticleTopCell */,
