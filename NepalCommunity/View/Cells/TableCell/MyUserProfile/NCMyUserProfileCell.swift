@@ -8,6 +8,7 @@
 
 import UIKit
 import TinyConstraints
+import FirebaseFirestore
 
 class NCMyUserProfileCell : UITableViewCell{
   
@@ -37,8 +38,14 @@ class NCMyUserProfileCell : UITableViewCell{
   var user : NCUser?{
     didSet{
       self.relayout()
+      self.observeFollowing()
+      self.observeFollower()
     }
   }
+  
+  //Listener
+  private var followerListener : ListenerRegistration?
+  private var followingListener : ListenerRegistration?
   
   private func setup(){
     self.backgroundColor = NCColors.white
@@ -220,11 +227,68 @@ class NCMyUserProfileCell : UITableViewCell{
       guard let _ = error else {return}
       self.userImage?.image = image
     })
-    if let followees = user.followers{
-      followCountLabel?.text = String(followees)
+  }
+}
+
+//MARK : Followers
+extension NCMyUserProfileCell{
+  private func observeFollower(){
+    guard let user = self.user else {return}
+    if followerListener != nil {self.removeObserveFollower()}
+    DispatchQueue.global(qos: .default).async {
+      self.followerListener = Firestore.firestore()
+        .collection(DatabaseReference.USERS_REF)
+        .document(user.uid)
+        .collection(DatabaseReference.FOLLOWERS)
+        .addSnapshotListener({ (snapshotListerner, error) in
+          if let error = error{
+            Dlog("\(error.localizedDescription)")
+            return
+          }
+          
+          guard let snapshot = snapshotListerner else {return}
+          let documents = snapshot.documents
+          let documentCounts = documents.count
+          
+          DispatchQueue.main.async {
+            self.followCountLabel?.text = String(documentCounts)
+          }
+        })
     }
-    if let following = user.following{
-      followingLabel?.text = String(following)
+  }
+  
+  func removeObserveFollower(){
+    guard let followerListener = self.followerListener else {return}
+    followerListener.remove()
+  }
+  
+  private func observeFollowing(){
+    guard let user = self.user else {return}
+    if followingListener != nil {self.removeObserveFollowing()}
+    DispatchQueue.global(qos: .default).async {
+      self.followerListener = Firestore.firestore()
+        .collection(DatabaseReference.USERS_REF)
+        .document(user.uid)
+        .collection(DatabaseReference.FOLLOWING)
+        .addSnapshotListener({ (snapshotListerner, error) in
+          if let error = error{
+            Dlog("\(error.localizedDescription)")
+            return
+          }
+          
+          guard let snapshot = snapshotListerner else {return}
+          let documents = snapshot.documents
+          let documentCounts = documents.count
+          
+          DispatchQueue.main.async {
+            self.followingCountLabel?.text = String(documentCounts)
+          }
+        })
     }
+  }
+  
+  func removeObserveFollowing(){
+    guard let followerListener = self.followerListener else {return}
+    followerListener.remove()
   }
 }

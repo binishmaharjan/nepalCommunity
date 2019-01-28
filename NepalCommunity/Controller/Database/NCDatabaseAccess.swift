@@ -199,4 +199,42 @@ extension NCDatabaseAccess{
       }
     }
   }
+  
+  func checkFollow(uid :String, ouid : String, completion: (( Bool?,Error?) -> ())?){
+    if let savedFollow = cacheFollow.object(forKey: NSString(string: "\(ouid)")) as? BoolWrapper{
+      let b = savedFollow.value
+      completion?(b,nil)
+    }else{
+      DispatchQueue.global(qos: .default).async {
+        Firestore.firestore()
+          .collection(DatabaseReference.USERS_REF)
+          .document(uid)
+          .collection(DatabaseReference.FOLLOWING)
+          .document(ouid)
+          .getDocument(completion: { (snapshot, error) in
+            if let error = error {
+              DispatchQueue.main.async {completion?(nil,error)}
+              return
+            }
+            
+            guard let snapshot = snapshot else {
+              DispatchQueue.main.async {
+                completion?(nil,NSError.init(domain: "No SnapShot", code: -1, userInfo: nil))
+              }
+              return
+            }
+            
+            let data = snapshot.data()
+            
+            if data == nil{
+              cacheFollow.setObject(BoolWrapper(false), forKey: NSString(string: "\(ouid)"))
+              DispatchQueue.main.async {completion?(false,nil)}
+            }else{
+              cacheFollow.setObject(BoolWrapper(true), forKey: NSString(string: "\(ouid)"))
+              DispatchQueue.main.async {completion?(true,nil)}
+            }
+          })
+      }
+    }
+  }
 }

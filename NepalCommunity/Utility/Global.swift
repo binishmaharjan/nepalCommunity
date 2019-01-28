@@ -57,6 +57,7 @@ let cacheLike = NSCache<NSString, AnyObject>()
 let cacheDislike = NSCache<NSString,AnyObject>()
 let cacheCommentLike = NSCache<NSString,AnyObject>()
 let cacheCommentDislike = NSCache<NSString,AnyObject>()
+let cacheFollow = NSCache<NSString,AnyObject>()
 
 class DatabaseReference{
   //User
@@ -68,6 +69,8 @@ class DatabaseReference{
   static let ACCOUNT_TYPE = "account_type"
   static let DATE_CREATED = "date_created"
   static let EMAIL = "email"
+  static let FOLLOWERS = "followers"
+  static let FOLLOWING = "following"
   
   
   //Article

@@ -8,6 +8,7 @@
 
 import UIKit
 import TinyConstraints
+import FirebaseFirestore
 
 class NCUserProfileCell : UITableViewCell {
   private var container : UIView?
@@ -16,14 +17,22 @@ class NCUserProfileCell : UITableViewCell {
   private var nameLabel: UILabel?
   private var emailLabel : UILabel?
   private var followView : UIView?
-  private var followLabel : UIView?
+  private var followLabel : UILabel?
   private var followCountLabel : UILabel?
   private var followingView : UIView?
   private var followingLabel : UILabel?
   private var followingCountLabel : UILabel?
   private var seperatorView : UIView?
   private var followBtnBG : UIView?
-  private var followBtn : UIView?
+  private var followBtn : UIButton?
+  
+  private var isFollowed : Bool = false{
+    didSet{
+      followBtnBG?.layer.borderWidth = isFollowed ? 0 : 2
+      followBtn?.setTitleColor(isFollowed ? NCColors.white : NCColors.blue, for: .normal)
+      followBtnBG?.backgroundColor = isFollowed ? NCColors.blue : NCColors.white
+    }
+  }
   
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -37,9 +46,17 @@ class NCUserProfileCell : UITableViewCell {
   
   var user : NCUser?{
     didSet{
+      self.checkFollow()
       self.relayout()
+      self.observeFollower()
+      self.observeFollowing()
     }
   }
+  
+  
+  //Listener
+  private var followerListener : ListenerRegistration?
+  private var followingListener : ListenerRegistration?
   
   private func setup(){
     self.backgroundColor = NCColors.white
@@ -247,17 +264,163 @@ class NCUserProfileCell : UITableViewCell {
       guard let _ = error else {return}
       self.userImage?.image = image
     })
-    if let followees = user.followers{
-      followCountLabel?.text = String(followees)
+  }
+}
+
+//MARK : Check Follow
+extension NCUserProfileCell : NCDatabaseAccess{
+  private func checkFollow(){
+    guard let otherUser = self.user,
+      let myUser = NCSessionManager.shared.user
+      else {return}
+    
+    self.checkFollow(uid: myUser.uid, ouid: otherUser.uid) { (isFollowed, error) in
+      if let error = error {
+        Dlog(error.localizedDescription)
+        return
+      }
+      
+      guard let isFollowed = isFollowed else {return}
+      self.isFollowed = isFollowed
     }
-    if let following = user.following{
-      followingLabel?.text = String(following)
+  }
+  
+  private func followFunction(){
+    guard let otherUser = self.user,
+      let myUser = NCSessionManager.shared.user
+      else {return}
+    
+    if !isFollowed{
+      self.isFollowed = true
+      cacheFollow.setObject(BoolWrapper(self.isFollowed), forKey: NSString(string: "\(otherUser.uid)"))
+      //Writing following id to own database
+      DispatchQueue.global(qos: .default).async {
+        Firestore.firestore()
+          .collection(DatabaseReference.USERS_REF)
+          .document(myUser.uid)
+          .collection(DatabaseReference.FOLLOWING)
+          .document(otherUser.uid).setData([
+            "uid" : "\(otherUser.uid)",
+            "date_created" : NCDate.dateToString()
+            ], completion: { (error) in
+              if let error = error{
+                DispatchQueue.main.async {Dlog("\(error.localizedDescription)")}
+              }
+          })
+      }
+      
+      //Writing followed id to other user database
+      DispatchQueue.global(qos: .default).async {
+        Firestore.firestore()
+          .collection(DatabaseReference.USERS_REF)
+          .document(otherUser.uid)
+          .collection(DatabaseReference.FOLLOWERS)
+          .document(myUser.uid).setData([
+            "uid" : "\(myUser.uid)",
+            "date_created" : NCDate.dateToString()
+            ], completion: { (error) in
+              if let error = error{
+                DispatchQueue.main.async {Dlog("\(error.localizedDescription)")}
+              }
+          })
+      }
+    }else{
+      self.isFollowed = false
+      cacheFollow.setObject(BoolWrapper(self.isFollowed), forKey: NSString(string: "\(otherUser.uid)"))
+      
+      //Adding in own following list
+      DispatchQueue.global(qos: .default).async {
+        Firestore.firestore()
+          .collection(DatabaseReference.USERS_REF)
+          .document(myUser.uid)
+          .collection(DatabaseReference.FOLLOWING)
+          .document(otherUser.uid).delete(completion: { (error) in
+            if let error = error{
+              DispatchQueue.main.async {Dlog("\(error.localizedDescription)")}
+            }
+          })
+      }
+      
+      //Deleting user followers
+      DispatchQueue.global(qos: .default).async {
+        Firestore.firestore()
+          .collection(DatabaseReference.USERS_REF)
+          .document(otherUser.uid)
+          .collection(DatabaseReference.FOLLOWERS)
+          .document(myUser.uid).delete(completion: { (error) in
+            if let error = error{
+              DispatchQueue.main.async {Dlog("\(error.localizedDescription)")}
+            }
+          })
+      }
     }
+  }
+  
+  
+  private func observeFollower(){
+    guard let user = self.user else {return}
+    if followerListener != nil {self.removeObserveFollower()}
+    DispatchQueue.global(qos: .default).async {
+      self.followerListener = Firestore.firestore()
+        .collection(DatabaseReference.USERS_REF)
+        .document(user.uid)
+        .collection(DatabaseReference.FOLLOWERS)
+        .addSnapshotListener({ (snapshotListerner, error) in
+          if let error = error{
+            Dlog("\(error.localizedDescription)")
+            return
+          }
+          
+          guard let snapshot = snapshotListerner else {return}
+          let documents = snapshot.documents
+          let documentCounts = documents.count
+          
+          DispatchQueue.main.async {
+            self.followCountLabel?.text = String(documentCounts)
+          }
+        })
+    }
+  }
+  
+  func removeObserveFollower(){
+    guard let followerListener = self.followerListener else {return}
+    followerListener.remove()
+  }
+  
+  private func observeFollowing(){
+    guard let user = self.user else {return}
+    if followingListener != nil {self.removeObserveFollowing()}
+    DispatchQueue.global(qos: .default).async {
+      self.followerListener = Firestore.firestore()
+        .collection(DatabaseReference.USERS_REF)
+        .document(user.uid)
+        .collection(DatabaseReference.FOLLOWING)
+        .addSnapshotListener({ (snapshotListerner, error) in
+          if let error = error{
+            Dlog("\(error.localizedDescription)")
+            return
+          }
+          
+          guard let snapshot = snapshotListerner else {return}
+          let documents = snapshot.documents
+          let documentCounts = documents.count
+          
+          DispatchQueue.main.async {
+            self.followingCountLabel?.text = String(documentCounts)
+          }
+        })
+    }
+  }
+  
+  func removeObserveFollowing(){
+    guard let followerListener = self.followerListener else {return}
+    followerListener.remove()
   }
 }
 
 extension NCUserProfileCell{
   @objc private func followBtnPressed(){
     Dlog("Follow")
+    self.followFunction()
   }
 }
