@@ -206,8 +206,9 @@ class NCSearchView : NCBaseView{
             let user = try FirebaseDecoder().decode(NCUser.self, from: data)
             
             let username = user.username
+            let uid = user.uid
             
-            if username.contains(searchText){
+            if username.contains(searchText) && uid != NCSessionManager.shared.user?.uid{
               self.users.append(user)
             }
           }catch{
