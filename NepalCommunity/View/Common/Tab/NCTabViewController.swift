@@ -44,6 +44,7 @@ class NCTabViewController : UITabBarController{
     categoryView.title = nil
     
     let searchView = NCSearchController()
+    let searchNav = NCNaviagtionController(rootViewController: searchView)
     searchView.view.backgroundColor = .white
     searchView.tabBarItem.imageInsets = UIEdgeInsets(top: TabViewConstants.TAB_ITEM_OFF_V,
                                                      left: TabViewConstants.TAB_ITEM_OFF_H,
@@ -67,7 +68,8 @@ class NCTabViewController : UITabBarController{
     notificationView.tabBarItem.selectedImage = UIImage(named:"icon_bell_h")?
       .withRenderingMode(UIImage.RenderingMode.alwaysOriginal)
     
-    let meView =  NCNaviagtionController(rootViewController: NCProfileController())
+    let meView = NCProfileController()
+    let meNav = NCNaviagtionController(rootViewController: meView)
     meView.view.backgroundColor = .white
     meView.tabBarItem.imageInsets = UIEdgeInsets(top: TabViewConstants.TAB_ITEM_OFF_V,
                                                  left: TabViewConstants.TAB_ITEM_OFF_H,
@@ -83,7 +85,7 @@ class NCTabViewController : UITabBarController{
       view.removeFromSuperview()
     }
     
-    self.viewControllers = [homeNav,searchView,categoryView,notificationView,meView]
+    self.viewControllers = [homeNav,searchNav,categoryView,notificationView,meNav]
   }
   
   private func setupTabBar(){

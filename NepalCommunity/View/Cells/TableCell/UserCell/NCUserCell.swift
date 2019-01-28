@@ -8,7 +8,7 @@
 
 import UIKit
 import TinyConstraints
-
+import SDWebImage
 
 class NCUserCell : UITableViewCell{
   
@@ -18,6 +18,18 @@ class NCUserCell : UITableViewCell{
   private weak var userEmailLbl : UILabel?
   private weak var container : UIView?
   
+  var user : NCUser?{
+    didSet{
+      guard let user = user else {return}
+      userNameLbl?.text = user.username
+      userEmailLbl?.text = user.email
+      userImage?.sd_setImage(with: URL(string: user.iconUrl), completed: { (image, error, _, _) in
+        if let error = error {return}
+        
+        self.userImage?.image = image
+      })
+    }
+  }
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
     self.setup()

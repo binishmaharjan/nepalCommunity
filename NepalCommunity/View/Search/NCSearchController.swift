@@ -28,11 +28,29 @@ class NCSearchController : NCViewController{
   private func setup(){
     let mainView = NCSearchView()
     self.mainView = mainView
+    mainView.searchDelegate = self
     self.view.addSubview(mainView)
   }
   
   private func setupConstraints(){
     guard let mainView = self.mainView else {return}
     mainView.edgesToSuperview(usingSafeArea : true)
+  }
+  
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+    self.navigationController?.navigationBar.isHidden = true
+  }
+  
+  override func viewWillDisappear(_ animated: Bool) {
+    super.viewWillDisappear(animated)
+  }
+}
+extension NCSearchController : NCSearchDelegate{
+  func cellWasTapped(user: NCUser) {
+   let vc = NCUserProfileController()
+    vc.hidesBottomBarWhenPushed = true
+    vc.user = user
+  self.navigationController?.pushViewController(vc, animated: true)
   }
 }
