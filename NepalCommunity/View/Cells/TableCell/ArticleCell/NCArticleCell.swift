@@ -445,6 +445,10 @@ extension NCArticleCell : NCButtonDelegate{
             }
           })
       }
+      //Removing the dislike since user liked this post
+      if isDisliked{
+        self.dislikeFunction()
+      }
     }else{
       //Saving the cache and changing the ui
       self.isLiked = false
@@ -484,6 +488,10 @@ extension NCArticleCell : NCButtonDelegate{
               return
             }
           })
+      }
+      //Removing the like since user disliked this post
+      if isLiked{
+        self.likeFunction()
       }
     }else{
       self.isDisliked = false
