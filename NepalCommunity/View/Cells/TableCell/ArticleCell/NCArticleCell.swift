@@ -177,6 +177,7 @@ class NCArticleCell : UITableViewCell, NCDatabaseAccess{
     let commentIconBG = UIView()
     self.commentIconBG = commentIconBG
     container.addSubview(commentIconBG)
+    commentIconBG.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(commentIconWasTapped)))
     
     let commentIcon = NCImageButtonView()
     self.commentIcon = commentIcon
@@ -397,12 +398,20 @@ class NCArticleCell : UITableViewCell, NCDatabaseAccess{
   }
 }
 
+//MARK : Cell Tapped && Comment Icon
 extension NCArticleCell{
   @objc private func cellWasTapped(){
     guard let article = self.article,
       let user = self.user
       else { return}
     articleCellSingleHomeDelegate?.passArticleAndUser(article: article, user: user)
+  }
+  
+  @objc private func commentIconWasTapped(){
+    guard let article = self.article,
+      let user = self.user
+      else { return}
+    articleCellSingleHomeDelegate?.commentIconPressed(article: article,user:user )
   }
 }
 
@@ -518,6 +527,8 @@ extension NCArticleCell : NCButtonDelegate{
       self.dislikeFunction()
     }else if view == self.likeIcon{
       self.likeFunction()
+    }else if view == self.commentIcon{
+      self.commentIconWasTapped()
     }
   }
   

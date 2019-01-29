@@ -24,7 +24,11 @@ class NCDetailViewController: NCViewController{
   }
   
   override var preferredStatusBarStyle: UIStatusBarStyle{return .lightContent}
+  //Should Keyboard come up
+  var shouldKeyboardShowUp : Bool = false
   
+  
+  //MARK: Initialize
   override func didInit() {
     super.didInit()
     outsideSafeAreaTopViewTemp?.backgroundColor = NCColors.blue
@@ -40,6 +44,14 @@ class NCDetailViewController: NCViewController{
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     self.setupNotification()
+  }
+  
+  override func viewDidAppear(_ animated: Bool) {
+    super.viewDidAppear(animated)
+    guard let mainView = self.mainView,
+          let commentField = mainView.commentField
+    else {return}
+    if shouldKeyboardShowUp{commentField.becomeFirstResponder()}
   }
   
   override func viewDidDisappear(_ animated: Bool) {

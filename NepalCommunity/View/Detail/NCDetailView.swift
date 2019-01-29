@@ -42,7 +42,7 @@ class NCDetailView : NCBaseView{
   private let refreshControl = UIRefreshControl()
   private var commentFieldView : UIView?
   private var commentFieldBG : UIView?
-  private var commentField : GrowingTextView?
+  var commentField : GrowingTextView?
   private var commentBtn : NCImageButtonView?
   private var commentFieldHeight: Constraint?
   private var userImageBG : UIView?
@@ -289,6 +289,10 @@ extension NCDetailView : UITableViewDelegate, UITableViewDataSource{
 
 //ImageDelegate
 extension NCDetailView : NCCellToTableViewDelegate{
+  func commentIconWasPressed() {
+    self.commentField?.becomeFirstResponder()
+  }
+  
   func passImageFromCellToTable(image: UIImage) {
     imageDelegate?.imagePressed(image: image)
   }

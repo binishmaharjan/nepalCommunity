@@ -14,13 +14,14 @@ class NCProfileController : NCViewController{
   
   override var preferredStatusBarStyle: UIStatusBarStyle{return .lightContent}
   private var mainView : NCProfileView?
+  //Should Keyboard show up when showing detail view
+  private var shouldKeyboardShowUp : Bool = false
   
   override func didInit() {
     super.didInit()
     outsideSafeAreaTopViewTemp?.backgroundColor = NCColors.blue
     outsideSafeAreaBottomViewTemp?.backgroundColor = NCColors.white
   }
-  
   
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -33,6 +34,7 @@ class NCProfileController : NCViewController{
     self.navigationController?.navigationBar.isHidden = true
     guard let mainView = self.mainView else {return}
     mainView.user = NCSessionManager.shared.user
+    self.shouldKeyboardShowUp = false
   }
   
   override func viewWillDisappear(_ animated: Bool) {
@@ -56,11 +58,17 @@ class NCProfileController : NCViewController{
 
 //MARK :  Cell Delegate
 extension NCProfileController : NCSingleHomeViewDelegate, NCDatabaseWrite{
+  func commentIconPressed(article: NCArticle, user :NCUser) {
+    self.shouldKeyboardShowUp = true
+    cellWasTapped(article: article, user: user)
+  }
+  
   func cellWasTapped(article: NCArticle, user: NCUser) {
     let detailVc = NCDetailViewController()
     detailVc.article = article
     detailVc.hidesBottomBarWhenPushed = true
     detailVc.user = user
+    detailVc.shouldKeyboardShowUp = self.shouldKeyboardShowUp
     self.navigationController?.pushViewController(detailVc, animated: true)
   }
   

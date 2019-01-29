@@ -225,6 +225,10 @@ extension NCProfileView {
 
 //MARK : Cell Delegate
 extension NCProfileView : NCArticleCellToSingleHomeDelegate{
+  func commentIconPressed(article: NCArticle, user :NCUser) {
+    cellDelegate?.commentIconPressed(article: article, user: user)
+  }
+  
   func passArticleAndUser(article: NCArticle, user: NCUser) {
     cellDelegate?.cellWasTapped(article: article, user: user)
   }

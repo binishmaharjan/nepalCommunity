@@ -14,21 +14,25 @@ import UIKit
 protocol NCSingleHomeViewDelegate{
   func cellWasTapped(article : NCArticle, user: NCUser)
   func menuButtonWasPressed(article : NCArticle)
+  func commentIconPressed(article : NCArticle, user :NCUser)
 }
 
 protocol NCSingleToPagerDelegate{
-  func passSingleToDelegate(article:NCArticle, user : NCUser)
+  func passFromSingleToPager(article:NCArticle, user : NCUser)
   func menuButtonWasPressed(article : NCArticle)
+  func commentIconPressed(article : NCArticle, user :NCUser)
 }
 
 protocol NCPagerToHomeDelegate{
-  func passPagerToHome(article:NCArticle, user :NCUser)
+  func passFromPagerToHome(article:NCArticle, user :NCUser)
   func menuButtonWasPressed(article : NCArticle)
+  func commentIconPressed(article : NCArticle, user :NCUser)
 }
 
 protocol NCArticleCellToSingleHomeDelegate{
   func passArticleAndUser(article: NCArticle, user: NCUser)
   func menuButtonWasPressed(article : NCArticle)
+  func commentIconPressed(article : NCArticle, user :NCUser)
 }
 
 
@@ -40,6 +44,7 @@ protocol NCImageDelegate{
 
 protocol NCCellToTableViewDelegate{
   func passImageFromCellToTable(image: UIImage)
+  func commentIconWasPressed()
 }
 
 protocol NCImageSelectionDelegate: NCImageDelegate {
