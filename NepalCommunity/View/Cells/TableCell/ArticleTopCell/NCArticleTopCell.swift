@@ -476,6 +476,10 @@ extension NCArticleTopCell{
             }
           })
       }
+      //Removing the dislike since user liked this post
+      if isDisliked{
+        self.dislikeFunction()
+      }
     }else{
       self.isLiked = false
       //Saving the cache and changing the ui
@@ -515,6 +519,10 @@ extension NCArticleTopCell{
               return
             }
           })
+      }
+      //Removing the like since user disliked this post
+      if isLiked{
+        self.likeFunction()
       }
     }else{
       self.isDisliked = false
