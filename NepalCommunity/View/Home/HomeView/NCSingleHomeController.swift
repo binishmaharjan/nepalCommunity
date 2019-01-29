@@ -55,11 +55,15 @@ class NCSingleHomeController : NCViewController{
 
 //Home View Delegate
 extension NCSingleHomeController : NCSingleHomeViewDelegate{
+  func commentIconPressed(article: NCArticle, user :NCUser) {
+    singleToPagerDelegate?.commentIconPressed(article: article, user: user)
+  }
+  
   func menuButtonWasPressed(article: NCArticle) {
     singleToPagerDelegate?.menuButtonWasPressed(article: article)
   }
   
   func cellWasTapped(article: NCArticle, user: NCUser) {
-    singleToPagerDelegate?.passSingleToDelegate(article: article, user: user)
+    singleToPagerDelegate?.passFromSingleToPager(article: article, user: user)
   }
 }

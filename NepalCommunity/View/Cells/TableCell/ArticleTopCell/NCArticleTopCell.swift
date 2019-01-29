@@ -196,6 +196,7 @@ class NCArticleTopCell: UITableViewCell, NCDatabaseAccess {
     let commentIconBG = UIView()
     self.commentIconBG = commentIconBG
     container.addSubview(commentIconBG)
+    commentIconBG.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(commentIconWasTapped)))
     
     let commentIcon = NCImageButtonView()
     self.commentIcon = commentIcon
@@ -429,6 +430,13 @@ extension NCArticleTopCell{
   }
 }
 
+//MARK : Comment Icon Was Pressed
+extension NCArticleTopCell{
+  @objc private func commentIconWasTapped(){
+    cellToTableViewDelegate?.commentIconWasPressed()
+  }
+}
+
 //MARK: Button
 extension NCArticleTopCell : NCButtonDelegate{
   func buttonViewTapped(view: NCButtonView) {
@@ -441,6 +449,8 @@ extension NCArticleTopCell : NCButtonDelegate{
             let user  = NCSessionManager.shared.user
         else {return}
       NCNotificationManager.post(menuButtonPressed: article.articleId, type: DatabaseReference.ARTICLE_REF, uid: user.uid, ouid: article.uid)
+    }else if view == self.commentIcon{
+      self.commentIconWasTapped()
     }
   }
 }

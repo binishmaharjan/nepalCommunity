@@ -14,13 +14,12 @@ class NCUserProfileController : NCViewController{
   private var mainView : NCUserProfileView?
   var user : NCUser?{
     didSet{
-      guard let mainView = self.mainView else {
-        Dlog("Error")
-        return
-      }
+      guard let mainView = self.mainView else {return}
       mainView.user = user
     }
   }
+  //Should Keyboard show up when showing detail view
+  private var shouldKeyboardShowUp : Bool = false
   
   override func didInit() {
     super.didInit()
@@ -37,7 +36,7 @@ class NCUserProfileController : NCViewController{
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     self.navigationController?.navigationBar.isHidden = true
-    guard let mainView = self.mainView else {return}
+    self.shouldKeyboardShowUp = false
   }
   
   override func viewWillDisappear(_ animated: Bool) {
@@ -61,11 +60,17 @@ class NCUserProfileController : NCViewController{
 
 //MARK :  Cell Delegate
 extension NCUserProfileController : NCSingleHomeViewDelegate, NCDatabaseWrite{
+  func commentIconPressed(article: NCArticle, user :NCUser) {
+    self.shouldKeyboardShowUp = true
+    cellWasTapped(article: article, user: user)
+  }
+  
   func cellWasTapped(article: NCArticle, user: NCUser) {
     let detailVc = NCDetailViewController()
     detailVc.article = article
     detailVc.hidesBottomBarWhenPushed = true
     detailVc.user = user
+    detailVc.shouldKeyboardShowUp = self.shouldKeyboardShowUp
     self.navigationController?.pushViewController(detailVc, animated: true)
   }
   

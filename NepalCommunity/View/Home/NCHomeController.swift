@@ -38,6 +38,9 @@ class NCHomeController: NCViewController {
   //PageView With Controllers
   private var pageView:NCPageViewController?
   
+  //Should Keyboard show up when showing detail view
+  private var shouldKeyboardShowUp : Bool = false
+  
   override func viewDidLoad() {
     super.viewDidLoad()
     setup()
@@ -49,19 +52,20 @@ class NCHomeController: NCViewController {
     super.didInit()
     outsideSafeAreaTopViewTemp?.backgroundColor = NCColors.blue
     outsideSafeAreaBottomViewTemp?.backgroundColor = NCColors.white
-   
+    
   }
   
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
-     self.navigationController?.navigationBar.isHidden = true
+    self.navigationController?.navigationBar.isHidden = true
+    self.shouldKeyboardShowUp = false
   }
   
   override func viewWillDisappear(_ animated: Bool) {
     super.viewWillDisappear(animated)
   }
-
- override var preferredStatusBarStyle: UIStatusBarStyle{return .lightContent}
+  
+  override var preferredStatusBarStyle: UIStatusBarStyle{return .lightContent}
   
   private func setup(){
     let mainView = NCHomeTopView()
@@ -74,7 +78,7 @@ class NCHomeController: NCViewController {
     pageView.homeTop = homeTop
     pageView.parentVC = self
     pageView.pagerToHomeDelegate = self
-     mainView.pageView = pageView
+    mainView.pageView = pageView
     self.view.addSubview(pageView.view)
     self.addChild(pageView)
     
@@ -98,10 +102,10 @@ class NCHomeController: NCViewController {
   
   private func setupConstraints(){
     guard let mainView = self.homeTop,
-          let scrollView = self.scrollView,
-          let contentView = self.contentView,
-          let menuBar = self.menuBar,
-          let pageView = self.pageView else { return }
+      let scrollView = self.scrollView,
+      let contentView = self.contentView,
+      let menuBar = self.menuBar,
+      let pageView = self.pageView else { return }
     mainView.edgesToSuperview(excluding: .bottom, usingSafeArea : true)
     mainView.height(88)
     
@@ -121,7 +125,7 @@ class NCHomeController: NCViewController {
     
     pageView.view.topToBottom(of: mainView)
     pageView.view.leftToSuperview()
-     pageView.view.rightToSuperview()
+    pageView.view.rightToSuperview()
     pageView.view.bottomToSuperview()
   }
 }
@@ -166,7 +170,7 @@ extension NCHomeController: NCPagerToHomeDelegate, NCDatabaseWrite{
       Dlog("Cancel")
     }
     if article.uid == user.uid{
-       menuAlert.addAction(deleteMenu)
+      menuAlert.addAction(deleteMenu)
     }else{
       menuAlert.addAction(reportMenu)
     }
@@ -174,11 +178,17 @@ extension NCHomeController: NCPagerToHomeDelegate, NCDatabaseWrite{
     self.present(menuAlert, animated: true, completion: nil)
   }
   
-  func passPagerToHome(article: NCArticle, user: NCUser) {
+  func passFromPagerToHome(article: NCArticle, user: NCUser) {
     let detailVc = NCDetailViewController()
     detailVc.article = article
     detailVc.hidesBottomBarWhenPushed = true
     detailVc.user = user
+    detailVc.shouldKeyboardShowUp = self.shouldKeyboardShowUp
     self.navigationController?.pushViewController(detailVc, animated: true)
+  }
+  
+  func commentIconPressed(article: NCArticle, user: NCUser) {
+    self.shouldKeyboardShowUp = true
+    passFromPagerToHome(article: article, user: user)
   }
 }
