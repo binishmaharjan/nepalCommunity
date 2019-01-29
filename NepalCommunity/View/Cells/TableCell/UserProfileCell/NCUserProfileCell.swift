@@ -211,6 +211,8 @@ class NCUserProfileCell : UITableViewCell {
     emailLabel.topToBottom(of: nameLabel, offset : 2)
     emailLabel.leftToSuperview(offset : 8)
     emailLabel.rightToSuperview(offset : -8)
+    //Hiding the email....just too lazy too delete this
+    emailLabel.height(0)
     
     followBtnBG.topToBottom(of: emailLabel, offset : 4)
     followBtnBG.width(150)
