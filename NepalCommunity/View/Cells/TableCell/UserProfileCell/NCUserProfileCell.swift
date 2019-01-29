@@ -31,6 +31,7 @@ class NCUserProfileCell : UITableViewCell {
       followBtnBG?.layer.borderWidth = isFollowed ? 0 : 2
       followBtn?.setTitleColor(isFollowed ? NCColors.white : NCColors.blue, for: .normal)
       followBtnBG?.backgroundColor = isFollowed ? NCColors.blue : NCColors.white
+      followBtn?.setTitle(isFollowed ? LOCALIZE("Following") : LOCALIZE("Follow"), for: .normal)
     }
   }
   
