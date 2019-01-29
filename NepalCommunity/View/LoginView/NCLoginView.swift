@@ -41,6 +41,9 @@ class NCLoginView : NCBaseView{
   private var noAccountLbl: UILabel?
   private var signUpLbl: UILabel?
   private var bottomLblStack : UIStackView?
+  private var hideBtnBG : UIView?
+  private var hideBtn : UIButton?
+  private var isPasswordHidden : Bool = true
 
   //MARK: Methods
   override func didInit() {
@@ -143,7 +146,18 @@ class NCLoginView : NCBaseView{
     passwordField.placeholder = LOCALIZE("Password")
     passwordField.font = NCFont.normal(size: LoginConstant.FONT_SIZE)
     passwordField.delegate = self
+    passwordField.isSecureTextEntry = true
     passwordFieldBG.addSubview(passwordField)
+    
+    let hideBtnBG = UIView()
+    self.hideBtnBG = hideBtnBG
+    passwordFieldBG.addSubview(hideBtnBG)
+    
+    let hideBtn = UIButton()
+    self.hideBtn = hideBtn
+    hideBtn.setImage(UIImage(named: "icon_hidden"), for: .normal)
+    hideBtnBG.addSubview(hideBtn)
+    hideBtn.addTarget(self, action: #selector(hideFunction), for: .touchUpInside)
     
     //SignIn Button
     let signInBtnBG = NCGradientView(
@@ -230,6 +244,8 @@ class NCLoginView : NCBaseView{
           let scrollView = self.scrollView,
           let contentView = self.contentView,
           let titleText = self.titleText,
+          let hideBtnBG = self.hideBtnBG,
+          let hideBtn = self.hideBtn,
           //let topGradientView = self.topGradientView,
           let bottomLblStack = self.bottomLblStack else { return }
     
@@ -270,10 +286,14 @@ class NCLoginView : NCBaseView{
     passwordFieldBG.right(to: usernameFieldBG)
     passwordFieldBG.height(to: usernameFieldBG)
     
-    passwordField.edgesToSuperview(insets: UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16))
-  
+    passwordField.edgesToSuperview(excluding : .right ,insets: UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16))
+    passwordField.rightToLeft(of: hideBtnBG)
     
+    hideBtnBG.edgesToSuperview(excluding: .left,insets: UIEdgeInsets(top: 2, left: 0, bottom: 2, right: 2))
+    hideBtnBG.width(LoginConstant.FIELD_HEIGHT)
     
+    hideBtn.edgesToSuperview()
+
     signInBtnBG.topToBottom(of: passwordFieldBG, offset: LoginConstant.BUTTON_TOP_OFF)
     signInBtnBG.leftToSuperview(offset : LoginConstant.SIDE_OFF)
     signInBtnBG.rightToSuperview(offset : -LoginConstant.SIDE_OFF)
@@ -318,6 +338,15 @@ extension NCLoginView{
   @objc func signUpButtonPressed(){
     guard let delegate  = self.signUpDelegate else { return }
     delegate.signUpButtonPressed()
+  }
+}
+
+//MARK : Password
+extension NCLoginView{
+  @objc func hideFunction(){
+    isPasswordHidden = !isPasswordHidden
+    passwordField?.isSecureTextEntry = isPasswordHidden ? true : false
+    hideBtn?.setImage(isPasswordHidden ? UIImage(named: "icon_hidden") : UIImage(named: "icon_hide"), for: .normal)
   }
 }
 

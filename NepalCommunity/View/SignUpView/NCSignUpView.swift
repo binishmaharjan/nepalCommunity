@@ -48,6 +48,9 @@ class NCSignUpView : NCBaseView{
   var emailField :UITextField?
   private weak var signUpBtnBG :NCGradientView?
   weak var signUpBtn: NCTextButton?
+  private var hideBtnBG : UIView?
+  private var hideBtn : UIButton?
+  private var isPasswordHidden : Bool = true
   
   
   //MARK: Methods
@@ -155,7 +158,18 @@ class NCSignUpView : NCBaseView{
     passwordField.placeholder = LOCALIZE("Password")
     passwordField.font = NCFont.normal(size: SignUpConstants.FONT_SIZE)
     passwordFieldBG.addSubview(passwordField)
+    passwordField.isSecureTextEntry = true
     passwordField.delegate = self
+    
+    let hideBtnBG = UIView()
+    self.hideBtnBG = hideBtnBG
+    passwordFieldBG.addSubview(hideBtnBG)
+    
+    let hideBtn = UIButton()
+    self.hideBtn = hideBtn
+    hideBtn.setImage(UIImage(named: "icon_hidden"), for: .normal)
+    hideBtnBG.addSubview(hideBtn)
+    hideBtn.addTarget(self, action: #selector(hideFunction), for: .touchUpInside)
     
     //Email
     let emailTitle = UILabel()
@@ -220,6 +234,8 @@ class NCSignUpView : NCBaseView{
       let titleLbl = self.titleLbl,
       let backBtn = self.backBtn,
       let iconView = self.iconView,
+      let hideBtnBG = self.hideBtnBG,
+      let hideBtn = self.hideBtn,
       let cameraIcon = self.cameraIcon  else { return }
     
     //Height of the contentView is decided by the bottom view i.e signupbtn
@@ -268,7 +284,13 @@ class NCSignUpView : NCBaseView{
     passwordFieldBG.right(to: usernameFieldBG)
     passwordFieldBG.height(to: usernameFieldBG)
     
-    passwordField.edgesToSuperview(insets: UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16))
+    passwordField.edgesToSuperview(excluding : .right ,insets: UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16))
+    passwordField.rightToLeft(of: hideBtnBG)
+    
+    hideBtnBG.edgesToSuperview(excluding: .left,insets: UIEdgeInsets(top: 2, left: 0, bottom: 2, right: 2))
+    hideBtnBG.width(SignUpConstants.FIELD_HEIGHT)
+    
+    hideBtn.edgesToSuperview()
     
     emailTitle.topToBottom(of: passwordFieldBG, offset: SignUpConstants.FIELD_TOP_OFF)
     emailTitle.leftToSuperview(offset : SignUpConstants.SIDE_OFF)
@@ -310,6 +332,15 @@ extension NCSignUpView: UITextFieldDelegate{
       emailField?.resignFirstResponder()
     }
     return true
+  }
+}
+
+//MARK : Password
+extension NCSignUpView{
+  @objc func hideFunction(){
+    isPasswordHidden = !isPasswordHidden
+    passwordField?.isSecureTextEntry = isPasswordHidden ? true : false
+    hideBtn?.setImage(isPasswordHidden ? UIImage(named: "icon_hidden") : UIImage(named: "icon_hide"), for: .normal)
   }
 }
 
