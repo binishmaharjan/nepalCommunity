@@ -132,6 +132,12 @@ class NCHomeController: NCViewController {
 
 
 extension NCHomeController: NCPagerToHomeDelegate, NCDatabaseWrite{
+  func userImageOrNamePressed(user: NCUser) {
+    let vc = NCUserProfileController()
+    vc.user = user
+    self.navigationController?.pushViewController(vc, animated: true)
+  }
+  
   func menuButtonWasPressed(article: NCArticle) {
     guard let user = NCSessionManager.shared.user else { return }
     let articleId = article.articleId

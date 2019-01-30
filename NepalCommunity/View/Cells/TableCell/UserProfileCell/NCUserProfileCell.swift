@@ -25,6 +25,8 @@ class NCUserProfileCell : UITableViewCell {
   private var seperatorView : UIView?
   private var followBtnBG : UIView?
   private var followBtn : UIButton?
+  private var FOLLOWBTN_HEIGHT : CGFloat = 30
+  private var followBtnHeightConstraints : Constraint?
   
   private var isFollowed : Bool = false{
     didSet{
@@ -51,6 +53,10 @@ class NCUserProfileCell : UITableViewCell {
       self.relayout()
       self.observeFollower()
       self.observeFollowing()
+      //if user is self
+      if user?.uid == NCSessionManager.shared.user?.uid{
+        followBtnHeightConstraints?.constant = 0
+      }
     }
   }
   
@@ -217,7 +223,7 @@ class NCUserProfileCell : UITableViewCell {
     
     followBtnBG.topToBottom(of: emailLabel, offset : 4)
     followBtnBG.width(150)
-    followBtnBG.height(30)
+    followBtnHeightConstraints =  followBtnBG.height(FOLLOWBTN_HEIGHT)
     followBtnBG.centerXToSuperview()
     
     followBtn.edgesToSuperview()

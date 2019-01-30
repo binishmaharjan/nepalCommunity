@@ -55,6 +55,10 @@ class NCSingleHomeController : NCViewController{
 
 //Home View Delegate
 extension NCSingleHomeController : NCSingleHomeViewDelegate{
+  func userImageOrNamePressed(user: NCUser) {
+    singleToPagerDelegate?.userImageOrNamePressed(user: user)
+  }
+  
   func commentIconPressed(article: NCArticle, user :NCUser) {
     singleToPagerDelegate?.commentIconPressed(article: article, user: user)
   }

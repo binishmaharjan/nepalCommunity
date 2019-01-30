@@ -58,6 +58,10 @@ class NCProfileController : NCViewController{
 
 //MARK :  Cell Delegate
 extension NCProfileController : NCSingleHomeViewDelegate, NCDatabaseWrite{
+  func userImageOrNamePressed(user: NCUser) {
+    //No Need To Implement
+  }
+  
   func commentIconPressed(article: NCArticle, user :NCUser) {
     self.shouldKeyboardShowUp = true
     cellWasTapped(article: article, user: user)

@@ -24,7 +24,7 @@ class NCUserCell : UITableViewCell{
       userNameLbl?.text = user.username
       userEmailLbl?.text = user.email
       userImage?.sd_setImage(with: URL(string: user.iconUrl), completed: { (image, error, _, _) in
-        if let error = error {return}
+        if let _ = error {return}
         
         self.userImage?.image = image
       })

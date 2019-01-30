@@ -64,6 +64,7 @@ class NCDetailViewController: NCViewController{
     self.mainView = mainView
     mainView.delegate = self
     mainView.imageDelegate = self
+    mainView.detailDelegate = self
     self.view.addSubview(mainView)
   }
   
@@ -86,7 +87,13 @@ extension NCDetailViewController : NCButtonDelegate{
 }
 
 //MARK: Full Image Detail
-extension NCDetailViewController : NCImageDelegate{
+extension NCDetailViewController : NCImageDelegate, NCDetailViewDelegate{
+  func userImageOrNameIsTapped(user: NCUser) {
+    let vc = NCUserProfileController()
+    vc.user = user
+    self.navigationController?.pushViewController(vc, animated: true)
+  }
+  
   func imagePressed(image: UIImage) {
     let vc = NCImageDetailViewController()
     vc.image = image

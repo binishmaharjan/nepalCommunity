@@ -119,6 +119,8 @@ class NCArticleCell : UITableViewCell, NCDatabaseAccess{
     userImage.layer.cornerRadius = 5.0
     userImage.contentMode = .scaleAspectFill
     userImage.clipsToBounds = true
+    userImage.isUserInteractionEnabled = true
+    userImage.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(userImageOrNamePressed)))
     
     //NameLabel Label
     let nameLabel = UILabel()
@@ -127,6 +129,8 @@ class NCArticleCell : UITableViewCell, NCDatabaseAccess{
     nameLabel.textColor = NCColors.black
     nameLabel.font = NCFont.bold(size: 14)
     nameLabel.adjustsFontSizeToFitWidth = true
+    nameLabel.isUserInteractionEnabled = true
+    nameLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(userImageOrNamePressed)))
     container.addSubview(nameLabel)
     
     //Category Label
@@ -290,7 +294,6 @@ class NCArticleCell : UITableViewCell, NCDatabaseAccess{
     
     nameLabel.top(to: userImageBG)
     nameLabel.leftToRight(of: userImageBG, offset : 8)
-    nameLabel.rightToLeft(of: menuIconBG)
     
     categoryBG.left(to: nameLabel)
     categoryBG.bottom(to: userImageBG)
@@ -398,7 +401,7 @@ class NCArticleCell : UITableViewCell, NCDatabaseAccess{
   }
 }
 
-//MARK : Cell Tapped && Comment Icon
+//MARK : Cell Tapped && Comment Icon && UserImage
 extension NCArticleCell{
   @objc private func cellWasTapped(){
     guard let article = self.article,
@@ -412,6 +415,11 @@ extension NCArticleCell{
       let user = self.user
       else { return}
     articleCellSingleHomeDelegate?.commentIconPressed(article: article,user:user )
+  }
+  
+  @objc private func userImageOrNamePressed(){
+    guard let user = self.user else {return}
+    articleCellSingleHomeDelegate?.userImageOrNamePressed(user: user)
   }
 }
 

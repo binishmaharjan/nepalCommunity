@@ -76,6 +76,9 @@ class NCCommentCell : UITableViewCell, NCDatabaseAccess{
     }
   }
   
+  //CommentCell Delegate
+  var commentCellDelegate : NCCellToTableViewDelegate?
+  
   private func setup(){
     self.backgroundColor = NCColors.white
     
@@ -101,6 +104,8 @@ class NCCommentCell : UITableViewCell, NCDatabaseAccess{
     userImage.image = UIImage(named: "50")
     userImage.layer.cornerRadius = 5.0
     userImage.contentMode = .scaleAspectFill
+    userImage.isUserInteractionEnabled = true
+    userImage.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(userImageOrNamePressed)))
     userImage.clipsToBounds = true
     
     //NameLabel Label
@@ -110,6 +115,8 @@ class NCCommentCell : UITableViewCell, NCDatabaseAccess{
     nameLabel.textColor = NCColors.black
     nameLabel.font = NCFont.bold(size: 14)
     nameLabel.adjustsFontSizeToFitWidth = true
+    nameLabel.isUserInteractionEnabled = true
+    nameLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(userImageOrNamePressed)))
     container.addSubview(nameLabel)
     
     let dateLabel = UILabel()
@@ -230,7 +237,6 @@ class NCCommentCell : UITableViewCell, NCDatabaseAccess{
     
     nameLabel.top(to: userImageBG)
     nameLabel.leftToRight(of: userImageBG, offset : 8)
-    nameLabel.rightToLeft(of: menuIconBG)
     
     dateLabel?.topToBottom(of: nameLabel,offset: 1)
     dateLabel?.leftToRight(of: userImage, offset: 8)
@@ -309,6 +315,16 @@ class NCCommentCell : UITableViewCell, NCDatabaseAccess{
   }
 }
 
+//MARK : Username Or Image Tapped
+extension NCCommentCell{
+  @objc private func userImageOrNamePressed(){
+    guard let user = self.user else {return}
+    commentCellDelegate?.userImageOrNamePressed(user: user)
+  }
+}
+
+
+//MARK: Button Delegate
 extension NCCommentCell: NCButtonDelegate{
   func buttonViewTapped(view: NCButtonView) {
     
