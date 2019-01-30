@@ -11,6 +11,7 @@ import UIKit
 class NCViewController: UIViewController{
   var isNib:Bool = false
   var statusBarStyle:UIStatusBarStyle = .default
+  var base:UIView = UIView()
   
   weak var outsideSafeAreaTopViewTemp:UIView?
   weak var outsideSafeAreaBottomViewTemp:UIView?
@@ -30,6 +31,37 @@ class NCViewController: UIViewController{
   
   func didInit() {
     setup()
+  }
+  
+  override func viewDidLoad() {
+    super.viewDidLoad()
+    super.viewDidLoad()
+    
+    self.view.backgroundColor = NCColors.white
+    
+    self.navigationController?.setNavigationBarHidden(true, animated: false)
+    
+    if !isNib{
+      self.view.addSubview(base)
+      base.frame = self.view.bounds
+      base.backgroundColor = NCColors.white
+      if let tabBar = self.tabBarController?.tabBar{
+       base.frame.size.height = self.view.frame.size.height - tabBar.frame.size.height
+      }
+    }
+  }
+  
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+    if self.base.subviews.count == 0 {
+      self.base.backgroundColor = NCColors.clear
+      NCPager.shared.currentViewController = self
+    }
+  }
+  
+  override func viewDidAppear(_ animated: Bool) {
+    super.viewDidAppear(animated)
+    NCPager.shared.currentViewController = self
   }
   
   private func setup() {

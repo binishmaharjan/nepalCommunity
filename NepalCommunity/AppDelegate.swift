@@ -16,6 +16,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
   var window: UIWindow?
   var homeBarNavigation: UINavigationController?
+  var tabBarController : NCTabViewController?
 
   func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
     //Firebase Server
@@ -25,6 +26,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     window = UIWindow(frame: UIScreen.main.bounds)
     window?.makeKeyAndVisible()
     let tabBar = NCTabViewController()
+    self.tabBarController = tabBar
     window?.rootViewController = tabBar
     
     return true
