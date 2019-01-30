@@ -12,6 +12,11 @@ import FirebaseFirestore
 import CodableFirebase
 import SDWebImage
 
+
+protocol NCDetailViewDelegate {
+  func userImageOrNameIsTapped(user : NCUser)
+}
+
 class NCDetailView : NCBaseView{
 
   //Header
@@ -63,6 +68,8 @@ class NCDetailView : NCBaseView{
       self.loadComments()
     }
   }
+  
+  var detailDelegate : NCDetailViewDelegate?
   var user: NCUser?
   
   //Comment
@@ -254,11 +261,13 @@ extension NCDetailView : UITableViewDelegate, UITableViewDataSource{
     
     if indexPath.row == 1, let cell = tableView.dequeueReusableCell(withIdentifier: CELL3_ID, for: indexPath) as? Cell3{
       cell.title = "Comments"
+      cell.selectionStyle = .none
     return cell
     }
     
     if indexPath.row > 1, let cell = tableView.dequeueReusableCell(withIdentifier: CELL2_ID, for: indexPath) as? Cell2{
       cell.selectionStyle = .none
+      cell.commentCellDelegate = self
       cell.comment =  comments[indexPath.row - 2]
       return cell
     }
@@ -289,6 +298,10 @@ extension NCDetailView : UITableViewDelegate, UITableViewDataSource{
 
 //ImageDelegate
 extension NCDetailView : NCCellToTableViewDelegate{
+  func userImageOrNamePressed(user: NCUser) {
+    detailDelegate?.userImageOrNameIsTapped(user: user)
+  }
+  
   func commentIconWasPressed() {
     self.commentField?.becomeFirstResponder()
   }

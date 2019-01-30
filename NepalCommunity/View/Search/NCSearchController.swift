@@ -48,9 +48,9 @@ class NCSearchController : NCViewController{
 }
 extension NCSearchController : NCSearchDelegate{
   func cellWasTapped(user: NCUser) {
-   let vc = NCUserProfileController()
+    let vc = NCUserProfileController()
     vc.hidesBottomBarWhenPushed = true
     vc.user = user
-  self.navigationController?.pushViewController(vc, animated: true)
+    self.navigationController?.pushViewController(vc, animated: true)
   }
 }

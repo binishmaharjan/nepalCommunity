@@ -231,6 +231,10 @@ extension NCPageViewController: UIScrollViewDelegate{
 
 //MARK
 extension NCPageViewController: NCSingleToPagerDelegate{
+  func userImageOrNamePressed(user: NCUser) {
+    pagerToHomeDelegate?.userImageOrNamePressed(user: user)
+  }
+  
   func commentIconPressed(article: NCArticle, user :NCUser) {
     pagerToHomeDelegate?.commentIconPressed(article: article, user: user)
   }

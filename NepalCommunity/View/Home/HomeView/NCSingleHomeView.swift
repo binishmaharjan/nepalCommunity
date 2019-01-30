@@ -276,6 +276,10 @@ extension NCSingleHomeView : UITableViewDelegate, UITableViewDataSource{
 }
 
 extension NCSingleHomeView : NCArticleCellToSingleHomeDelegate{
+  func userImageOrNamePressed(user: NCUser) {
+    homeViewDelegate?.userImageOrNamePressed(user: user)
+  }
+  
   func commentIconPressed(article: NCArticle, user :NCUser) {
     homeViewDelegate?.commentIconPressed(article: article, user: user)
   }
