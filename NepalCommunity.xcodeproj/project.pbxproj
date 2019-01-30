@@ -81,6 +81,9 @@
 		ACCC08BE218018DC00D6391A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = ACCC08BD218018DC00D6391A /* GoogleService-Info.plist */; };
 		ACD4FE7D21AE5DC000C1F534 /* NCArticle.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACD4FE7C21AE5DC000C1F534 /* NCArticle.swift */; };
 		ACDEACDC219E4C5B009964AE /* NCPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACDEACDB219E4C5B009964AE /* NCPageViewController.swift */; };
+		ACE361F3220139C20023CC26 /* NCPager.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACE361F2220139C20023CC26 /* NCPager.swift */; };
+		ACE361F522013DBD0023CC26 /* UINavigation+Transitions.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACE361F422013DBD0023CC26 /* UINavigation+Transitions.swift */; };
+		ACE361F822013E590023CC26 /* NCPager+Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACE361F722013E590023CC26 /* NCPager+Alert.swift */; };
 		D0D2F491D22460BBF516816D /* Pods_NepalCommunity.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 702D276B339B5FD20876420C /* Pods_NepalCommunity.framework */; };
 /* End PBXBuildFile section */
 
@@ -164,6 +167,9 @@
 		ACCC08BD218018DC00D6391A /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		ACD4FE7C21AE5DC000C1F534 /* NCArticle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCArticle.swift; sourceTree = "<group>"; };
 		ACDEACDB219E4C5B009964AE /* NCPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCPageViewController.swift; sourceTree = "<group>"; };
+		ACE361F2220139C20023CC26 /* NCPager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCPager.swift; sourceTree = "<group>"; };
+		ACE361F422013DBD0023CC26 /* UINavigation+Transitions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UINavigation+Transitions.swift"; sourceTree = "<group>"; };
+		ACE361F722013E590023CC26 /* NCPager+Alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NCPager+Alert.swift"; sourceTree = "<group>"; };
 		B302AD8A90610761900FB03F /* Pods-NepalCommunity.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NepalCommunity.debug.xcconfig"; path = "Pods/Target Support Files/Pods-NepalCommunity/Pods-NepalCommunity.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -309,6 +315,7 @@
 		AC1EDCAF218147500089C7AF /* Utility */ = {
 			isa = PBXGroup;
 			children = (
+				ACE361F622013E270023CC26 /* Pager */,
 				AC69B34021ABBCE8008BE631 /* ImageDownloader */,
 				AC69B33D21ABB242008BE631 /* SessionManager */,
 				AC1EDCCB2182A1040089C7AF /* Extension */,
@@ -344,6 +351,7 @@
 				ACA50A7C2182B8CB00B2040A /* UIButton+Animation.swift */,
 				ACA50A922186AF4100B2040A /* Array+extension.swift */,
 				AC2FC9E621C33AC500052D1F /* NCDate.swift */,
+				ACE361F422013DBD0023CC26 /* UINavigation+Transitions.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -657,6 +665,15 @@
 			path = PageView;
 			sourceTree = "<group>";
 		};
+		ACE361F622013E270023CC26 /* Pager */ = {
+			isa = PBXGroup;
+			children = (
+				ACE361F2220139C20023CC26 /* NCPager.swift */,
+				ACE361F722013E590023CC26 /* NCPager+Alert.swift */,
+			);
+			path = Pager;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -851,6 +868,7 @@
 				ACB5289821FE875800A4E98E /* NCUserProfileView.swift in Sources */,
 				ACA12F1721F6B97A00E56664 /* NCSearchView.swift in Sources */,
 				AC0322D221C88E9300E13780 /* NCTitleCell.swift in Sources */,
+				ACE361F822013E590023CC26 /* NCPager+Alert.swift in Sources */,
 				AC2FC9DC21C0D28E00052D1F /* NCimageDetailView.swift in Sources */,
 				AC71845521A4F7610056DF3F /* NCCreateArticleView.swift in Sources */,
 				ACB249162187F2C3008B510E /* NCSignUpAndSignIn.swift in Sources */,
@@ -891,8 +909,10 @@
 				ACB2491C21893852008B510E /* NCActivityIndicator.swift in Sources */,
 				AC0A0AB321FABA4300FFB17F /* NCUserProfileController.swift in Sources */,
 				ACB249142186E353008B510E /* NCAccountType.swift in Sources */,
+				ACE361F3220139C20023CC26 /* NCPager.swift in Sources */,
 				AC00BCE121C36A7800984F9D /* BoolWrapper.swift in Sources */,
 				ACD4FE7D21AE5DC000C1F534 /* NCArticle.swift in Sources */,
+				ACE361F522013DBD0023CC26 /* UINavigation+Transitions.swift in Sources */,
 				ACA50A932186AF4100B2040A /* Array+extension.swift in Sources */,
 				AC1EDCCD2182A1220089C7AF /* UIView+Draw.swift in Sources */,
 				AC17189D21BA391400E3E118 /* NCCommentCell.swift in Sources */,
