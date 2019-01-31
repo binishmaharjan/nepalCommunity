@@ -100,10 +100,14 @@ class NCMyUserProfileCell : UITableViewCell{
     let followView = UIView()
     self.followView = followView
     container.addSubview(followView)
+    followView.isUserInteractionEnabled = true
+    followView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(followersAreaTapped)))
     
     let followingView = UIView()
     self.followingView = followingView
     container.addSubview(followingView)
+    followingView.isUserInteractionEnabled = true
+    followingView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(followingAreaTapped)))
     
     //Follow Label
     let followLabel = UILabel()
@@ -290,5 +294,18 @@ extension NCMyUserProfileCell{
   func removeObserveFollowing(){
     guard let followerListener = self.followerListener else {return}
     followerListener.remove()
+  }
+}
+
+//MARK : Following & Followers Pressed
+extension NCMyUserProfileCell{
+  @objc func followingAreaTapped(){
+    guard let user = self.user else {return}
+    NCPager.shared.showFollowingList(user: user)
+  }
+  
+  @objc func followersAreaTapped(){
+    guard let user = self.user else {return}
+    NCPager.shared.showFollowerList(user: user)
   }
 }

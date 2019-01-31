@@ -118,10 +118,14 @@ class NCUserProfileCell : UITableViewCell {
     let followView = UIView()
     self.followView = followView
     container.addSubview(followView)
+    followView.isUserInteractionEnabled = true
+    followView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(followersAreaTapped)))
     
     let followingView = UIView()
     self.followingView = followingView
     container.addSubview(followingView)
+    followingView.isUserInteractionEnabled = true
+    followingView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(followingAreaTapped)))
     
     //Follow Label
     let followLabel = UILabel()
@@ -427,9 +431,21 @@ extension NCUserProfileCell : NCDatabaseAccess{
   }
 }
 
+//MARK : Following & Followers Pressed
 extension NCUserProfileCell{
   @objc private func followBtnPressed(){
-    Dlog("Follow")
     self.followFunction()
   }
+  
+  @objc func followingAreaTapped(){
+    guard let user = self.user else {return}
+    NCPager.shared.showFollowingList(user: user)
+  }
+  
+  @objc func followersAreaTapped(){
+    guard let user = self.user else {return}
+    NCPager.shared.showFollowerList(user: user)
+  }
+  
 }
+

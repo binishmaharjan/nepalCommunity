@@ -84,6 +84,9 @@
 		ACE361F3220139C20023CC26 /* NCPager.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACE361F2220139C20023CC26 /* NCPager.swift */; };
 		ACE361F522013DBD0023CC26 /* UINavigation+Transitions.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACE361F422013DBD0023CC26 /* UINavigation+Transitions.swift */; };
 		ACE361F822013E590023CC26 /* NCPager+Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACE361F722013E590023CC26 /* NCPager+Alert.swift */; };
+		ACE36202220146550023CC26 /* NCUserListController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACE36201220146550023CC26 /* NCUserListController.swift */; };
+		ACE36204220146900023CC26 /* NCUserListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACE36203220146900023CC26 /* NCUserListView.swift */; };
+		ACE3620622014A340023CC26 /* MQPager+push.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACE3620522014A340023CC26 /* MQPager+push.swift */; };
 		D0D2F491D22460BBF516816D /* Pods_NepalCommunity.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 702D276B339B5FD20876420C /* Pods_NepalCommunity.framework */; };
 /* End PBXBuildFile section */
 
@@ -170,6 +173,9 @@
 		ACE361F2220139C20023CC26 /* NCPager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCPager.swift; sourceTree = "<group>"; };
 		ACE361F422013DBD0023CC26 /* UINavigation+Transitions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UINavigation+Transitions.swift"; sourceTree = "<group>"; };
 		ACE361F722013E590023CC26 /* NCPager+Alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NCPager+Alert.swift"; sourceTree = "<group>"; };
+		ACE36201220146550023CC26 /* NCUserListController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCUserListController.swift; sourceTree = "<group>"; };
+		ACE36203220146900023CC26 /* NCUserListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCUserListView.swift; sourceTree = "<group>"; };
+		ACE3620522014A340023CC26 /* MQPager+push.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MQPager+push.swift"; sourceTree = "<group>"; };
 		B302AD8A90610761900FB03F /* Pods-NepalCommunity.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NepalCommunity.debug.xcconfig"; path = "Pods/Target Support Files/Pods-NepalCommunity/Pods-NepalCommunity.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -286,6 +292,7 @@
 		AC1EDCAB2181467D0089C7AF /* View */ = {
 			isa = PBXGroup;
 			children = (
+				ACE36200220145F70023CC26 /* Followers&Following */,
 				AC0A0AB121FABA1F00FFB17F /* UserProfile */,
 				ACA12F0421F1618400E56664 /* Profile */,
 				AC2FC9D821C0D20600052D1F /* ImageDetailView */,
@@ -670,8 +677,18 @@
 			children = (
 				ACE361F2220139C20023CC26 /* NCPager.swift */,
 				ACE361F722013E590023CC26 /* NCPager+Alert.swift */,
+				ACE3620522014A340023CC26 /* MQPager+push.swift */,
 			);
 			path = Pager;
+			sourceTree = "<group>";
+		};
+		ACE36200220145F70023CC26 /* Followers&Following */ = {
+			isa = PBXGroup;
+			children = (
+				ACE36201220146550023CC26 /* NCUserListController.swift */,
+				ACE36203220146900023CC26 /* NCUserListView.swift */,
+			);
+			path = "Followers&Following";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -852,6 +869,7 @@
 				ACDEACDC219E4C5B009964AE /* NCPageViewController.swift in Sources */,
 				AC9F2568219C06530090A77E /* NCHomeController.swift in Sources */,
 				AC2FC9DA21C0D28100052D1F /* NCImageDetailViewController.swift in Sources */,
+				ACE3620622014A340023CC26 /* MQPager+push.swift in Sources */,
 				ACA50A812185F88900B2040A /* NCGradientView.swift in Sources */,
 				AC0322D021C74C6000E13780 /* NCDummyViewController.swift in Sources */,
 				AC9F2575219D12BC0090A77E /* NCMenuCell.swift in Sources */,
@@ -893,6 +911,7 @@
 				AC9F256A219C07BD0090A77E /* NCNaviagtionController.swift in Sources */,
 				AC9727A521B8E11500F265FD /* NCDetailView.swift in Sources */,
 				ACB2491A2187F77B008B510E /* NCDatebaseWrite.swift in Sources */,
+				ACE36204220146900023CC26 /* NCUserListView.swift in Sources */,
 				ACA50A7D2182B8CB00B2040A /* UIButton+Animation.swift in Sources */,
 				AC423AB921ED8A12008B81AA /* NCComment.swift in Sources */,
 				AC9F256E219D061D0090A77E /* NCHomeTopView.swift in Sources */,
@@ -910,6 +929,7 @@
 				AC0A0AB321FABA4300FFB17F /* NCUserProfileController.swift in Sources */,
 				ACB249142186E353008B510E /* NCAccountType.swift in Sources */,
 				ACE361F3220139C20023CC26 /* NCPager.swift in Sources */,
+				ACE36202220146550023CC26 /* NCUserListController.swift in Sources */,
 				AC00BCE121C36A7800984F9D /* BoolWrapper.swift in Sources */,
 				ACD4FE7D21AE5DC000C1F534 /* NCArticle.swift in Sources */,
 				ACE361F522013DBD0023CC26 /* UINavigation+Transitions.swift in Sources */,
