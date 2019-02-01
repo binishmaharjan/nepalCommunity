@@ -23,4 +23,10 @@ extension NCPager{
     vc.titleString = NCUserListType.following
     push(viewController: vc)
   }
+  
+  func showSettingPage(){
+    let vc = NCSettingController()
+    vc.titleString = LOCALIZE("Setting")
+    push(viewController: vc)
+  }
 }
