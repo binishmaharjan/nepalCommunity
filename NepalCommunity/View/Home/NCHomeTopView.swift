@@ -8,7 +8,6 @@
 
 import UIKit
 import TinyConstraints
-import FirebaseAuth
 
 class NCHomeTopView: NCBaseView{
   
@@ -68,13 +67,6 @@ class NCHomeTopView: NCBaseView{
     let menuBar = NCMenuBar()
     self.menuBar = menuBar
     self.addSubview(menuBar)
-    
-    let button = UIButton(frame: CGRect(x: 0, y: 0, width: 50, height: 20))
-    button.setTitle("LOGOUT", for: .normal)
-    button.addTarget(self, action: #selector(logOutFun), for: .touchUpInside)
-    header?.addSubview(button)
-    button.topToSuperview()
-    button.rightToSuperview()
   
   }
   
@@ -86,16 +78,5 @@ class NCHomeTopView: NCBaseView{
     menuBar.leftToSuperview()
     menuBar.rightToSuperview()
     menuBar.height(HEADER_H)
-  }
-  
-  
-  //TODO: Remove this and the firebase auth library and Button
-  @objc private func logOutFun(){
-    let firebaseAuth = Auth.auth()
-    do{
-      try firebaseAuth.signOut()
-    }catch{
-      debugPrint("Error signing out \(error.localizedDescription)")
-    }
   }
 }

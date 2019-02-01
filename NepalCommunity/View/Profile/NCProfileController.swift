@@ -128,6 +128,7 @@ extension NCProfileController : NCButtonDelegate{
   func buttonViewTapped(view: NCButtonView) {
     if view == mainView?.settingBtn{
       Dlog("Setting")
+      NCPager.shared.showSettingPage()
     }
   }
 }
