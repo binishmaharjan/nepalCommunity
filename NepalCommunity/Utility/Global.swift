@@ -71,6 +71,8 @@ class DatabaseReference{
   static let EMAIL = "email"
   static let FOLLOWERS = "followers"
   static let FOLLOWING = "following"
+  static let LIKED_ARTICLE = "like_article"
+  static let DISLIKE_ARTICLE = "dislike_article"
   
   
   //Article
