@@ -29,4 +29,18 @@ extension NCPager{
     vc.titleString = LOCALIZE("Setting")
     push(viewController: vc)
   }
+  
+  func showLikedArticlePage(user : NCUser,title :NCArticleListType){
+    let vc = NCArticleListController()
+    vc.user = user
+    vc.titleString = title
+    push(viewController: vc)
+  }
+  
+  func showDislikeArticlePage(user : NCUser, title : NCArticleListType){
+    let vc = NCArticleListController()
+    vc.user = user
+    vc.titleString = title
+    push(viewController: vc)
+  }
 }

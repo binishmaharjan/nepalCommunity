@@ -69,7 +69,7 @@ extension NCDatabaseWrite{
             if let error = error{
               DispatchQueue.main.async {completion?(error)}
             }else{
-             DispatchQueue.main.async {completion?(nil)}
+              DispatchQueue.main.async {completion?(nil)}
             }
         }
       }
@@ -102,7 +102,7 @@ extension NCDatabaseWrite{
             if let error = error{
               DispatchQueue.main.async {completion?(error)}
             }else{
-               DispatchQueue.main.async {completion?(nil)}
+              DispatchQueue.main.async {completion?(nil)}
             }
         }
       }
@@ -144,26 +144,93 @@ extension NCDatabaseWrite{
   
   func report(id: String, type : String,uid:String, completion : ((Error?) -> ())?){
     DispatchQueue.global(qos: .default).async {
-    Firestore.firestore()
-      .collection(DatabaseReference.REPORT_REF)
-      .document(id)
-      .collection(DatabaseReference.REPORT_IDS)
-      .document(uid)
-      .setData([
-        DatabaseReference.DATE_CREATED : NCDate.dateToString(),
-        DatabaseReference.REPORT_TYPE : type
-      ]) { (error) in
-        if let error = error{
-          DispatchQueue.main.async {
-            completion?(error)
+      Firestore.firestore()
+        .collection(DatabaseReference.REPORT_REF)
+        .document(id)
+        .collection(DatabaseReference.REPORT_IDS)
+        .document(uid)
+        .setData([
+          DatabaseReference.DATE_CREATED : NCDate.dateToString(),
+          DatabaseReference.REPORT_TYPE : type
+        ]) { (error) in
+          if let error = error{
+            DispatchQueue.main.async {
+              completion?(error)
+            }
+          }else{
+            DispatchQueue.main.async {
+              completion?(nil)
+            }
           }
-        }else{
-          DispatchQueue.main.async {
-            completion?(nil)
-          }
-        }
       }
     }
     
+  }
+  
+  func registerLikedArticle(uid : String, aritcleid:String, completion :((Error?)->())?){
+    DispatchQueue.global(qos: .default).async {
+      Firestore.firestore()
+        .collection(DatabaseReference.USERS_REF)
+        .document(uid)
+        .collection(DatabaseReference.LIKED_ARTICLE)
+        .document(aritcleid)
+        .setData([DatabaseReference.ARTICLE_ID:aritcleid,
+                  DatabaseReference.DATE_CREATED : NCDate.dateToString()], completion: { (error) in
+          if let error = error {
+            completion?(error)
+          }
+          completion?(nil)
+        })
+    }
+  }
+  
+  
+  func registerDislikeArticle(uid : String, aritcleid:String, completion :((Error?)->())?){
+    DispatchQueue.global(qos: .default).async {
+      Firestore.firestore()
+        .collection(DatabaseReference.USERS_REF)
+        .document(uid)
+        .collection(DatabaseReference.DISLIKE_ARTICLE)
+        .document(aritcleid)
+        .setData([DatabaseReference.ARTICLE_ID:aritcleid,
+                  DatabaseReference.DATE_CREATED : NCDate.dateToString()], completion: { (error) in
+          if let error = error {
+            completion?(error)
+          }
+          completion?(nil)
+        })
+    }
+  }
+  
+  func removeLikedArticle(uid : String, aritcleid:String, completion :((Error?)->())?){
+    DispatchQueue.global(qos: .default).async {
+      Firestore.firestore()
+        .collection(DatabaseReference.USERS_REF)
+        .document(uid)
+        .collection(DatabaseReference.LIKED_ARTICLE)
+        .document(aritcleid)
+        .delete(completion: { (error) in
+          if let error = error{
+            completion?(error)
+          }
+          completion?(nil)
+        })
+    }
+  }
+  
+  func removeDislikedArticle(uid : String, aritcleid:String, completion :((Error?)->())?){
+    DispatchQueue.global(qos: .default).async {
+      Firestore.firestore()
+        .collection(DatabaseReference.USERS_REF)
+        .document(uid)
+        .collection(DatabaseReference.DISLIKE_ARTICLE)
+        .document(aritcleid)
+        .delete(completion: { (error) in
+          if let error = error{
+            completion?(error)
+          }
+          completion?(nil)
+        })
+    }
   }
 }

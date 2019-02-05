@@ -79,6 +79,8 @@
 		ACBEB71D2203D69A00E87190 /* NCSettingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACBEB71C2203D69A00E87190 /* NCSettingController.swift */; };
 		ACBEB71F2203D6A500E87190 /* NCSettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACBEB71E2203D6A500E87190 /* NCSettingView.swift */; };
 		ACBEB7222203E8F700E87190 /* NCSettingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACBEB7212203E8F700E87190 /* NCSettingCell.swift */; };
+		ACC6638B2207DC4700AB2C7B /* NCArticleListController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACC6638A2207DC4700AB2C7B /* NCArticleListController.swift */; };
+		ACC6638D2207DCD100AB2C7B /* NCArticleListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACC6638C2207DCD100AB2C7B /* NCArticleListView.swift */; };
 		ACCC08AC2180140100D6391A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACCC08AB2180140100D6391A /* AppDelegate.swift */; };
 		ACCC08B62180140500D6391A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = ACCC08B42180140500D6391A /* LaunchScreen.storyboard */; };
 		ACCC08BE218018DC00D6391A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = ACCC08BD218018DC00D6391A /* GoogleService-Info.plist */; };
@@ -169,6 +171,8 @@
 		ACBEB71C2203D69A00E87190 /* NCSettingController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCSettingController.swift; sourceTree = "<group>"; };
 		ACBEB71E2203D6A500E87190 /* NCSettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCSettingView.swift; sourceTree = "<group>"; };
 		ACBEB7212203E8F700E87190 /* NCSettingCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCSettingCell.swift; sourceTree = "<group>"; };
+		ACC6638A2207DC4700AB2C7B /* NCArticleListController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCArticleListController.swift; sourceTree = "<group>"; };
+		ACC6638C2207DCD100AB2C7B /* NCArticleListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCArticleListView.swift; sourceTree = "<group>"; };
 		ACCC08A82180140100D6391A /* d_NepalCommunity.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = d_NepalCommunity.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		ACCC08AB2180140100D6391A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		ACCC08B52180140500D6391A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -298,6 +302,7 @@
 		AC1EDCAB2181467D0089C7AF /* View */ = {
 			isa = PBXGroup;
 			children = (
+				ACC663892207D97100AB2C7B /* Like&DislikedArticles */,
 				ACBEB71B2203D67F00E87190 /* Setting */,
 				ACE36200220145F70023CC26 /* Followers&Following */,
 				AC0A0AB121FABA1F00FFB17F /* UserProfile */,
@@ -645,6 +650,15 @@
 			path = SettingCell;
 			sourceTree = "<group>";
 		};
+		ACC663892207D97100AB2C7B /* Like&DislikedArticles */ = {
+			isa = PBXGroup;
+			children = (
+				ACC6638A2207DC4700AB2C7B /* NCArticleListController.swift */,
+				ACC6638C2207DCD100AB2C7B /* NCArticleListView.swift */,
+			);
+			path = "Like&DislikedArticles";
+			sourceTree = "<group>";
+		};
 		ACCC089F2180140000D6391A = {
 			isa = PBXGroup;
 			children = (
@@ -898,6 +912,7 @@
 				ACA50A812185F88900B2040A /* NCGradientView.swift in Sources */,
 				AC0322D021C74C6000E13780 /* NCDummyViewController.swift in Sources */,
 				AC9F2575219D12BC0090A77E /* NCMenuCell.swift in Sources */,
+				ACC6638D2207DCD100AB2C7B /* NCArticleListView.swift in Sources */,
 				AC1EDCC921829D450089C7AF /* NCViewController.swift in Sources */,
 				AC71845921A6510B0056DF3F /* NCImageSelectionCell.swift in Sources */,
 				AC71845221A4F41A0056DF3F /* NCCreateArticleController.swift in Sources */,
@@ -934,6 +949,7 @@
 				AC9F256C219D05A80090A77E /* NCMenuBar.swift in Sources */,
 				ACB737DE21BE123200A1F063 /* NCDatabaseAccess.swift in Sources */,
 				AC1EDCB1218147C60089C7AF /* NCFont.swift in Sources */,
+				ACC6638B2207DC4700AB2C7B /* NCArticleListController.swift in Sources */,
 				AC9F256A219C07BD0090A77E /* NCNaviagtionController.swift in Sources */,
 				ACBEB7222203E8F700E87190 /* NCSettingCell.swift in Sources */,
 				AC9727A521B8E11500F265FD /* NCDetailView.swift in Sources */,

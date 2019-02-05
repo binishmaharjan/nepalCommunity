@@ -48,6 +48,7 @@ class NCSettingView : NCBaseView{
     let backBtn = NCImageButtonView()
     backBtn.image = UIImage(named:"icon_back_white")
     header.addSubview(backBtn)
+    backBtn.delegate = self
     self.backBtn = backBtn
     
     let titleLabel = UILabel()
@@ -120,9 +121,11 @@ extension NCSettingView : UITableViewDataSource, UITableViewDelegate{
     case 0:
       Dlog(menus[indexPath.row])
     case 1:
-       Dlog(menus[indexPath.row])
+       guard let user = NCSessionManager.shared.user else {return}
+       NCPager.shared.showLikedArticlePage(user: user, title : NCArticleListType.likedArticle)
     case 2:
-       Dlog(menus[indexPath.row])
+       guard let user = NCSessionManager.shared.user else {return}
+       NCPager.shared.showDislikeArticlePage(user : user, title: NCArticleListType.dislikeArticle)
     case 3:
        Dlog(menus[indexPath.row])
     case 4:
@@ -138,6 +141,14 @@ extension NCSettingView : UITableViewDataSource, UITableViewDelegate{
       }
     default:
       return
+    }
+  }
+}
+
+extension NCSettingView : NCButtonDelegate{
+  func buttonViewTapped(view: NCButtonView) {
+    if view == self.backBtn{
+      NCPager.shared.pop()
     }
   }
 }

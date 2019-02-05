@@ -1,8 +1,8 @@
 //
-//  NCUserListView.swift
+//  NCArticleListView.swift
 //  NepalCommunity
 //
-//  Created by guest on 2019/01/30.
+//  Created by guest on 2019/02/04.
 //  Copyright © 2019年 guest. All rights reserved.
 //
 
@@ -11,13 +11,14 @@ import TinyConstraints
 import FirebaseFirestore
 import CodableFirebase
 
-enum NCUserListType : String{
-  case follower = "Followers"
-  case following = "Following"
+enum NCArticleListType : String{
+  case likedArticle = "like_article"
+  case dislikeArticle = "dislike_article"
 }
 
-class NCUserListView : NCBaseView{
-  
+
+class NCArticleListView : NCBaseView{
+  //MARK: Variables
   //Header
   private let HEADER_H:CGFloat = 44
   private weak var header:UIView?
@@ -29,27 +30,33 @@ class NCUserListView : NCBaseView{
   //TableView
   private var tableView : UITableView?
   
-  typealias Cell1 = NCUserCell
+  typealias Cell1 = NCArticleCell
   let CELL1_CLASS = Cell1.self
   let CELL1_ID = NSStringFromClass(Cell1.self)
   
+  //User
+  var user : NCUser?
+  
+  var title : NCArticleListType = .likedArticle{
+    didSet{
+      switch title {
+      case .likedArticle:
+        titleLbl?.text = LOCALIZE("Like Articles")
+      case .dislikeArticle:
+        titleLbl?.text = LOCALIZE("Dislike Articles")
+      }
+      self.downloadArticleList()
+    }
+  }
+  
+  private var articles : [NCArticle] = [NCArticle]()
+  
+  //MARK: Default Functions
   override func didInit() {
     super.didInit()
     self.setup()
     self.setupConstraints()
   }
-  
-  var user : NCUser?
-  
-  var title :NCUserListType?{
-    didSet{
-      titleLbl?.text = title?.rawValue
-      self.loadUserList()
-    }
-  }
-  
-  //Users
-  private var users : [NCUser] = [NCUser]()
   
   private func setup(){
     //Header
@@ -84,7 +91,6 @@ class NCUserListView : NCBaseView{
     self.addSubview(tableView)
     tableView.estimatedRowHeight = 100
     tableView.rowHeight = UITableView.automaticDimension
-    
   }
   
   private func setupConstraints(){
@@ -92,7 +98,7 @@ class NCUserListView : NCBaseView{
       let backBtn = self.backBtn,
       let titleLbl = self.titleLbl,
       let tableView = self.tableView
-    else {return}
+      else {return}
     
     header.topToSuperview()
     header.leftToSuperview()
@@ -111,15 +117,17 @@ class NCUserListView : NCBaseView{
 }
 
 //MARK : UITableView Delegate
-extension NCUserListView : UITableViewDelegate, UITableViewDataSource{
+extension NCArticleListView : UITableViewDelegate, UITableViewDataSource{
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return users.count
+    return articles.count
   }
   
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    if let cell = tableView.dequeueReusableCell(withIdentifier: CELL1_ID, for: indexPath) as? Cell1{
+    if let cell = tableView.dequeueReusableCell(withIdentifier: CELL1_ID, for: indexPath) as? Cell1,
+      let user = self.user{
+      cell.user = user
+      cell.article = articles[indexPath.row]
       cell.selectionStyle = .none
-      cell.user = self.users[indexPath.row]
       return cell
     }
     return UITableViewCell()
@@ -127,106 +135,95 @@ extension NCUserListView : UITableViewDelegate, UITableViewDataSource{
 }
 
 //MARK: Button Delegate
-extension NCUserListView : NCButtonDelegate{
+extension NCArticleListView : NCButtonDelegate{
   func buttonViewTapped(view: NCButtonView) {
     NCPager.shared.pop(animated : true)
   }
 }
 
 //MARK : Download Data
-extension NCUserListView{
-  private func loadUserList(){
-    guard let user = self.user,
-      let title = self .title else {return}
+extension NCArticleListView{
+  private func downloadArticleList(){
+    guard let user = self.user
+      else {return}
     
-    let ref : CollectionReference?
-    switch title {
-    case .follower :
-      ref = Firestore.firestore()
-        .collection(DatabaseReference.USERS_REF)
-        .document(user.uid)
-        .collection(DatabaseReference.FOLLOWERS)
-    case .following:
-      ref = Firestore.firestore()
-        .collection(DatabaseReference.USERS_REF)
-        .document(user.uid)
-        .collection(DatabaseReference.FOLLOWING)
-    }
-    
-    guard let tRef = ref else {return}
+    let ref  = Firestore.firestore()
+      .collection(DatabaseReference.USERS_REF)
+      .document(user.uid)
+      .collection(title.rawValue)
     
     DispatchQueue.global(qos: .default).async {
-      tRef.getDocuments(completion: { (snapshot, error) in
-        if let error = error{
+      ref.getDocuments(completion: { (snapshot, error) in
+        if let error = error {
           Dlog(error.localizedDescription)
           return
         }
         
-        guard let snapshot = snapshot else {
-          Dlog("No Snapshot")
-          return
-        }
-        
+        guard let snapshot = snapshot else {return}
         let documents = snapshot.documents
-        let dispatchGroup = DispatchGroup()
-        self.users.removeAll()
+        
+        let dispatchGroup : DispatchGroup = DispatchGroup()
         
         documents.forEach({ (document) in
-          guard let id = document.get("uid") as? String else {return}
-         dispatchGroup.enter()
-          self.downloadUser(id: id, completion: { (u, error) in
+          let data = document.data()
+          guard let articleId = data[DatabaseReference.ARTICLE_ID] as? String else {return}
+          
+          dispatchGroup.enter()
+          self.downloadArticle(articleId: articleId, completion: { (article, error) in
             if let error = error{
               Dlog(error.localizedDescription)
               dispatchGroup.leave()
               return
             }
             
-            guard let u = u else {
+            guard let a = article else {
               dispatchGroup.leave()
               return
             }
             
-            self.users.append(u)
+            self.articles.append(a)
             dispatchGroup.leave()
           })
         })
         
-        dispatchGroup.notify(queue: .main){
+        dispatchGroup.notify(queue: .main, execute: {
           self.tableView?.reloadData()
-        }
+        })
       })
     }
   }
   
-  private func downloadUser(id : String,completion: (( NCUser?,Error?) -> ())?){
+  private func downloadArticle(articleId : String, completion : ((NCArticle?, Error?) ->())?){
     let ref = Firestore.firestore()
-      .collection(DatabaseReference.USERS_REF)
-      .whereField(DatabaseReference.USER_ID, isEqualTo: id)
+      .collection(DatabaseReference.ARTICLE_REF)
+      .whereField(DatabaseReference.ARTICLE_ID, isEqualTo: articleId)
     
     DispatchQueue.global(qos: .default).async {
       ref.getDocuments(completion: { (snapshot, error) in
-        if let error = error {
+        if let error = error{
           completion?(nil,error)
           return
         }
         
         guard let snapshot = snapshot else {
-          completion?(nil,NSError.init(domain: "No Snap", code: -1, userInfo: nil))
+          completion?(nil, NSError.init(domain: "No Snapshot", code: -1, userInfo: nil))
           return
         }
         
-        let documents = snapshot.documents
-        if documents.count > 0{
-          guard let document = documents.first else {return}
-          do{
-            let data = document.data()
-            let u = try FirebaseDecoder().decode(NCUser.self, from: data)
-            completion?(u,nil)
-          }catch{
-            completion?(nil,error)
-          }
+        guard let document = snapshot.documents.first else{
+          completion?(nil,NSError.init(domain: "No Document", code: -1, userInfo: nil))
+          return
+        }
+        
+        let data = document.data()
+        do{
+          let article = try FirebaseDecoder().decode(NCArticle.self, from: data)
+          completion?(article,nil)
+        }catch{
+          completion?(nil,error)
         }
       })
     }
   }
 }
+

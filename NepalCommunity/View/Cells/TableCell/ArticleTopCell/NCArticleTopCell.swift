@@ -64,7 +64,7 @@ class NCArticleTopCell: UITableViewCell, NCDatabaseAccess {
       self.relayout()
     }
   }
-
+  
   //User
   var user: NCUser?{
     didSet{
@@ -419,7 +419,7 @@ class NCArticleTopCell: UITableViewCell, NCDatabaseAccess {
         })
       }
     }
-
+    
   }
   
 }
@@ -455,7 +455,7 @@ extension NCArticleTopCell : NCButtonDelegate{
       self.likeFunction()
     }else if view == menuIcon{
       guard let article = self.article,
-            let user  = NCSessionManager.shared.user
+        let user  = NCSessionManager.shared.user
         else {return}
       NCNotificationManager.post(menuButtonPressed: article.articleId, type: DatabaseReference.ARTICLE_REF, uid: user.uid, ouid: article.uid)
     }else if view == self.commentIcon{
@@ -465,7 +465,7 @@ extension NCArticleTopCell : NCButtonDelegate{
 }
 
 //Like and dislike
-extension NCArticleTopCell{
+extension NCArticleTopCell : NCDatabaseWrite{
   @objc private func likeButtonPressed(){
     self.likeFunction()
   }
@@ -495,6 +495,9 @@ extension NCArticleTopCell{
             }
           })
       }
+      //Adding aritcle id in the liked Article list
+      self.registerLikedArticle(uid: uid, aritcleid: article.articleId) { (_) in
+      }
       //Removing the dislike since user liked this post
       if isDisliked{
         self.dislikeFunction()
@@ -514,6 +517,9 @@ extension NCArticleTopCell{
               return
             }
           })
+      }
+      //Removing the ariticle id from the like list
+      self.removeLikedArticle(uid: uid, aritcleid: article.articleId) { (_) in
       }
     }
   }
@@ -539,6 +545,9 @@ extension NCArticleTopCell{
             }
           })
       }
+      //Adding aritcle id in the dislike Article list
+      self.registerDislikeArticle(uid: uid, aritcleid: article.articleId) { (_) in
+      }
       //Removing the like since user disliked this post
       if isLiked{
         self.likeFunction()
@@ -557,6 +566,9 @@ extension NCArticleTopCell{
               return
             }
           })
+      }
+      //Removing the ariticle id from the dislike list
+      self.removeDislikedArticle(uid: uid, aritcleid: article.articleId) { (_) in
       }
     }
   }

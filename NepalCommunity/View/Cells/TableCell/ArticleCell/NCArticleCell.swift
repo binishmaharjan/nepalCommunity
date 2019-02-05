@@ -11,7 +11,7 @@ import TinyConstraints
 import FirebaseFirestore
 import CodableFirebase
 
-class NCArticleCell : UITableViewCell, NCDatabaseAccess{
+class NCArticleCell : UITableViewCell, NCDatabaseAccess, NCDatabaseWrite{
   
   //Variables
   private var container: UIView?
@@ -462,6 +462,10 @@ extension NCArticleCell : NCButtonDelegate{
             }
           })
       }
+      //Adding aritcle id in the liked Article list
+      self.registerLikedArticle(uid: uid, aritcleid: article.articleId) { (_) in
+      }
+      
       //Removing the dislike since user liked this post
       if isDisliked{
         self.dislikeFunction()
@@ -481,6 +485,10 @@ extension NCArticleCell : NCButtonDelegate{
               return
             }
           })
+      }
+      
+      //Removing the ariticle id from the like list
+      self.removeLikedArticle(uid: uid, aritcleid: article.articleId) { (_) in
       }
     }
   }
@@ -506,6 +514,11 @@ extension NCArticleCell : NCButtonDelegate{
             }
           })
       }
+      
+      //Adding aritcle id in the dislike Article list
+      self.registerDislikeArticle(uid: uid, aritcleid: article.articleId) { (_) in
+      }
+      
       //Removing the like since user disliked this post
       if isLiked{
         self.likeFunction()
@@ -524,6 +537,9 @@ extension NCArticleCell : NCButtonDelegate{
               return
             }
           })
+      }
+      //Removing the ariticle id from the dislike list
+      self.removeDislikedArticle(uid: uid, aritcleid: article.articleId) { (_) in
       }
     }
   }
