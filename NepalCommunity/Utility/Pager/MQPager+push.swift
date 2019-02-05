@@ -43,4 +43,19 @@ extension NCPager{
     vc.titleString = title
     push(viewController: vc)
   }
+  
+  func showDetailPage(article : NCArticle, user : NCUser, shouldKeyBoardShowUp : Bool){
+    let vc = NCDetailViewController()
+    vc.article = article
+    vc.user = user
+    vc.hidesBottomBarWhenPushed = true
+    vc.shouldKeyboardShowUp = shouldKeyBoardShowUp
+    push(viewController: vc)
+  }
+  
+  func showUserProfile(user : NCUser){
+    let vc = NCUserProfileController()
+    vc.user = user
+    push(viewController: vc)
+  }
 }

@@ -9,10 +9,9 @@
 import UIKit
 import TinyConstraints
 
-class NCSingleHomeController : NCViewController{
+class NCSingleHomeController : UIViewController{
   
   private var mainView : NCSingleHomeView?
-  var singleToPagerDelegate : NCSingleToPagerDelegate?
   
 //  var label : UILabel?
 //  var labelText: String = ""{
@@ -35,7 +34,6 @@ class NCSingleHomeController : NCViewController{
   private func setup(){
     let mainView  = NCSingleHomeView()
     self.mainView = mainView
-    mainView.homeViewDelegate = self
     self.view.addSubview(mainView)
     
 //    let label  = UILabel()
@@ -49,25 +47,5 @@ class NCSingleHomeController : NCViewController{
   private func setupConstraints(){
     guard let mainView = self.mainView else { return }
     mainView.edgesToSuperview()
-  }
-  
-}
-
-//Home View Delegate
-extension NCSingleHomeController : NCSingleHomeViewDelegate{
-  func userImageOrNamePressed(user: NCUser) {
-    singleToPagerDelegate?.userImageOrNamePressed(user: user)
-  }
-  
-  func commentIconPressed(article: NCArticle, user :NCUser) {
-    singleToPagerDelegate?.commentIconPressed(article: article, user: user)
-  }
-  
-  func menuButtonWasPressed(article: NCArticle) {
-    singleToPagerDelegate?.menuButtonWasPressed(article: article)
-  }
-  
-  func cellWasTapped(article: NCArticle, user: NCUser) {
-    singleToPagerDelegate?.passFromSingleToPager(article: article, user: user)
   }
 }

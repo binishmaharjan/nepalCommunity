@@ -28,9 +28,6 @@ class NCPageViewController : UIPageViewController{
   //Flag to scroll the Menu bar
   var shouldScrollMenuBar : Bool = true
   
-  //Delegate
-  var pagerToHomeDelegate : NCPagerToHomeDelegate?
-  
   //MARK: Default Initializers
   override init(transitionStyle style: UIPageViewController.TransitionStyle, navigationOrientation: UIPageViewController.NavigationOrientation, options: [UIPageViewController.OptionsKey : Any]? = nil) {
     super.init(transitionStyle: style, navigationOrientation: navigationOrientation, options: options)
@@ -52,37 +49,31 @@ class NCPageViewController : UIPageViewController{
     let popular = NCSingleHomeController()
     popular.view.backgroundColor = NCColors.white
     popular.referenceTitle = NCCategories.popular.rawValue
-    popular.singleToPagerDelegate = self
     popular.view.tag = 0
     
     let foodTravel = NCSingleHomeController()
     foodTravel.view.backgroundColor = NCColors.white
     foodTravel.referenceTitle = NCCategories.food_travel.rawValue
-    foodTravel.singleToPagerDelegate = self
     foodTravel.view.tag = 1
     
     let japanLife = NCSingleHomeController()
     japanLife.view.backgroundColor = NCColors.white
     japanLife.referenceTitle = NCCategories.japanLife.rawValue
-    japanLife.singleToPagerDelegate = self
     japanLife.view.tag = 2
     
     let schoolVisa = NCSingleHomeController()
     schoolVisa.view.backgroundColor = NCColors.white
     schoolVisa.referenceTitle = NCCategories.school_visa.rawValue
-    schoolVisa.singleToPagerDelegate = self
     schoolVisa.view.tag = 3
     
     let parttime = NCSingleHomeController()
     parttime.view.backgroundColor = NCColors.white
     parttime.referenceTitle = NCCategories.parttime.rawValue
-    parttime.singleToPagerDelegate = self
     parttime.view.tag = 4
     
     let miscellaneous = NCSingleHomeController()
     miscellaneous.view.backgroundColor = NCColors.white
     miscellaneous.referenceTitle = NCCategories.miscellaneous.rawValue
-    miscellaneous.singleToPagerDelegate = self
     miscellaneous.view.tag = 5
     
     
@@ -227,24 +218,3 @@ extension NCPageViewController: UIScrollViewDelegate{
     self.shouldScrollMenuBar = true
   }
 }
-
-
-//MARK
-extension NCPageViewController: NCSingleToPagerDelegate{
-  func userImageOrNamePressed(user: NCUser) {
-    pagerToHomeDelegate?.userImageOrNamePressed(user: user)
-  }
-  
-  func commentIconPressed(article: NCArticle, user :NCUser) {
-    pagerToHomeDelegate?.commentIconPressed(article: article, user: user)
-  }
-  
-  func menuButtonWasPressed(article: NCArticle) {
-    pagerToHomeDelegate?.menuButtonWasPressed(article: article)
-  }
-  
-  func passFromSingleToPager(article: NCArticle, user: NCUser) {
-    pagerToHomeDelegate?.passFromPagerToHome(article: article, user: user)
-  }
-}
-

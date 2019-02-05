@@ -15,7 +15,6 @@ class NCSingleHomeView : NCBaseView{
   //mainTableView
   private var tableView: UITableView?
   private var emptyView: NCEmptyTableView?
-  var homeViewDelegate : NCSingleHomeViewDelegate?
   
   //TableView Cell
   typealias Cell = NCArticleCell
@@ -248,15 +247,10 @@ extension NCSingleHomeView : UITableViewDelegate, UITableViewDataSource{
     if let cell = tableView.dequeueReusableCell(withIdentifier: CELL_ID, for: indexPath) as? NCArticleCell{
       cell.selectionStyle = .none
       cell.article = articles[indexPath.row]
-      cell.articleCellSingleHomeDelegate = self
       return cell
     }
     return UITableViewCell()
   }
-  
-//  func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-//    return 142
-//  }
   
   func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
     let startLoadingIndex = self.articles.count - LAST_COUNT
@@ -274,22 +268,3 @@ extension NCSingleHomeView : UITableViewDelegate, UITableViewDataSource{
     cell.removeObserveComment()
   }
 }
-
-extension NCSingleHomeView : NCArticleCellToSingleHomeDelegate{
-  func userImageOrNamePressed(user: NCUser) {
-    homeViewDelegate?.userImageOrNamePressed(user: user)
-  }
-  
-  func commentIconPressed(article: NCArticle, user :NCUser) {
-    homeViewDelegate?.commentIconPressed(article: article, user: user)
-  }
-  
-  func menuButtonWasPressed(article: NCArticle) {
-    homeViewDelegate?.menuButtonWasPressed(article: article)
-  }
-  
-  func passArticleAndUser(article: NCArticle, user: NCUser) {
-    homeViewDelegate?.cellWasTapped(article: article, user: user)
-  }
-}
-
