@@ -40,7 +40,6 @@ class NCProfileView : NCBaseView{
   let CELL2_ID = NSStringFromClass(Cell2.self)
   
   //Cell Delegate
-  var cellDelegate : NCSingleHomeViewDelegate?
   var buttonDelegate : NCButtonDelegate?{
     didSet{
       settingBtn?.delegate = buttonDelegate
@@ -155,7 +154,6 @@ extension NCProfileView : UITableViewDelegate, UITableViewDataSource{
     if indexPath.row != 0, let cell = tableView.dequeueReusableCell(withIdentifier: CELL2_ID, for: indexPath) as? Cell2{
       cell.article = articles[indexPath.row - 1]
       cell.selectionStyle = .none
-      cell.articleCellSingleHomeDelegate = self
       return cell
     }
     return UITableViewCell()
@@ -220,25 +218,6 @@ extension NCProfileView {
         }
       })
     }
-  }
-}
-
-//MARK : Cell Delegate
-extension NCProfileView : NCArticleCellToSingleHomeDelegate{
-  func userImageOrNamePressed(user: NCUser) {
-    cellDelegate?.userImageOrNamePressed(user: user)
-  }
-  
-  func commentIconPressed(article: NCArticle, user :NCUser) {
-    cellDelegate?.commentIconPressed(article: article, user: user)
-  }
-  
-  func passArticleAndUser(article: NCArticle, user: NCUser) {
-    cellDelegate?.cellWasTapped(article: article, user: user)
-  }
-  
-  func menuButtonWasPressed(article: NCArticle) {
-    cellDelegate?.menuButtonWasPressed(article: article)
   }
 }
 

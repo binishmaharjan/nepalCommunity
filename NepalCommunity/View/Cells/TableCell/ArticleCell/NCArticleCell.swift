@@ -63,9 +63,6 @@ class NCArticleCell : UITableViewCell, NCDatabaseAccess, NCDatabaseWrite{
     fatalError("init(coder:) has not been implemented")
   }
   
-  //Delegate
-  var articleCellSingleHomeDelegate : NCArticleCellToSingleHomeDelegate?
-  
   var article: NCArticle?{
     didSet{
       self.checkLiked()
@@ -407,19 +404,19 @@ extension NCArticleCell{
     guard let article = self.article,
       let user = self.user
       else { return}
-    articleCellSingleHomeDelegate?.passArticleAndUser(article: article, user: user)
+    NCPager.shared.showDetailPage(article: article, user: user, shouldKeyBoardShowUp: false)
   }
   
   @objc private func commentIconWasTapped(){
     guard let article = self.article,
       let user = self.user
       else { return}
-    articleCellSingleHomeDelegate?.commentIconPressed(article: article,user:user )
+    NCPager.shared.showDetailPage(article: article, user: user, shouldKeyBoardShowUp: true)
   }
   
   @objc private func userImageOrNamePressed(){
     guard let user = self.user else {return}
-    articleCellSingleHomeDelegate?.userImageOrNamePressed(user: user)
+     NCPager.shared.showUserProfile(user: user)
   }
 }
 
@@ -558,7 +555,8 @@ extension NCArticleCell : NCButtonDelegate{
   
   //MARK : Menu Button Pressed
   private func menuButtonPressed(){
-    articleCellSingleHomeDelegate?.menuButtonWasPressed(article:article!)
+    guard let aricle = self.article else {return}
+    NCPager.shared.showMenu(article: aricle)
   }
   
 }

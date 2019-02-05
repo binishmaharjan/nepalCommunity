@@ -11,7 +11,7 @@ import UIKit
 extension NCPager{
   func showAlert(messsage:String?, ok:(()->Void)?) {
     let ac = UIAlertController(title: nil, message: messsage, preferredStyle: .alert)
-    let okBtn = UIAlertAction(title: "OK", style: .default) { (action) in
+    let okBtn = UIAlertAction(title: "OK", style: .default) { (action) in 
       ok?()
     }
     ac.addAction(okBtn)
