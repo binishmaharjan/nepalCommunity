@@ -93,6 +93,8 @@
 		ACE36202220146550023CC26 /* NCUserListController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACE36201220146550023CC26 /* NCUserListController.swift */; };
 		ACE36204220146900023CC26 /* NCUserListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACE36203220146900023CC26 /* NCUserListView.swift */; };
 		ACE3620622014A340023CC26 /* MQPager+push.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACE3620522014A340023CC26 /* MQPager+push.swift */; };
+		ACF33E8E220BBE9C0032DFF4 /* NCNotificationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACF33E8D220BBE9C0032DFF4 /* NCNotificationController.swift */; };
+		ACF33E90220BC3360032DFF4 /* NCNotificationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACF33E8F220BC3360032DFF4 /* NCNotificationView.swift */; };
 		D0D2F491D22460BBF516816D /* Pods_NepalCommunity.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 702D276B339B5FD20876420C /* Pods_NepalCommunity.framework */; };
 /* End PBXBuildFile section */
 
@@ -188,6 +190,8 @@
 		ACE36201220146550023CC26 /* NCUserListController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCUserListController.swift; sourceTree = "<group>"; };
 		ACE36203220146900023CC26 /* NCUserListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCUserListView.swift; sourceTree = "<group>"; };
 		ACE3620522014A340023CC26 /* MQPager+push.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MQPager+push.swift"; sourceTree = "<group>"; };
+		ACF33E8D220BBE9C0032DFF4 /* NCNotificationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCNotificationController.swift; sourceTree = "<group>"; };
+		ACF33E8F220BC3360032DFF4 /* NCNotificationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCNotificationView.swift; sourceTree = "<group>"; };
 		B302AD8A90610761900FB03F /* Pods-NepalCommunity.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NepalCommunity.debug.xcconfig"; path = "Pods/Target Support Files/Pods-NepalCommunity/Pods-NepalCommunity.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -304,6 +308,7 @@
 		AC1EDCAB2181467D0089C7AF /* View */ = {
 			isa = PBXGroup;
 			children = (
+				ACF33E8C220BBE750032DFF4 /* Notification */,
 				ACC663892207D97100AB2C7B /* Like&DislikedArticles */,
 				ACBEB71B2203D67F00E87190 /* Setting */,
 				ACE36200220145F70023CC26 /* Followers&Following */,
@@ -733,6 +738,15 @@
 			path = "Followers&Following";
 			sourceTree = "<group>";
 		};
+		ACF33E8C220BBE750032DFF4 /* Notification */ = {
+			isa = PBXGroup;
+			children = (
+				ACF33E8D220BBE9C0032DFF4 /* NCNotificationController.swift */,
+				ACF33E8F220BC3360032DFF4 /* NCNotificationView.swift */,
+			);
+			path = Notification;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -980,9 +994,11 @@
 				ACE36202220146550023CC26 /* NCUserListController.swift in Sources */,
 				AC00BCE121C36A7800984F9D /* BoolWrapper.swift in Sources */,
 				ACD4FE7D21AE5DC000C1F534 /* NCArticle.swift in Sources */,
+				ACF33E90220BC3360032DFF4 /* NCNotificationView.swift in Sources */,
 				ACE361F522013DBD0023CC26 /* UINavigation+Transitions.swift in Sources */,
 				ACA50A932186AF4100B2040A /* Array+extension.swift in Sources */,
 				AC1EDCCD2182A1220089C7AF /* UIView+Draw.swift in Sources */,
+				ACF33E8E220BBE9C0032DFF4 /* NCNotificationController.swift in Sources */,
 				AC17189D21BA391400E3E118 /* NCCommentCell.swift in Sources */,
 				ACA50A852186A1EB00B2040A /* NCSignUpView.swift in Sources */,
 				AC1EDCC2218298C60089C7AF /* NCLoginViewController.swift in Sources */,
