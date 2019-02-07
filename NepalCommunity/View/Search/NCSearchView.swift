@@ -284,6 +284,6 @@ extension NCSearchView : UITableViewDelegate, UITableViewDataSource{
   }
   
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-    searchDelegate?.cellWasTapped(user: self.users[indexPath.row])
+    NCPager.shared.showUserProfile(user: self.users[indexPath.row])
   }
 }

@@ -124,6 +124,10 @@ extension NCUserListView : UITableViewDelegate, UITableViewDataSource{
     }
     return UITableViewCell()
   }
+  
+  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    NCPager.shared.showUserProfile(user: self.users[indexPath.row])
+  }
 }
 
 //MARK: Button Delegate

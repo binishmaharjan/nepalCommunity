@@ -58,4 +58,11 @@ extension NCPager{
     vc.user = user
     push(viewController: vc)
   }
+  
+  func showUserPage(user : NCUser){
+    let vc = NCUserProfileController()
+    vc.hidesBottomBarWhenPushed = true
+    vc.user = user
+    push(viewController: vc)
+  }
 }
