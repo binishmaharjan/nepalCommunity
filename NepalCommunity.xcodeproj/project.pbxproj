@@ -177,7 +177,7 @@
 		ACBEB7212203E8F700E87190 /* NCSettingCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCSettingCell.swift; sourceTree = "<group>"; };
 		ACC6638A2207DC4700AB2C7B /* NCArticleListController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCArticleListController.swift; sourceTree = "<group>"; };
 		ACC6638C2207DCD100AB2C7B /* NCArticleListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCArticleListView.swift; sourceTree = "<group>"; };
-		ACCC08A82180140100D6391A /* d_NepalCommunity.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = d_NepalCommunity.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		ACCC08A82180140100D6391A /* d_NepalSolution.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = d_NepalSolution.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		ACCC08AB2180140100D6391A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		ACCC08B52180140500D6391A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		ACCC08B72180140500D6391A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -681,7 +681,7 @@
 		ACCC08A92180140100D6391A /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				ACCC08A82180140100D6391A /* d_NepalCommunity.app */,
+				ACCC08A82180140100D6391A /* d_NepalSolution.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -767,7 +767,7 @@
 			);
 			name = NepalCommunity;
 			productName = NepalCommunity;
-			productReference = ACCC08A82180140100D6391A /* d_NepalCommunity.app */;
+			productReference = ACCC08A82180140100D6391A /* d_NepalSolution.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -1150,7 +1150,7 @@
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.jec.17cm0219.NepalCommunity.dev;
-				PRODUCT_NAME = d_NepalCommunity;
+				PRODUCT_NAME = d_NepalSolution;
 				SWIFT_ENABLE_BATCH_MODE = NO;
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1170,7 +1170,7 @@
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.jec.17cm0219.NepalCommunity;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = NepalSolution;
 				SWIFT_ENABLE_BATCH_MODE = NO;
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
