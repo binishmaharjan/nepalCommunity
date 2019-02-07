@@ -56,7 +56,8 @@ class NCTabViewController : UITabBarController{
     searchView.tabBarItem.selectedImage = UIImage(named:"icon_search_h")?
       .withRenderingMode(UIImage.RenderingMode.alwaysOriginal)
     
-    let notificationView = UIViewController()
+    let notificationView = NCNotificationController()
+    let notificationNav = NCNaviagtionController(rootViewController: notificationView)
     notificationView.view.backgroundColor = .white
     notificationView.tabBarItem.imageInsets = UIEdgeInsets(top: TabViewConstants.TAB_ITEM_OFF_V,
                                                            left: TabViewConstants.TAB_ITEM_OFF_H,
@@ -85,7 +86,7 @@ class NCTabViewController : UITabBarController{
       view.removeFromSuperview()
     }
     
-    self.viewControllers = [homeNav,searchNav,categoryView,notificationView,meNav]
+    self.viewControllers = [homeNav,searchNav,categoryView,notificationNav,meNav]
   }
   
   private func setupTabBar(){
@@ -158,15 +159,6 @@ class NCTabViewController : UITabBarController{
     shadowLayer.shadowOpacity = TabViewConstants.SHADOW_OPACITY
   }
   
-//
-//  @objc func signoutButtonPressed(){
-//    let firebaseAuth = Auth.auth()
-//    do{
-//      try firebaseAuth.signOut()
-//    }catch{
-//      debugPrint("Error signing out \(error.localizedDescription)")
-//    }
-//  }
   
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
