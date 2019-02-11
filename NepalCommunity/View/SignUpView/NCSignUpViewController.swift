@@ -204,17 +204,13 @@ extension NCSignUpViewController : GalleryControllerDelegate{
   }
   
   func galleryController(_ controller: GalleryController, didSelectVideo video: Video) {
-    
   }
   
   func galleryController(_ controller: GalleryController, requestLightbox images: [Image]) {
-    
   }
   
   func galleryControllerDidCancel(_ controller: GalleryController) {
     controller.dismiss(animated: true, completion: nil)
   }
-  
-  
 }
 

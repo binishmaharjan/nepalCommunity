@@ -176,10 +176,10 @@ extension NCDatabaseWrite{
         .document(aritcleid)
         .setData([DatabaseReference.ARTICLE_ID:aritcleid,
                   DatabaseReference.DATE_CREATED : NCDate.dateToString()], completion: { (error) in
-          if let error = error {
-            completion?(error)
-          }
-          completion?(nil)
+                    if let error = error {
+                      completion?(error)
+                    }
+                    completion?(nil)
         })
     }
   }
@@ -194,10 +194,10 @@ extension NCDatabaseWrite{
         .document(aritcleid)
         .setData([DatabaseReference.ARTICLE_ID:aritcleid,
                   DatabaseReference.DATE_CREATED : NCDate.dateToString()], completion: { (error) in
-          if let error = error {
-            completion?(error)
-          }
-          completion?(nil)
+                    if let error = error {
+                      completion?(error)
+                    }
+                    completion?(nil)
         })
     }
   }
@@ -230,6 +230,41 @@ extension NCDatabaseWrite{
             completion?(error)
           }
           completion?(nil)
+        })
+    }
+  }
+  
+  func editField(uid : String, name : String, url : String, completion : ((NCUser?,Error?)->())?){
+    DispatchQueue.global(qos: .default).async {
+      Firestore.firestore()
+        .collection(DatabaseReference.USERS_REF)
+        .document(uid)
+        .updateData([
+          DatabaseReference.USERNAME : name,
+          DatabaseReference.ICON_URL : url
+          ], completion: { (error) in
+            if let error = error{completion?(nil,error)}
+            
+            Firestore.firestore().collection(DatabaseReference.USERS_REF).document(uid).getDocument(completion: { (snapshot, error) in
+              if let error = error{
+                completion?(nil,error)
+                return
+              }
+              
+              guard let snapshot = snapshot,
+                let data = snapshot.data()
+                else {
+                  completion?(nil,NSError.init(domain: "Error", code: -1, userInfo: nil))
+                  return
+              }
+              
+              do{
+                let user = try FirestoreDecoder().decode(NCUser.self, from: data)
+                completion?(user,nil)
+              }catch{
+                completion?(nil,error)
+              }
+            })
         })
     }
   }

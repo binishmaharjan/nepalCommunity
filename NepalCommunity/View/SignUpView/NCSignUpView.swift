@@ -182,7 +182,7 @@ class NCSignUpView : NCBaseView{
     let emailFieldBG = UIView()
     self.emailFieldBG = emailFieldBG
     emailFieldBG.backgroundColor = NCColors.white
-    emailFieldBG.layer.cornerRadius = SignUpConstants.CORNER_RADIUS_ZERO
+    emailFieldBG.layer.cornerRadius = 0
     emailFieldBG.layer.borderColor = NCColors.gray.cgColor
     emailFieldBG.layer.borderWidth = 2
     contentView.addSubview(emailFieldBG)

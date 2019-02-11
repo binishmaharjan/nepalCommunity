@@ -166,7 +166,7 @@ class NCCreateArticleView : NCBaseView{
     let postBtn = NCTextButton()
     self.postBtn = postBtn
     postBtn.text = LOCALIZE("POST")
-    postBtn.font = NCFont.bold(size: 14)
+    postBtn.font = NCFont.bold(size: 12)
     postBtnBG.addSubview(postBtn)
     
     //User Image
