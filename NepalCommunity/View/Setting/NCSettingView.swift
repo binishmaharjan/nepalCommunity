@@ -119,7 +119,7 @@ extension NCSettingView : UITableViewDataSource, UITableViewDelegate{
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     switch indexPath.row {
     case 0:
-      Dlog(menus[indexPath.row])
+      NCPager.shared.showEditProfile()
     case 1:
        guard let user = NCSessionManager.shared.user else {return}
        NCPager.shared.showLikedArticlePage(user: user, title : NCArticleListType.likedArticle)
@@ -135,6 +135,7 @@ extension NCSettingView : UITableViewDataSource, UITableViewDelegate{
         let firebaseAuth = Auth.auth()
         do{
           try firebaseAuth.signOut()
+          NCSessionManager.shared.user = nil
         }catch{
           debugPrint("Error signing out \(error.localizedDescription)")
         }

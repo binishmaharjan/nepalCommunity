@@ -65,4 +65,10 @@ extension NCPager{
     vc.user = user
     push(viewController: vc)
   }
+  
+  func showEditProfile(){
+    let vc = NCEditProfileController()
+    vc.titleString = "Edit Profile"
+    push(viewController: vc)
+  }
 }

@@ -34,6 +34,8 @@
 		AC69B33C21AB96D8008BE631 /* NCUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC69B33B21AB96D8008BE631 /* NCUser.swift */; };
 		AC69B33F21ABB259008BE631 /* NCSessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC69B33E21ABB259008BE631 /* NCSessionManager.swift */; };
 		AC69B34221ABBD00008BE631 /* NCImageDownloader.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC69B34121ABBD00008BE631 /* NCImageDownloader.swift */; };
+		AC6B569A220BD8D200776EE9 /* NCEditProfileController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC6B5699220BD8D200776EE9 /* NCEditProfileController.swift */; };
+		AC6B569C220BDAC100776EE9 /* NCEditProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC6B569B220BDAC100776EE9 /* NCEditProfileView.swift */; };
 		AC71844A21A24C360056DF3F /* NCSingleHomeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC71844921A24C360056DF3F /* NCSingleHomeController.swift */; };
 		AC71844C21A24D410056DF3F /* NCSingleHomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC71844B21A24D410056DF3F /* NCSingleHomeView.swift */; };
 		AC71845021A2528D0056DF3F /* NCArticleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC71844F21A2528D0056DF3F /* NCArticleCell.swift */; };
@@ -67,6 +69,7 @@
 		ACA50A8F2186AB0B00B2040A /* NCImageButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACA50A8E2186AB0B00B2040A /* NCImageButtonView.swift */; };
 		ACA50A912186AD7F00B2040A /* NCTextButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACA50A902186AD7F00B2040A /* NCTextButton.swift */; };
 		ACA50A932186AF4100B2040A /* Array+extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACA50A922186AF4100B2040A /* Array+extension.swift */; };
+		ACA5D361220D22DC0046BC88 /* NCPager+present.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACA5D360220D22DC0046BC88 /* NCPager+present.swift */; };
 		ACB249142186E353008B510E /* NCAccountType.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACB249132186E353008B510E /* NCAccountType.swift */; };
 		ACB249162187F2C3008B510E /* NCSignUpAndSignIn.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACB249152187F2C3008B510E /* NCSignUpAndSignIn.swift */; };
 		ACB2491A2187F77B008B510E /* NCDatebaseWrite.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACB249192187F77B008B510E /* NCDatebaseWrite.swift */; };
@@ -129,6 +132,8 @@
 		AC69B33B21AB96D8008BE631 /* NCUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCUser.swift; sourceTree = "<group>"; };
 		AC69B33E21ABB259008BE631 /* NCSessionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCSessionManager.swift; sourceTree = "<group>"; };
 		AC69B34121ABBD00008BE631 /* NCImageDownloader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCImageDownloader.swift; sourceTree = "<group>"; };
+		AC6B5699220BD8D200776EE9 /* NCEditProfileController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCEditProfileController.swift; sourceTree = "<group>"; };
+		AC6B569B220BDAC100776EE9 /* NCEditProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCEditProfileView.swift; sourceTree = "<group>"; };
 		AC71844921A24C360056DF3F /* NCSingleHomeController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCSingleHomeController.swift; sourceTree = "<group>"; };
 		AC71844B21A24D410056DF3F /* NCSingleHomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCSingleHomeView.swift; sourceTree = "<group>"; };
 		AC71844F21A2528D0056DF3F /* NCArticleCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCArticleCell.swift; sourceTree = "<group>"; };
@@ -162,6 +167,7 @@
 		ACA50A8E2186AB0B00B2040A /* NCImageButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCImageButtonView.swift; sourceTree = "<group>"; };
 		ACA50A902186AD7F00B2040A /* NCTextButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCTextButton.swift; sourceTree = "<group>"; };
 		ACA50A922186AF4100B2040A /* Array+extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+extension.swift"; sourceTree = "<group>"; };
+		ACA5D360220D22DC0046BC88 /* NCPager+present.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NCPager+present.swift"; sourceTree = "<group>"; };
 		ACB249132186E353008B510E /* NCAccountType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCAccountType.swift; sourceTree = "<group>"; };
 		ACB249152187F2C3008B510E /* NCSignUpAndSignIn.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCSignUpAndSignIn.swift; sourceTree = "<group>"; };
 		ACB249192187F77B008B510E /* NCDatebaseWrite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCDatebaseWrite.swift; sourceTree = "<group>"; };
@@ -177,7 +183,7 @@
 		ACBEB7212203E8F700E87190 /* NCSettingCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCSettingCell.swift; sourceTree = "<group>"; };
 		ACC6638A2207DC4700AB2C7B /* NCArticleListController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCArticleListController.swift; sourceTree = "<group>"; };
 		ACC6638C2207DCD100AB2C7B /* NCArticleListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCArticleListView.swift; sourceTree = "<group>"; };
-		ACCC08A82180140100D6391A /* d_NepalSolution.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = d_NepalSolution.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		ACCC08A82180140100D6391A /* d_NepalCommunity.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = d_NepalCommunity.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		ACCC08AB2180140100D6391A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		ACCC08B52180140500D6391A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		ACCC08B72180140500D6391A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -308,6 +314,7 @@
 		AC1EDCAB2181467D0089C7AF /* View */ = {
 			isa = PBXGroup;
 			children = (
+				AC6B5698220BD8B500776EE9 /* Edit Profile */,
 				ACF33E8C220BBE750032DFF4 /* Notification */,
 				ACC663892207D97100AB2C7B /* Like&DislikedArticles */,
 				ACBEB71B2203D67F00E87190 /* Setting */,
@@ -406,6 +413,15 @@
 				AC69B34121ABBD00008BE631 /* NCImageDownloader.swift */,
 			);
 			path = ImageDownloader;
+			sourceTree = "<group>";
+		};
+		AC6B5698220BD8B500776EE9 /* Edit Profile */ = {
+			isa = PBXGroup;
+			children = (
+				AC6B5699220BD8D200776EE9 /* NCEditProfileController.swift */,
+				AC6B569B220BDAC100776EE9 /* NCEditProfileView.swift */,
+			);
+			path = "Edit Profile";
 			sourceTree = "<group>";
 		};
 		AC71844821A247840056DF3F /* HomeView */ = {
@@ -681,7 +697,7 @@
 		ACCC08A92180140100D6391A /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				ACCC08A82180140100D6391A /* d_NepalSolution.app */,
+				ACCC08A82180140100D6391A /* d_NepalCommunity.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -725,6 +741,7 @@
 				ACE361F722013E590023CC26 /* NCPager+Alert.swift */,
 				ACE3620522014A340023CC26 /* MQPager+push.swift */,
 				AC910DB222092D66008EF419 /* NCPager+Menu.swift */,
+				ACA5D360220D22DC0046BC88 /* NCPager+present.swift */,
 			);
 			path = Pager;
 			sourceTree = "<group>";
@@ -767,7 +784,7 @@
 			);
 			name = NepalCommunity;
 			productName = NepalCommunity;
-			productReference = ACCC08A82180140100D6391A /* d_NepalSolution.app */;
+			productReference = ACCC08A82180140100D6391A /* d_NepalCommunity.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -947,9 +964,11 @@
 				ACE361F822013E590023CC26 /* NCPager+Alert.swift in Sources */,
 				AC2FC9DC21C0D28E00052D1F /* NCimageDetailView.swift in Sources */,
 				AC71845521A4F7610056DF3F /* NCCreateArticleView.swift in Sources */,
+				ACA5D361220D22DC0046BC88 /* NCPager+present.swift in Sources */,
 				ACB249162187F2C3008B510E /* NCSignUpAndSignIn.swift in Sources */,
 				ACBEB71F2203D6A500E87190 /* NCSettingView.swift in Sources */,
 				AC71844A21A24C360056DF3F /* NCSingleHomeController.swift in Sources */,
+				AC6B569A220BD8D200776EE9 /* NCEditProfileController.swift in Sources */,
 				ACA50A8D2186AA9A00B2040A /* NCButtonView.swift in Sources */,
 				AC594E4621ED6E3400C584C5 /* GrowingTextView.swift in Sources */,
 				ACA50A892186A32F00B2040A /* NCLoginViewDelegate.swift in Sources */,
@@ -968,6 +987,7 @@
 				ACB737DE21BE123200A1F063 /* NCDatabaseAccess.swift in Sources */,
 				AC1EDCB1218147C60089C7AF /* NCFont.swift in Sources */,
 				ACC6638B2207DC4700AB2C7B /* NCArticleListController.swift in Sources */,
+				AC6B569C220BDAC100776EE9 /* NCEditProfileView.swift in Sources */,
 				AC9F256A219C07BD0090A77E /* NCNaviagtionController.swift in Sources */,
 				ACBEB7222203E8F700E87190 /* NCSettingCell.swift in Sources */,
 				AC9727A521B8E11500F265FD /* NCDetailView.swift in Sources */,
@@ -1150,7 +1170,7 @@
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.jec.17cm0219.NepalCommunity.dev;
-				PRODUCT_NAME = d_NepalSolution;
+				PRODUCT_NAME = d_NepalCommunity;
 				SWIFT_ENABLE_BATCH_MODE = NO;
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1170,7 +1190,7 @@
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.jec.17cm0219.NepalCommunity;
-				PRODUCT_NAME = NepalSolution;
+				PRODUCT_NAME = NepalCommunity;
 				SWIFT_ENABLE_BATCH_MODE = NO;
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
