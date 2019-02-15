@@ -267,7 +267,7 @@ extension NCDetailView : UITableViewDelegate, UITableViewDataSource{
     
     if indexPath.row > 1, let cell = tableView.dequeueReusableCell(withIdentifier: CELL2_ID, for: indexPath) as? Cell2{
       cell.selectionStyle = .none
-      cell.commentCellDelegate = self
+      cell.index = indexPath.row - 2
       cell.comment =  comments[indexPath.row - 2]
       return cell
     }
@@ -292,6 +292,21 @@ extension NCDetailView : UITableViewDelegate, UITableViewDataSource{
   
   func scrollViewDidScroll(_ scrollView: UIScrollView) {
     commentField?.resignFirstResponder()
+  }
+}
+
+//MARK : Row Deletion
+extension NCDetailView{
+  func deleteRow(index :Int){
+    comments.remove(at: index)
+    if !comments.isEmpty{
+      self.tableView?.beginUpdates()
+      let cellIndex = IndexPath(row: index + 2, section: 0)
+      self.tableView?.deleteRows(at: [cellIndex], with: .none)
+      self.tableView?.endUpdates()
+    }else{
+      self.tableView?.reloadData()
+    }
   }
 }
 

@@ -30,13 +30,17 @@ class NCLoginViewController: NCViewController{
   
   
   override func viewWillAppear(_ animated: Bool) {
-    super.viewDidAppear(animated)
+    super.viewWillAppear(animated)
     self.navigationController?.isNavigationBarHidden = true
     self.setupNotification()
   }
   
-  override func viewDidDisappear(_ animated: Bool) {
+  override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
+  }
+  
+  override func viewDidDisappear(_ animated: Bool) {
+    super.viewDidDisappear(animated)
     self.tearDownNotification()
   }
   
@@ -82,7 +86,8 @@ extension NCLoginViewController : NCLoginViewDelegate, NCButtonDelegate, NCSignU
         //Login Successful
         NCActivityIndicator.shared.stop()
         NCSessionManager.shared.userLoggedIn()
-        self.dismiss(animated: true, completion: nil)
+        //self.dismiss(animated: true, completion: nil)
+        NCPager.shared.dismissModal()
       }
     }
       /*
@@ -155,8 +160,7 @@ extension NCLoginViewController : NCLoginViewDelegate, NCButtonDelegate, NCSignU
   
   //Sign up new email user button is pressed
   func signUpButtonPressed() {
-    let vc = NCSignUpViewController()
-    self.navigationController?.pushViewController(vc, animated: true)
+    NCPager.shared.showSignUpView()
   }
   
 }

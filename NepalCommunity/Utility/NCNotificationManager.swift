@@ -59,8 +59,6 @@ extension NCNotificationManager{
   }
   
   //MARK:- Menu Button Pressed
-  
-  
   private static let N_MENU_BUTTON_PRESSED = "N_MENU_BUTTON_PRESSED"
   static func post(menuButtonPressed id: String, type :String, uid : String,ouid : String){
     var userInfo : [AnyHashable : Any] = [AnyHashable : Any]()
@@ -72,5 +70,15 @@ extension NCNotificationManager{
   }
   static func receive(menuButtonPressed observer :Any, selector :Selector){
     receive(name: N_MENU_BUTTON_PRESSED, observer: observer, selector: selector)
+  }
+  
+  
+  //MARK:- Row Deleted
+  private static let N_ROW_DELETED = "N_ROW_DELETED"
+  static func post(rowDeleted index : Int){
+    self.post(name: N_ROW_DELETED, object: index)
+  }
+  static func receieve(rowDeleted observer : Any, selector : Selector){
+    receive(name: N_ROW_DELETED, observer: observer, selector: selector)
   }
 }

@@ -126,6 +126,7 @@ extension NCArticleListView : UITableViewDelegate, UITableViewDataSource{
     if let cell = tableView.dequeueReusableCell(withIdentifier: CELL1_ID, for: indexPath) as? Cell1,
       let user = self.user{
       cell.user = user
+      cell.index = indexPath.row
       cell.article = articles[indexPath.row]
       cell.selectionStyle = .none
       return cell

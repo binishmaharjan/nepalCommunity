@@ -29,6 +29,9 @@ class NCCommentCell : UITableViewCell, NCDatabaseAccess{
   private var menuIconBG: UIView?
   private var menuIcon: NCImageButtonView?
   
+  //Cell Index
+  var index : Int?
+  
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
     self.setup()
@@ -76,8 +79,6 @@ class NCCommentCell : UITableViewCell, NCDatabaseAccess{
     }
   }
   
-  //CommentCell Delegate
-  var commentCellDelegate : NCCellToTableViewDelegate?
   
   private func setup(){
     self.backgroundColor = NCColors.white
@@ -319,7 +320,7 @@ class NCCommentCell : UITableViewCell, NCDatabaseAccess{
 extension NCCommentCell{
   @objc private func userImageOrNamePressed(){
     guard let user = self.user else {return}
-    commentCellDelegate?.userImageOrNamePressed(user: user)
+    NCPager.shared.showUserPage(user: user)
   }
 }
 
@@ -333,10 +334,9 @@ extension NCCommentCell: NCButtonDelegate{
     }else if view == self.dislikeIcon{
       self.dislikeFunction()
     }else if view == self.menuIcon{
-      guard let comment = self.comment,
-        let user  = NCSessionManager.shared.user
+      guard let comment = self.comment
         else {return}
-      NCNotificationManager.post(menuButtonPressed: comment.commentId, type: DatabaseReference.COMMENT_REF, uid: user.uid, ouid: comment.uid)
+      NCPager.shared.showMenu(comment: comment, index : index ?? 0)
     }
   }
   

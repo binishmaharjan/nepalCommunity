@@ -71,4 +71,9 @@ extension NCPager{
     vc.titleString = "Edit Profile"
     push(viewController: vc)
   }
+  
+  func showSignUpView(){
+    let vc = NCSignUpViewController()
+    self.push(viewController: vc)
+  }
 }

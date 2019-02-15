@@ -165,8 +165,7 @@ class NCTabViewController : UITabBarController{
     self.navigationController?.isNavigationBarHidden = true
     handle = Auth.auth().addStateDidChangeListener({ (auth, user) in
       if user == nil{
-        let loginvc = UINavigationController(rootViewController: NCLoginViewController())
-        self.present(loginvc, animated: true, completion: nil)
+        NCPager.shared.showLoginPage()
       }else{
 //        User is logged in
       }

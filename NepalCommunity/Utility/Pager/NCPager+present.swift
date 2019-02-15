@@ -9,3 +9,12 @@
 import UIKit
 
 
+extension NCPager{
+  
+  func showLoginPage(){
+    let vc = UINavigationController(rootViewController: NCLoginViewController())
+    self.present(viewController: vc)
+  }
+  
+}
+

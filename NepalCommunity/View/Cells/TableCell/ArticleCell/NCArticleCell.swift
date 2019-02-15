@@ -11,6 +11,10 @@ import TinyConstraints
 import FirebaseFirestore
 import CodableFirebase
 
+protocol NCArticleDelegate : NSObjectProtocol{
+  func deleteCell(index : Int)
+}
+
 class NCArticleCell : UITableViewCell, NCDatabaseAccess, NCDatabaseWrite{
   
   //Variables
@@ -36,6 +40,8 @@ class NCArticleCell : UITableViewCell, NCDatabaseAccess, NCDatabaseWrite{
   private var menuIconBG: UIView?
   private var menuIcon: NCImageButtonView?
   
+  var index : Int?
+  var articleDelegate : NCArticleDelegate?
   
   private var isLiked : Bool = false{
     didSet{
@@ -555,8 +561,15 @@ extension NCArticleCell : NCButtonDelegate{
   
   //MARK : Menu Button Pressed
   private func menuButtonPressed(){
-    guard let aricle = self.article else {return}
-    NCPager.shared.showMenu(article: aricle)
+    guard let article = self.article else {return}
+    NCPager.shared.showMenu(article: article, index: self.index ?? 0) { (shouldDelete) in
+      guard let shouldDelete = shouldDelete,
+            let index = self.index
+      else {return}
+      if shouldDelete{
+        self.articleDelegate?.deleteCell(index: index)
+      }
+    }
   }
   
 }
