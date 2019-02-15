@@ -92,7 +92,7 @@ class DatabaseReference{
   
   //Comment
   static let COMMENT_REF = "comment"
-  static let COMMENT_ID = "comment_id"
+  static let COMMENT_ID = "commentId"
   static let COMMENT_STRING = "comment_string"
   
   //Report

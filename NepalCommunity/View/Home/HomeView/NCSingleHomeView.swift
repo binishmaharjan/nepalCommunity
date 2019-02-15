@@ -246,6 +246,8 @@ extension NCSingleHomeView : UITableViewDelegate, UITableViewDataSource{
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     if let cell = tableView.dequeueReusableCell(withIdentifier: CELL_ID, for: indexPath) as? NCArticleCell{
       cell.selectionStyle = .none
+      cell.index = indexPath.row
+      cell.articleDelegate = self
       cell.article = articles[indexPath.row]
       return cell
     }
@@ -266,5 +268,20 @@ extension NCSingleHomeView : UITableViewDelegate, UITableViewDataSource{
     cell.removeObserverLike()
     cell.removeObserveDisLike()
     cell.removeObserveComment()
+  }
+}
+
+//MARK : NCARticle Delegate
+extension NCSingleHomeView : NCArticleDelegate{
+  func deleteCell(index: Int) {
+    articles.remove(at: index)
+    if !articles.isEmpty{
+      self.tableView?.beginUpdates()
+      let cellIndex = IndexPath(row: index, section: 0)
+      self.tableView?.deleteRows(at: [cellIndex], with: .none)
+      self.tableView?.endUpdates()
+    }else{
+      self.tableView?.reloadData()
+    }
   }
 }

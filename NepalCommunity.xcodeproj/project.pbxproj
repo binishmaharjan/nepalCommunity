@@ -25,6 +25,7 @@
 		AC1EDCC521829A9E0089C7AF /* NCBaseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC1EDCC421829A9E0089C7AF /* NCBaseView.swift */; };
 		AC1EDCC921829D450089C7AF /* NCViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC1EDCC821829D450089C7AF /* NCViewController.swift */; };
 		AC1EDCCD2182A1220089C7AF /* UIView+Draw.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC1EDCCC2182A1220089C7AF /* UIView+Draw.swift */; };
+		AC2A373822156C4600C443FC /* NCDelayExec.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC2A373722156C4600C443FC /* NCDelayExec.swift */; };
 		AC2FC9DA21C0D28100052D1F /* NCImageDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC2FC9D921C0D28100052D1F /* NCImageDetailViewController.swift */; };
 		AC2FC9DC21C0D28E00052D1F /* NCimageDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC2FC9DB21C0D28E00052D1F /* NCimageDetailView.swift */; };
 		AC2FC9DE21C0D29F00052D1F /* NCDraggableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC2FC9DD21C0D29F00052D1F /* NCDraggableView.swift */; };
@@ -122,6 +123,7 @@
 		AC1EDCC421829A9E0089C7AF /* NCBaseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCBaseView.swift; sourceTree = "<group>"; };
 		AC1EDCC821829D450089C7AF /* NCViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCViewController.swift; sourceTree = "<group>"; };
 		AC1EDCCC2182A1220089C7AF /* UIView+Draw.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Draw.swift"; sourceTree = "<group>"; };
+		AC2A373722156C4600C443FC /* NCDelayExec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCDelayExec.swift; sourceTree = "<group>"; };
 		AC2FC9D921C0D28100052D1F /* NCImageDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCImageDetailViewController.swift; sourceTree = "<group>"; };
 		AC2FC9DB21C0D28E00052D1F /* NCimageDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCimageDetailView.swift; sourceTree = "<group>"; };
 		AC2FC9DD21C0D29F00052D1F /* NCDraggableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCDraggableView.swift; sourceTree = "<group>"; };
@@ -356,6 +358,7 @@
 				AC1EDCB0218147C60089C7AF /* NCFont.swift */,
 				AC1EDCB2218148AC0089C7AF /* NCColors.swift */,
 				AC1EDCB421814F380089C7AF /* NCNotificationManager.swift */,
+				AC2A373722156C4600C443FC /* NCDelayExec.swift */,
 			);
 			path = Utility;
 			sourceTree = "<group>";
@@ -962,6 +965,7 @@
 				ACA12F1721F6B97A00E56664 /* NCSearchView.swift in Sources */,
 				AC0322D221C88E9300E13780 /* NCTitleCell.swift in Sources */,
 				ACE361F822013E590023CC26 /* NCPager+Alert.swift in Sources */,
+				AC2A373822156C4600C443FC /* NCDelayExec.swift in Sources */,
 				AC2FC9DC21C0D28E00052D1F /* NCimageDetailView.swift in Sources */,
 				AC71845521A4F7610056DF3F /* NCCreateArticleView.swift in Sources */,
 				ACA5D361220D22DC0046BC88 /* NCPager+present.swift in Sources */,

@@ -20,7 +20,7 @@ class NCSignUpViewController: NCViewController{
   private var mainView: NCSignUpView?
   private var mainViewBottomConstraints: Constraint?
   
-  //MARK : Functions
+  //MARK : Overrides
   override func didInit() {
     super.didInit()
     outsideSafeAreaTopViewTemp?.backgroundColor = NCColors.white
@@ -45,6 +45,7 @@ class NCSignUpViewController: NCViewController{
     self.tearDownNotification()
   }
   
+  //MARK : Setups
   private func setup(){
     let mainView = NCSignUpView()
     self.mainView = mainView
@@ -68,7 +69,7 @@ class NCSignUpViewController: NCViewController{
 extension NCSignUpViewController: NCButtonDelegate, NCSignUpAndSignIn, NCDatabaseWrite, NCStorage{
   func buttonViewTapped(view: NCButtonView) {
     if view == mainView?.backBtn{
-      self.navigationController?.popViewController(animated: true)
+      NCPager.shared.pop()
     }else if view == mainView?.signUpBtn{
       emailSignUp()
     }else if view == mainView?.cameraIcon{
@@ -137,7 +138,7 @@ extension NCSignUpViewController: NCButtonDelegate, NCSignUpAndSignIn, NCDatabas
             NCDropDownNotification.shared.showError(message: LOCALIZE("Error : \(error.localizedDescription)"))
             return
           }
-          self.navigationController?.popViewController(animated: true)
+          NCPager.shared.pop()
           NCActivityIndicator.shared.stop()
           NCDropDownNotification.shared.showSuccess(message: LOCALIZE("Account Successfully Created"))
         })

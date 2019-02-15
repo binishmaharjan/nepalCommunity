@@ -149,6 +149,7 @@ extension NCUserProfileView : UITableViewDelegate, UITableViewDataSource{
     }
     
     if indexPath.row != 0, let cell = tableView.dequeueReusableCell(withIdentifier: CELL2_ID, for: indexPath) as? Cell2{
+      cell.index = indexPath.row - 1
       cell.article = articles[indexPath.row - 1]
       cell.selectionStyle = .none
       return cell

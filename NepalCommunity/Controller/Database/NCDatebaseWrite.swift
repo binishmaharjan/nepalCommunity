@@ -22,6 +22,7 @@ protocol NCDatabaseWrite{
 
 extension NCDatabaseWrite{
   
+  //Register Email User
   func writeEmailUser(userId: String, username: String, iconUrl: String, email : String, completion: ((Error?) -> ())?) {
     
     let user = NCUser.init(accountType: NCAccountType.email.rawValue,
@@ -50,6 +51,7 @@ extension NCDatabaseWrite{
     }
   }
   
+  //Register Facebook User
   func writeFacebookUser(userId: String, username: String, iconUrl: String,email: String, completion: ((Error?) -> ())?) {
     
     let user = NCUser.init(accountType: NCAccountType.facebook.rawValue,
@@ -78,6 +80,8 @@ extension NCDatabaseWrite{
     }
   }
   
+  
+  //Post Article
   func postArticle(articleId : String,userId: String, title: String, description: String, category : String,imageURL : String,hasImage : Int, completion : ((Error?) -> ())?){
     
     let article = NCArticle.init(articleDescription: description,
@@ -112,6 +116,7 @@ extension NCDatabaseWrite{
   }
   
   
+  //Post Comment
   func postComment(commentId : String, uid:String, articleId: String, commentString: String,completion : ((Error?) -> ())?){
     
     let comment = NCComment.init(commentId: commentId,
@@ -142,6 +147,8 @@ extension NCDatabaseWrite{
     }
   }
   
+  
+  //Report User
   func report(id: String, type : String,uid:String, completion : ((Error?) -> ())?){
     DispatchQueue.global(qos: .default).async {
       Firestore.firestore()
@@ -164,9 +171,188 @@ extension NCDatabaseWrite{
           }
       }
     }
+  }
+  
+  //Delete the Comment
+  func deleteComment(articleId: String, commentId : String,completion : ((Error?)->())?){
+    let commentRef = Firestore.firestore()
+      .collection(DatabaseReference.ARTICLE_REF)
+      .document(articleId)
+      .collection(DatabaseReference.COMMENT_REF)
+      .document(commentId)
+    
+    let dispatchGroup : DispatchGroup = DispatchGroup()
+    
+    //Deleting the like IDs
+    DispatchQueue.global(qos: .default).async {
+      dispatchGroup.enter()
+      self.deleteSingleCollection(ref: commentRef.collection(DatabaseReference.LIKE_ID_REF), completion: { (error) in
+        if let _ = error{
+          dispatchGroup.leave()
+          return
+        }
+        dispatchGroup.leave()
+      })
+    }
+    
+    //Deleteting all the dislike Ids
+    DispatchQueue.global(qos: .default).async {
+      dispatchGroup.enter()
+      self.deleteSingleCollection(ref: commentRef.collection(DatabaseReference.DISLIKE_ID_REF), completion: { (error) in
+        if let _ = error{
+          dispatchGroup.leave()
+          return
+        }
+        dispatchGroup.leave()
+      })
+    }
+    
+    //Deleting the comment Itself
+    dispatchGroup.notify(queue: .global(qos: .default)) {
+      self.deleteSingleDocument(ref: commentRef, completion: { (error) in
+        if let error = error{
+          completion?(error)
+          return
+        }
+        completion?(nil)
+      })
+    }
+  }
+  
+  //Deleting the aricle
+  func deleteArticle(articleId : String, completion : ((Error?)->())?){
+    let articleRef = Firestore.firestore()
+      .collection(DatabaseReference.ARTICLE_REF)
+      .document(articleId)
+    let dispatchGroup = DispatchGroup()
+    
+    //Getting all comments
+    DispatchQueue.global(qos: .default).async {
+      let commentRef = articleRef.collection(DatabaseReference.COMMENT_REF)
+      commentRef.getDocuments(completion: { (snapshot, error) in
+        if let error = error{
+          completion?(error)
+          return
+        }
+        
+        guard let snapshot = snapshot else {
+          completion?(NSError.init(domain: "No Snapshot", code: -1, userInfo: nil))
+          return
+        }
+        
+        let documents = snapshot.documents
+        documents.forEach({ (document) in
+          dispatchGroup.enter()
+          let data = document.data()
+          guard let commentId = data[DatabaseReference.COMMENT_ID] as? String else{
+            dispatchGroup.leave()
+            return
+          }
+          
+          self.deleteComment(articleId: articleId, commentId: commentId, completion: { (error) in
+            if let _ = error{
+              dispatchGroup.leave()
+              return
+            }
+            dispatchGroup.leave()
+          })
+        })
+      })
+    }
+    
+    //Deleteting all the dislike Ids
+    DispatchQueue.global(qos: .default).async {
+      dispatchGroup.enter()
+      self.deleteSingleCollection(ref: articleRef.collection(DatabaseReference.DISLIKE_ID_REF), completion: { (error) in
+        if let _ = error{
+          dispatchGroup.leave()
+          return
+        }
+        dispatchGroup.leave()
+      })
+    }
+    
+    //Deleting the dislike IDs
+    DispatchQueue.global(qos: .default).async {
+      dispatchGroup.enter()
+      self.deleteSingleCollection(ref: articleRef.collection(DatabaseReference.LIKE_ID_REF), completion: { (error) in
+        if let _ = error{
+          dispatchGroup.leave()
+          return
+        }
+        dispatchGroup.leave()
+      })
+    }
+    
+    //Deleting the Article Itself
+    dispatchGroup.notify(queue: .global(qos: .default)) {
+      self.deleteSingleDocument(ref: articleRef, completion: { (error) in
+        if let error = error{
+          completion?(error)
+          return
+        }
+        completion?(nil)
+      })
+    }
     
   }
   
+  //Delete the single Colletion
+  func deleteSingleCollection(ref : CollectionReference, completion : ((Error?)->())?){
+    DispatchQueue.global(qos: .default).async {
+      
+      let dispatchGroup = DispatchGroup()
+      ref.getDocuments(completion: { (snapshot, error) in
+        if let error = error{
+          completion?(error)
+          return
+        }
+        
+        guard let snapshot = snapshot else {
+          completion?(NSError.init(domain: "No Snapshot", code: -1, userInfo: nil))
+          return
+        }
+        
+        let documents = snapshot.documents
+        documents.forEach({ (document) in
+          dispatchGroup.enter()
+          guard let id = document.data()[DatabaseReference.USER_ID] as? String else {
+            dispatchGroup.leave()
+            return
+          }
+          
+          let documentRef = ref.document(id)
+          self.deleteSingleDocument(ref: documentRef, completion: { (error) in
+            if let _ = error {
+              dispatchGroup.leave()
+              return
+            }
+            
+            //Successful
+            dispatchGroup.leave()
+          })
+        })
+      })
+      
+      dispatchGroup.notify(queue: .main, execute: {
+        completion?(nil)
+      })
+    }
+  }
+  
+  //Deletion of the single Document
+  func deleteSingleDocument(ref : DocumentReference, completion : ((Error?) -> ())?){
+    DispatchQueue.global(qos: .default).async {
+      ref.delete(completion: { (error) in
+        if let error = error {
+          completion?(error)
+        }
+        completion?(nil)
+      })
+    }
+  }
+  
+  //Register Like Articles
   func registerLikedArticle(uid : String, aritcleid:String, completion :((Error?)->())?){
     DispatchQueue.global(qos: .default).async {
       Firestore.firestore()
@@ -185,6 +371,7 @@ extension NCDatabaseWrite{
   }
   
   
+  //Register Dislike Articles
   func registerDislikeArticle(uid : String, aritcleid:String, completion :((Error?)->())?){
     DispatchQueue.global(qos: .default).async {
       Firestore.firestore()
@@ -202,6 +389,7 @@ extension NCDatabaseWrite{
     }
   }
   
+  //Remove Like Article
   func removeLikedArticle(uid : String, aritcleid:String, completion :((Error?)->())?){
     DispatchQueue.global(qos: .default).async {
       Firestore.firestore()
@@ -218,6 +406,7 @@ extension NCDatabaseWrite{
     }
   }
   
+  //Remove Dislike Article
   func removeDislikedArticle(uid : String, aritcleid:String, completion :((Error?)->())?){
     DispatchQueue.global(qos: .default).async {
       Firestore.firestore()
@@ -234,6 +423,7 @@ extension NCDatabaseWrite{
     }
   }
   
+  //Edit Profile
   func editField(uid : String, name : String, url : String, completion : ((NCUser?,Error?)->())?){
     DispatchQueue.global(qos: .default).async {
       Firestore.firestore()

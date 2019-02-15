@@ -133,6 +133,8 @@ class NCProfileView : NCBaseView{
   }
   
   @objc private func refreshControlDragged(){
+    guard let user = NCSessionManager.shared.user else{return}
+    self.user = user
     self.loadArticles()
   }
 }
@@ -152,7 +154,9 @@ extension NCProfileView : UITableViewDelegate, UITableViewDataSource{
     }
     
     if indexPath.row != 0, let cell = tableView.dequeueReusableCell(withIdentifier: CELL2_ID, for: indexPath) as? Cell2{
+      cell.index = indexPath.row - 1
       cell.article = articles[indexPath.row - 1]
+      cell.articleDelegate  = self
       cell.selectionStyle = .none
       return cell
     }
@@ -221,4 +225,18 @@ extension NCProfileView {
   }
 }
 
+//MARK: Aricle delegate
+extension NCProfileView : NCArticleDelegate{
+  func deleteCell(index: Int) {
+    articles.remove(at: index)
+    if !articles.isEmpty{
+      self.tableView?.beginUpdates()
+      let cellIndex = IndexPath(row: index + 1, section: 0)
+      self.tableView?.deleteRows(at: [cellIndex], with: .none)
+      self.tableView?.endUpdates()
+    }else{
+      self.tableView?.reloadData()
+    }
+  }
+}
 
