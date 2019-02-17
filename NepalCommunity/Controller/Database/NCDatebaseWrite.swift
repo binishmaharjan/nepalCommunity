@@ -10,6 +10,7 @@ import Foundation
 import Firebase
 import FirebaseFirestore
 import CodableFirebase
+import InstantSearch
 
 protocol NCDatabaseWrite{
   func writeEmailUser(userId : String, username: String,iconUrl : String,email : String, completion : ((_ error: Error?)->())? )
@@ -43,11 +44,34 @@ extension NCDatabaseWrite{
               DispatchQueue.main.async {completion?(error)}
             }else{
               DispatchQueue.main.async {completion?(nil)}
+              //Send Data to the algoria
+              self.pushDataAlgolia(data: data)
             }
         }
       }
     }catch{
       completion?(error)
+    }
+  }
+  
+  //Algoria Database
+  private func pushDataAlgolia(data: [String: AnyObject]) {
+
+    var index: Index?
+    index = NCSessionManager.shared.client.index(withName: "NC_users")
+    
+    //Making the objectid of algoria to the same as user id in firebase
+    var newData = data
+    if let objectId = data["uid"] {
+      newData.updateValue(objectId, forKey: "objectID")
+    }
+    
+    DispatchQueue.global().async {
+      index?.addObject(newData, completionHandler: { (content, error) -> Void in
+        if error == nil {
+          Dlog("Object IDs: \(content!)")
+        }
+      })
     }
   }
   
@@ -425,16 +449,20 @@ extension NCDatabaseWrite{
   
   //Edit Profile
   func editField(uid : String, name : String, url : String, completion : ((NCUser?,Error?)->())?){
+    let updateData = [
+      DatabaseReference.USERNAME : name,
+      DatabaseReference.ICON_URL : url
+    ]
     DispatchQueue.global(qos: .default).async {
       Firestore.firestore()
         .collection(DatabaseReference.USERS_REF)
         .document(uid)
-        .updateData([
-          DatabaseReference.USERNAME : name,
-          DatabaseReference.ICON_URL : url
-          ], completion: { (error) in
+        .updateData(updateData, completion: { (error) in
             if let error = error{completion?(nil,error)}
-            
+          
+          //Updating the algoria
+          self.updateAlgoriaData(data: updateData as [String : AnyObject])
+          
             Firestore.firestore().collection(DatabaseReference.USERS_REF).document(uid).getDocument(completion: { (snapshot, error) in
               if let error = error{
                 completion?(nil,error)
@@ -457,5 +485,20 @@ extension NCDatabaseWrite{
             })
         })
     }
+  }
+  
+  private func updateAlgoriaData(data : [String : AnyObject]){
+    guard let objectId = NCSessionManager.shared.user?.uid else {return}
+    
+    let index = NCSessionManager.shared.client.index(withName: "NC_users")
+    
+    DispatchQueue.global().async {
+      index.partialUpdateObject(data, withID: objectId, completionHandler: { (content, error) in
+        if error == nil{
+          Dlog("Objects IDs: \(content!)")
+        }
+      })
+    }
+
   }
 }
