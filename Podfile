@@ -19,4 +19,5 @@ target 'NepalCommunity' do
   pod 'SwiftyJSON', '4.2.0'
   pod 'CodableFirebase', '0.2.1'
   pod 'SDWebImage', '4.4.2'
+  pod 'InstantSearch'
 end

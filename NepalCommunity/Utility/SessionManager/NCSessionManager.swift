@@ -10,11 +10,19 @@ import Foundation
 import FirebaseFirestore
 import FirebaseAuth
 import CodableFirebase
+import InstantSearch
 
 class NCSessionManager{
   private  init(){}
   
   static let shared = NCSessionManager()
+  
+  //Algoria
+  #if DEBUG
+  let client = Client(appID: "TEX8MYT9UR", apiKey: "878e7eed2af88d0f48b5b180bc1d92ea")
+  #else
+  let client = Client(appID: "TEX8MYT9UR", apiKey: "878e7eed2af88d0f48b5b180bc1d92ea")
+  #endif
   
   var user : NCUser?
   

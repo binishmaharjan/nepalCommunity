@@ -9,6 +9,7 @@ import UIKit
 import TinyConstraints
 import FirebaseFirestore
 import CodableFirebase
+import InstantSearch
 
 
 protocol NCSearchDelegate : NSObjectProtocol{
@@ -41,6 +42,15 @@ class NCSearchView : NCBaseView{
   let CELL1_ID = NSStringFromClass(Cell1.self)
   
   var users : [NCUser] = [NCUser]()
+  var algoriaUser : [NCUser] = [NCUser]()
+  
+  //INdex Algoria
+  var index : Index?
+  var page : UInt = 0
+  var nbPages : UInt = UInt()
+  var query = Query()
+  var isLoading : Bool = false
+  let COUNT_LAST_CELL : Int = 4
   
   
   override func didInit() {
@@ -230,10 +240,16 @@ class NCSearchView : NCBaseView{
 extension NCSearchView : UITextFieldDelegate{
   func textFieldShouldReturn(_ textField: UITextField) -> Bool {
     textField.resignFirstResponder()
+    
+    guard let searchText = textField.text else {return true}
+    
+    self.startAlgoria(searchText: searchText)
+    
     return true
   }
   
   func textFieldDidBeginEditing(_ textField: UITextField) {
+    textField.text = ""
     cancelBtnWidth = 80
     self.setNeedsUpdateConstraints()
     UIView.animate(withDuration: 0.2) {
@@ -249,14 +265,9 @@ extension NCSearchView : UITextFieldDelegate{
     }
   }
   
-  func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-    
-    return true
-  }
-  
   @objc func textDidChange(_ textField : UITextField){
-    guard let searchText = textField.text else {return}
-    self.loadUser(searchText: searchText)
+//    guard let searchText = textField.text else {return}
+//    self.loadUser(searchText: searchText)
   }
   
   @objc func canceButtonPressed(){
@@ -270,12 +281,12 @@ extension NCSearchView : UITextFieldDelegate{
 //MARK : TableView Delegate and Datasource
 extension NCSearchView : UITableViewDelegate, UITableViewDataSource{
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return users.count
+    return algoriaUser.count
   }
   
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     if let cell = tableView.dequeueReusableCell(withIdentifier: CELL1_ID, for: indexPath) as? Cell1{
-      cell.user = users[indexPath.row]
+      cell.user = algoriaUser[indexPath.row]
       cell.selectionStyle = .none
       return cell
     }
@@ -284,6 +295,174 @@ extension NCSearchView : UITableViewDelegate, UITableViewDataSource{
   }
   
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-    NCPager.shared.showUserProfile(user: self.users[indexPath.row])
+    NCPager.shared.showUserProfile(user: self.algoriaUser[indexPath.row])
+  }
+  
+  func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+      let element = self.algoriaUser.count - COUNT_LAST_CELL
+      if !isLoading, indexPath.row >= element {
+        loadMoreSearch()
+      }
+  }
+  
+  
+  
+  
+  //Setup Algoria
+  
+  private func startAlgoria(searchText : String){
+    guard let currentUser = NCSessionManager.shared.user else {return}
+    
+    //Creating ALgoria INdex
+    index = NCSessionManager.shared.client.index(withName: "NC_users")
+    query.query = searchText
+    query.hitsPerPage = 30
+    page = 0
+    query.page = page
+    self.algoriaUser.removeAll()
+    
+    
+    DispatchQueue.global(qos: .default).async {
+      guard let index = self.index,
+        let tableView = self.tableView else {return}
+      
+      self.isLoading = true
+      
+      index.search(self.query, completionHandler: { (content, error) in
+        
+        if let error = error{
+          self.isLoading = false
+          self.tableView?.reloadData()
+          Dlog(error.localizedDescription)
+          return
+        }
+        
+        if let content = content, let hits = content["hits"] as? [AnyObject], !hits.isEmpty{
+          for (hitIndex, hit) in hits.enumerated(){
+            guard let  hitDic = hit as? [String : AnyObject],
+            let nbPages = content["nbPages"] as? UInt else {
+              self.isLoading = false
+              return
+            }
+            
+            self.nbPages = nbPages
+            do{
+              let user = try FirebaseDecoder().decode(NCUser.self, from: hitDic)
+              
+              if user.uid != currentUser.uid{
+                self.algoriaUser.append(user)
+              }
+              
+              DispatchQueue.main.async {
+                if (hitIndex + 1) == hits.count{
+                  tableView.reloadData()
+                  self.isLoading = false
+                  
+                  if self.algoriaUser.isEmpty, nbPages != 1{
+                    self.loadMoreSearch()
+                  }
+                }
+              }
+            }catch{
+              Dlog(error.localizedDescription)
+              tableView.reloadData()
+              self.isLoading = false
+            }
+          }
+        }
+        
+      })
+    }
+  }
+  
+  
+  private func loadMoreSearch(){
+    guard page + 1 < nbPages,
+      let index = self.index,
+      !isLoading,
+      let tableView = self.tableView,
+      let currentUser = NCSessionManager.shared.user
+    else { return }
+    
+    page = page + 1
+    query.page = page
+    isLoading = true
+    
+    DispatchQueue.global(qos: .default).async {
+      index.search(self.query, completionHandler: { (content, error) in
+        if let error = error{
+          Dlog(error.localizedDescription)
+          self.isLoading = false
+          tableView.reloadData()
+          return
+        }
+        
+        guard let content = content,
+              let hits = content["hits"] as? [AnyObject],
+              !hits.isEmpty
+          else{
+            self.isLoading = false
+            tableView.reloadData()
+            return
+        }
+        
+        for(hitIndex, hit) in hits.enumerated(){
+          guard let hitDic = hit as? [String: AnyObject] else {
+            self.isLoading = false
+            return
+          }
+          
+          do{
+            let user = try FirebaseDecoder().decode(NCUser.self, from: hitDic)
+            if user.uid != currentUser.uid{
+              self.algoriaUser.append(user)
+            }
+            
+            DispatchQueue.main.async {
+              if (hitIndex + 1) == hits.count{
+                tableView.reloadData()
+                self.isLoading = false
+                if self.algoriaUser.isEmpty{
+                  self.loadMoreSearch()
+                }
+              }
+            }
+          }catch{
+            self.isLoading = false
+            Dlog(error.localizedDescription)
+            tableView.reloadData()
+          }
+        }
+      })
+    }
   }
 }
+
+//Delete Algoria
+//private func deleteDataAlgolia(contentType: ContentType, contributionId: String) {
+//  var index: Index?
+//
+//  if contentType == .story {
+//    index = ANISessionManager.shared.client.index(withName: KEY_STORIES_INDEX)
+//  } else if contentType == .qna {
+//    index = ANISessionManager.shared.client.index(withName: KEY_QNAS_INDEX)
+//  }
+//
+//  DispatchQueue.global().async {
+//    index?.deleteObject(withID: contributionId)
+//  }
+//}
+//Update Algoria
+//private func updateDataAlgolia(data: [String: AnyObject]) {
+//  guard let objectId = ANISessionManager.shared.currentUserUid else { return }
+//
+//  let index = ANISessionManager.shared.client.index(withName: KEY_USERS_INDEX)
+//
+//  DispatchQueue.global().async {
+//    index.partialUpdateObject(data, withID: objectId, completionHandler: { (content, error) -> Void in
+//      if error == nil {
+//        DLog("Object IDs: \(content!)")
+//      }
+//    })
+//  }
+//}
