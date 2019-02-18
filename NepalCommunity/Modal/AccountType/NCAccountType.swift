@@ -12,4 +12,5 @@ import Foundation
 enum NCAccountType: String {
   case email = "email"
   case facebook = "facebook"
+  case google = "google"
 }

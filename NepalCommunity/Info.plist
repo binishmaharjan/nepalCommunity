@@ -24,6 +24,14 @@
 				<string>fb282795129016009</string>
 			</array>
 		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>com.googleusercontent.apps.681951406004-4ol2lui7n7k2gqurg39ifv2lfvoh6qlj</string>
+			</array>
+		</dict>
 	</array>
 	<key>FacebookAppID</key>
 	<string>282795129016009</string>

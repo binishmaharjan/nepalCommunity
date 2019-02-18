@@ -10,17 +10,19 @@ import UIKit
 import Firebase
 import FirebaseAuth
 import FBSDKCoreKit
+import GoogleSignIn
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
-
+  
   var window: UIWindow?
   var homeBarNavigation: UINavigationController?
   var tabBarController : NCTabViewController?
-
+  
   func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
     //Firebase Server
     setupFirebaseServer(application,launchOptions)
+    setupGoogleAuthentication()
     
     //Setting up initial windows
     window = UIWindow(frame: UIScreen.main.bounds)
@@ -32,21 +34,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     return true
   }
   
-//  func application(_ application: UIApplication, open url: URL, sourceApplication: String?, annotation: Any) -> Bool {
-//    return FBSDKApplicationDelegate.sharedInstance().application(application, open: url, sourceApplication: sourceApplication, annotation: annotation)
-//  }
-  
-//  func application(_ application: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
-//
-//    let handled: Bool = FBSDKApplicationDelegate.sharedInstance().application(application, open: url, sourceApplication: options[UIApplication.OpenURLOptionsKey.sourceApplication] as? String, annotation: options[UIApplication.OpenURLOptionsKey.annotation])
-//    // Add any custom logic here.
-//    return handled
-//  }
-  
   func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
-    return FBSDKApplicationDelegate.sharedInstance().application(app, open: url, options: options)
+    return GIDSignIn.sharedInstance().handle(url,
+                                             sourceApplication:options[UIApplication.OpenURLOptionsKey.sourceApplication] as? String,
+                                             annotation: [:])
+    //For Facebook
+    //    return FBSDKApplicationDelegate.sharedInstance().application(app, open: url, options: options)
   }
-
+  
   
 }
 
@@ -76,6 +71,56 @@ extension AppDelegate{
     }else{
       Dlog("Not Logged In")
     }
+  }
+}
+
+extension AppDelegate : GIDSignInDelegate, NCSignUpAndSignIn, NCDatabaseWrite{
+  
+  private func setupGoogleAuthentication(){
+    GIDSignIn.sharedInstance().clientID = FirebaseApp.app()?.options.clientID
+    GIDSignIn.sharedInstance().delegate = self
+  }
+  
+  func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!, withError error: Error!) {
+    NCActivityIndicator.shared.start(view: (NCPager.shared.currentViewController?.view!)!)
+    if let error = error{
+      Dlog(error.localizedDescription)
+      NCActivityIndicator.shared.stop()
+      return
+    }
+    
+    guard let authentication = user.authentication else {return}
+    let credentitial = GoogleAuthProvider.credential(withIDToken: authentication.idToken, accessToken: authentication.accessToken)
+    self.loginWithGoogle(credential: credentitial) { (username, uid, email, url, error) in
+      if let error = error{
+        Dlog(error.localizedDescription)
+        NCActivityIndicator.shared.stop()
+        return
+      }
+      
+      guard let username = username,
+        let uid = uid,
+        let email = email,
+        let url = url
+        else {
+          NCActivityIndicator.shared.stop()
+          Dlog("No Google Data")
+          return
+      }
+      self.writeGooglUser(userId: uid, username: username, iconUrl: url, email: email, completion: { (error) in
+        if let error = error{
+          Dlog(error.localizedDescription)
+          NCActivityIndicator.shared.stop()
+        }
+        NCSessionManager.shared.userLoggedIn()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
+          NCNotificationManager.postDismissLogin()
+          NCActivityIndicator.shared.stop()
+        })
+        Dlog("Successful")
+      })
+    }
+    
   }
 }
 

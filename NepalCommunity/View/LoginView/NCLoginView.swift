@@ -182,7 +182,7 @@ class NCLoginView : NCBaseView{
     
     //FaceBook Button
     let fbBtnBG = NCGradientView(
-      colors: [NCColors.fbBlue.cgColor, NCColors.fbBlue.cgColor],
+      colors: [NCColors.googleRed.cgColor, NCColors.googleRed.cgColor],
       cornerRadius: LoginConstant.CORNER_RADIUS_ZERO,
       startPoint: CGPoint(x: 0, y: 0),
       endPoint: CGPoint(x:1, y:0)
@@ -196,7 +196,7 @@ class NCLoginView : NCBaseView{
     let fbBtn = NCTextButton()
     self.fbBtn = fbBtn
     fbBtn.backgroundColor = NCColors.clear
-    fbBtn.text = LOCALIZE("Sign In With Facebook")
+    fbBtn.text = LOCALIZE("Sign In With Google")
     fbBtn.font = NCFont.bold(size: LoginConstant.FONT_SIZE)
     fbBtn.textColor = NCColors.white
     fbBtnBG.addSubview(fbBtn)

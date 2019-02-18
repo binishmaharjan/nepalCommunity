@@ -12,6 +12,7 @@ target 'NepalCommunity' do
   pod 'Firebase/Storage'
   pod 'FacebookCore'
   pod 'FacebookLogin'
+  pod 'GoogleSignIn'
   
   pod 'TinyConstraints', '3.3.1'
   pod 'NVActivityIndicatorView', '4.4.0'

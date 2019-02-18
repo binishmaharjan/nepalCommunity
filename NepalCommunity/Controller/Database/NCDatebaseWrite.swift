@@ -104,6 +104,36 @@ extension NCDatabaseWrite{
     }
   }
   
+  //Register Google User
+  func writeGooglUser(userId: String, username:String, iconUrl: String, email: String,completion: ((Error?) -> ())?){
+    let user = NCUser.init(accountType: NCAccountType.google.rawValue,
+                           dateCreated: NCDate.dateToString(),
+                           iconUrl: iconUrl,
+                           uid: userId,
+                           username: username,
+                           email: email,
+                           followers: 0,
+                           following: 0)
+    do{
+      let data = try FirestoreEncoder().encode(user) as [String : AnyObject]
+      DispatchQueue.global(qos: .default).async {
+        Firestore.firestore()
+          .collection(DatabaseReference.USERS_REF)
+          .document(userId).setData(data) { (error) in
+            if let error = error{
+              DispatchQueue.main.async {completion?(error)}
+            }else{
+              DispatchQueue.main.async {completion?(nil)}
+              //Send Data to the algoria
+              self.pushDataAlgolia(data: data)
+            }
+        }
+      }
+    }catch{
+      completion?(error)
+    }
+  }
+  
   
   //Post Article
   func postArticle(articleId : String,userId: String, title: String, description: String, category : String,imageURL : String,hasImage : Int, completion : ((Error?) -> ())?){
