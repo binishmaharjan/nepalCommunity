@@ -12,6 +12,7 @@ import FacebookCore
 import FacebookLogin
 import FirebaseAuth
 import SwiftyJSON
+import GoogleSignIn
 
 protocol NCSignUpAndSignIn{
   func registerEmail(email : String, password : String, username : String,completion:((_ userId:String?, _ error:Error?)->())?)
@@ -87,7 +88,28 @@ extension NCSignUpAndSignIn{
       completion?(nil)
       //Fetch The Facebook Information
     }
-    
+  }
+  
+  func loginWithGoogle(credential : AuthCredential, completion: ((_ name : String?, _ id : String?, _ email : String?,_ url : String? , _ error : Error?)->())?){
+    Dlog("Google Login")
+    Auth.auth().signInAndRetrieveData(with: credential) { (result, error) in
+      if let error = error{
+        completion?(nil,nil,nil,nil,error)
+        return
+      }
+      
+      guard let result = result else {
+        completion?(nil,nil,nil,nil,NSError.init(domain: "No Result", code: -1, userInfo: nil))
+        return
+      }
+      
+      let username = result.user.displayName
+      let email = result.user.email
+      let photoUrl = result.user.photoURL
+      let uid = Auth.auth().currentUser?.uid
+      
+      completion?(username,uid,email,photoUrl?.absoluteString,nil)
+    }
   }
   
   func fetchFacebookUser(completion : ((_ name : String?, _ id : String?,_ email : String? , _ image : UIImage?, _ error : Error?) -> ())?){

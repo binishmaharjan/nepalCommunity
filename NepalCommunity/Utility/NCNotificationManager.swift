@@ -78,7 +78,16 @@ extension NCNotificationManager{
   static func post(rowDeleted index : Int){
     self.post(name: N_ROW_DELETED, object: index)
   }
-  static func receieve(rowDeleted observer : Any, selector : Selector){
+  static func receive(rowDeleted observer : Any, selector : Selector){
     receive(name: N_ROW_DELETED, observer: observer, selector: selector)
+  }
+  
+  //MARK : Dismiss Login
+  private static let N_DISMISS_LOGIN = "N_DISMISS_LOGIN"
+  static func postDismissLogin(){
+    self.post(name: N_DISMISS_LOGIN, object: nil)
+  }
+  static func receive(dismissLogin observer :Any, selector :Selector){
+    receive(name: N_DISMISS_LOGIN, observer: observer, selector: selector)
   }
 }

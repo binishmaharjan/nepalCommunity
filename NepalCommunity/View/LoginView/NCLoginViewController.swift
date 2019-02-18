@@ -8,6 +8,7 @@
 
 import UIKit
 import TinyConstraints
+import GoogleSignIn
 
 
 class NCLoginViewController: NCViewController{
@@ -51,6 +52,8 @@ class NCLoginViewController: NCViewController{
     mainView.signUpDelegate = self
     mainView.delegate = self
     self.view.addSubview(mainView)
+    
+    GIDSignIn.sharedInstance()?.uiDelegate = self
   }
   
   private func setupConstraints(){
@@ -64,7 +67,7 @@ class NCLoginViewController: NCViewController{
 }
 
 //MARK: Button Delegate
-extension NCLoginViewController : NCLoginViewDelegate, NCButtonDelegate, NCSignUpAndSignIn, NCDatabaseWrite, NCStorage{
+extension NCLoginViewController : NCLoginViewDelegate, NCButtonDelegate, NCSignUpAndSignIn, NCDatabaseWrite, NCStorage, GIDSignInUIDelegate{
   func buttonViewTapped(view: NCButtonView) {
     /*
      Sign in with email
@@ -91,70 +94,11 @@ extension NCLoginViewController : NCLoginViewDelegate, NCButtonDelegate, NCSignU
       }
     }
       /*
-       Sign in with Facebook
+       Sign in with Google
        */
     else if view == mainView?.fbBtn{
-      //Start the indicator
-      NCActivityIndicator.shared.start(view: self.view)
-      //Register with Facebook
-      self.registerWithFacebook(viewController: self) { (error) in
-        if let error = error {
-          NCActivityIndicator.shared.stop()
-          NCDropDownNotification.shared.showError(message: error.localizedDescription)
-          return
-        }
-        //If successful, login with the facebook
-        self.loginWithFacebook(completion: { (error) in
-          if let error = error {
-            NCActivityIndicator.shared.stop()
-            NCDropDownNotification.shared.showError(message: error.localizedDescription)
-            return
-          }
-          //Get the information form the facebook
-          self.fetchFacebookUser(completion: { (name, uid, email, image, error) in
-            if let error = error {
-              NCActivityIndicator.shared.stop()
-              NCDropDownNotification.shared.showError(message: error.localizedDescription)
-              return
-            }
-            
-            guard let name = name,
-              let uid = uid,
-              let email = email,
-              let image = image else {
-                NCActivityIndicator.shared.stop()
-                NCDropDownNotification.shared.showError(message: "Fetch Error")
-                return
-            }
-            //Once image is downloaded, save the image to the storage
-            self.saveImageToStorage(image: image, userId: uid, completion: { (url, error) in
-              if let error = error {
-                NCActivityIndicator.shared.stop()
-                NCDropDownNotification.shared.showError(message: error.localizedDescription)
-                return
-              }
-              
-              guard let url = url else {
-                NCActivityIndicator.shared.stop()
-                NCDropDownNotification.shared.showError(message: "URL Error")
-                return
-              }
-              
-              //If save is successful,write the user info to the database
-              self.writeFacebookUser(userId: uid, username: name, iconUrl: url, email: email, completion: { (error) in
-                if let error = error {
-                  NCActivityIndicator.shared.stop()
-                  NCDropDownNotification.shared.showError(message: error.localizedDescription)
-                  return
-                }
-                NCActivityIndicator.shared.stop()
-                NCSessionManager.shared.userLoggedIn()
-                self.dismiss(animated: true, completion: nil)
-              })
-            })
-          })
-        })
-      }
+      Dlog("Google Login")
+      self.registerWithGoogle(completion: nil)
     }
   }
   
@@ -162,7 +106,79 @@ extension NCLoginViewController : NCLoginViewDelegate, NCButtonDelegate, NCSignU
   func signUpButtonPressed() {
     NCPager.shared.showSignUpView()
   }
+}
+
+//MARK: SignUp Functions
+extension NCLoginViewController{
   
+  func registerWithGoogle(completion : ((Error?)->())?){
+    Dlog("Google Registration")
+    GIDSignIn.sharedInstance()?.signIn()
+  }
+  
+  private func facebookSignUpFunction(){
+    //Start the indicator
+    NCActivityIndicator.shared.start(view: self.view)
+    //Register with Facebook
+    self.registerWithFacebook(viewController: self) { (error) in
+      if let error = error {
+        NCActivityIndicator.shared.stop()
+        NCDropDownNotification.shared.showError(message: error.localizedDescription)
+        return
+      }
+      //If successful, login with the facebook
+      self.loginWithFacebook(completion: { (error) in
+        if let error = error {
+          NCActivityIndicator.shared.stop()
+          NCDropDownNotification.shared.showError(message: error.localizedDescription)
+          return
+        }
+        //Get the information form the facebook
+        self.fetchFacebookUser(completion: { (name, uid, email, image, error) in
+          if let error = error {
+            NCActivityIndicator.shared.stop()
+            NCDropDownNotification.shared.showError(message: error.localizedDescription)
+            return
+          }
+          
+          guard let name = name,
+            let uid = uid,
+            let email = email,
+            let image = image else {
+              NCActivityIndicator.shared.stop()
+              NCDropDownNotification.shared.showError(message: "Fetch Error")
+              return
+          }
+          //Once image is downloaded, save the image to the storage
+          self.saveImageToStorage(image: image, userId: uid, completion: { (url, error) in
+            if let error = error {
+              NCActivityIndicator.shared.stop()
+              NCDropDownNotification.shared.showError(message: error.localizedDescription)
+              return
+            }
+            
+            guard let url = url else {
+              NCActivityIndicator.shared.stop()
+              NCDropDownNotification.shared.showError(message: "URL Error")
+              return
+            }
+            
+            //If save is successful,write the user info to the database
+            self.writeFacebookUser(userId: uid, username: name, iconUrl: url, email: email, completion: { (error) in
+              if let error = error {
+                NCActivityIndicator.shared.stop()
+                NCDropDownNotification.shared.showError(message: error.localizedDescription)
+                return
+              }
+              NCActivityIndicator.shared.stop()
+              NCSessionManager.shared.userLoggedIn()
+              self.dismiss(animated: true, completion: nil)
+            })
+          })
+        })
+      })
+    }
+  }
 }
 
 //MARK: Notification
@@ -171,10 +187,15 @@ extension NCLoginViewController{
     self.tearDownNotification()
     NCNotificationManager.receive(keyboardWillHide: self, selector: #selector(keyboardWillHide(_:)))
     NCNotificationManager.receive(keyboardWillShow: self, selector: #selector(keyboardWilShow(_:)))
+    NCNotificationManager.receive(dismissLogin: self, selector: #selector(receiveDismissLogin(_:)))
   }
   
   private func tearDownNotification(){
     NCNotificationManager.remove(self)
+  }
+  
+  @objc func receiveDismissLogin(_ notification : Notification){
+    NCPager.shared.dismissModal()
   }
   
   @objc func keyboardWilShow(_ notification : Notification){

@@ -108,7 +108,7 @@ extension NCDetailViewController : NCDatabaseWrite{
     NCNotificationManager.receive(keyboardWillHide: self, selector: #selector(keyboardWillHide(_:)))
     NCNotificationManager.receive(keyboardWillShow: self, selector: #selector(keyboardWilShow(_:)))
     NCNotificationManager.receive(menuButtonPressed: self, selector: #selector(menuButtonPressed(_:)))
-    NCNotificationManager.receieve(rowDeleted: self, selector: #selector(receiveRowDeleted(_:)))
+    NCNotificationManager.receive(rowDeleted: self, selector: #selector(receiveRowDeleted(_:)))
   }
   
   private func tearDownNotification(){

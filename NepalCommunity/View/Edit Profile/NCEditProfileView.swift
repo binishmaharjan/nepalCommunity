@@ -281,7 +281,11 @@ extension NCEditProfileView : NCButtonDelegate, NCDatabaseWrite, NCStorage{
           NCDropDownNotification.shared.showError(message: "Error")
           return
         }
+        //Removing the current user information from the cache Users
+        let uid = newUser.uid
+        cacheUsers.removeObject(forKey: NSString(string: uid))
         
+        //Replacing new user form session Manager
         NCSessionManager.shared.user = newUser
         NCActivityIndicator.shared.stop()
         self.isLoading = false
