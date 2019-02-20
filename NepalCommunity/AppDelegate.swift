@@ -74,6 +74,7 @@ extension AppDelegate{
   }
 }
 
+
 extension AppDelegate : GIDSignInDelegate, NCSignUpAndSignIn, NCDatabaseWrite{
   
   private func setupGoogleAuthentication(){
@@ -120,7 +121,6 @@ extension AppDelegate : GIDSignInDelegate, NCSignUpAndSignIn, NCDatabaseWrite{
         Dlog("Successful")
       })
     }
-    
   }
 }
 

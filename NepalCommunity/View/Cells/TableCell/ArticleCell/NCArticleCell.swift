@@ -473,6 +473,12 @@ extension NCArticleCell : NCButtonDelegate{
       if isDisliked{
         self.dislikeFunction()
       }
+      
+      //Sending the Notification
+      let notificationID = randomID(length: 25)
+      let receiverId = article.uid
+      let articleId = article.articleId
+      sendNotification(notificationId: notificationID, receiverId: receiverId, notificationType: NCNotificationType.articleLike.rawValue, transitionId: articleId)
     }else{
       //Saving the cache and changing the ui
       self.isLiked = false
@@ -526,6 +532,11 @@ extension NCArticleCell : NCButtonDelegate{
       if isLiked{
         self.likeFunction()
       }
+      //Sending the Notification
+      let notificationID = randomID(length: 25)
+      let receiverId = article.uid
+      let articleId = article.articleId
+      sendNotification(notificationId: notificationID, receiverId: receiverId, notificationType: NCNotificationType.articleDislike.rawValue, transitionId: articleId)
     }else{
       self.isDisliked = false
        cacheDislike.setObject(BoolWrapper(self.isDisliked), forKey: NSString(string: "\(article.articleId)"))
@@ -694,5 +705,23 @@ extension NCArticleCell{
   func removeObserveComment(){
     guard let commentListener = self.commentListener else {return}
     commentListener.remove()
+  }
+}
+
+
+//MARK: Notification
+extension NCArticleCell{
+  private func sendNotification(notificationId : String, receiverId: String,notificationType :String,transitionId:String){
+    self.writeNotification(notificaitonId: notificationId,
+                           receiverId: receiverId,
+                           notificationType: notificationType,
+                           transitionId: transitionId,
+                           completion: { (error) in
+                            if let error = error{
+                              Dlog(error.localizedDescription)
+                              return
+                            }
+                            Dlog("Notification Sent")
+    })
   }
 }

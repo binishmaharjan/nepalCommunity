@@ -383,6 +383,11 @@ extension NCCommentCell: NCButtonDelegate{
       if isDisliked{
         self.dislikeFunction()
       }
+      //Sending the Notification
+      let notificationID = randomID(length: 25)
+      let receiverId = comment.uid
+      let articleId = comment.articleId
+      sendNotification(notificationId: notificationID, receiverId: receiverId, notificationType: NCNotificationType.commentLike.rawValue, transitionId: articleId)
     }else{
       self.isLiked = false
       //Saving the cache and changing the ui
@@ -431,6 +436,12 @@ extension NCCommentCell: NCButtonDelegate{
       if isLiked{
         self.likeFunction()
       }
+      
+      //Sending the Notification
+      let notificationID = randomID(length: 25)
+      let receiverId = comment.uid
+      let articleId = comment.articleId
+      sendNotification(notificationId: notificationID, receiverId: receiverId, notificationType: NCNotificationType.commentDislike.rawValue, transitionId: articleId)
     }else{
       self.isDisliked = false
       cacheCommentDislike.setObject(BoolWrapper(self.isDisliked), forKey: NSString(string: "\(comment.commentId)"))
@@ -546,5 +557,21 @@ extension NCCommentCell: NCButtonDelegate{
     guard let disLikeListener = self.disLikeListener else {return}
     disLikeListener.remove()
   }
-  
+}
+
+//MARK: Notification
+extension NCCommentCell : NCDatabaseWrite{
+  private func sendNotification(notificationId : String, receiverId: String,notificationType :String,transitionId:String){
+    self.writeNotification(notificaitonId: notificationId,
+                           receiverId: receiverId,
+                           notificationType: notificationType,
+                           transitionId: transitionId,
+                           completion: { (error) in
+                            if let error = error{
+                              Dlog(error.localizedDescription)
+                              return
+                            }
+                            Dlog("Notification Sent")
+    })
+  }
 }

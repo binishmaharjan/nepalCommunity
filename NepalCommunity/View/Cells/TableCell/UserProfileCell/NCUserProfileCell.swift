@@ -281,7 +281,7 @@ class NCUserProfileCell : UITableViewCell {
 }
 
 //MARK : Check Follow
-extension NCUserProfileCell : NCDatabaseAccess{
+extension NCUserProfileCell : NCDatabaseAccess, NCDatabaseWrite{
   private func checkFollow(){
     guard let otherUser = self.user,
       let myUser = NCSessionManager.shared.user
@@ -337,6 +337,18 @@ extension NCUserProfileCell : NCDatabaseAccess{
               }
           })
       }
+      
+      //Sending the notification
+      let notificationId = randomID(length: 25)
+      let receiverId = otherUser.uid
+      self.writeNotification(notificaitonId: notificationId, receiverId: receiverId, notificationType: NCNotificationType.follow.rawValue, transitionId: receiverId) { (error) in
+        if let error = error {
+          Dlog(error.localizedDescription)
+          return
+        }
+        Dlog("Notification Sent")
+      }
+      
     }else{
       self.isFollowed = false
       cacheFollow.setObject(BoolWrapper(self.isFollowed), forKey: NSString(string: "\(otherUser.uid)"))

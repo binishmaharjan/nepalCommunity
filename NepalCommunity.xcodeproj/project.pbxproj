@@ -45,6 +45,8 @@
 		AC71845921A6510B0056DF3F /* NCImageSelectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC71845821A6510B0056DF3F /* NCImageSelectionCell.swift */; };
 		AC72845A21F815CA00638FC4 /* NCUserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC72845921F815C900638FC4 /* NCUserCell.swift */; };
 		AC7D187721B508360041503F /* NCEmptyTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC7D187621B508360041503F /* NCEmptyTableView.swift */; };
+		AC867E37221A3F580010EE91 /* NCNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC867E36221A3F580010EE91 /* NCNotification.swift */; };
+		AC867E3A221B9E610010EE91 /* NCNotificationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC867E39221B9E610010EE91 /* NCNotificationCell.swift */; };
 		AC910DB322092D67008EF419 /* NCPager+Menu.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC910DB222092D66008EF419 /* NCPager+Menu.swift */; };
 		AC9727A321B8E0AA00F265FD /* NCDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC9727A221B8E0AA00F265FD /* NCDetailViewController.swift */; };
 		AC9727A521B8E11500F265FD /* NCDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC9727A421B8E11500F265FD /* NCDetailView.swift */; };
@@ -144,6 +146,8 @@
 		AC71845821A6510B0056DF3F /* NCImageSelectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCImageSelectionCell.swift; sourceTree = "<group>"; };
 		AC72845921F815C900638FC4 /* NCUserCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCUserCell.swift; sourceTree = "<group>"; };
 		AC7D187621B508360041503F /* NCEmptyTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCEmptyTableView.swift; sourceTree = "<group>"; };
+		AC867E36221A3F580010EE91 /* NCNotification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCNotification.swift; sourceTree = "<group>"; };
+		AC867E39221B9E610010EE91 /* NCNotificationCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCNotificationCell.swift; sourceTree = "<group>"; };
 		AC910DB222092D66008EF419 /* NCPager+Menu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NCPager+Menu.swift"; sourceTree = "<group>"; };
 		AC9727A221B8E0AA00F265FD /* NCDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCDetailViewController.swift; sourceTree = "<group>"; };
 		AC9727A421B8E11500F265FD /* NCDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCDetailView.swift; sourceTree = "<group>"; };
@@ -306,6 +310,7 @@
 				AC00BCDD21C36A3000984F9D /* WrapperClass */,
 				ACBBBA0C21AB7FB70077C6E4 /* Categories */,
 				AC1EDCCA2182A0F40089C7AF /* AccountType */,
+				AC867E36221A3F580010EE91 /* NCNotification.swift */,
 				AC69B33B21AB96D8008BE631 /* NCUser.swift */,
 				ACD4FE7C21AE5DC000C1F534 /* NCArticle.swift */,
 				AC423AB821ED8A12008B81AA /* NCComment.swift */,
@@ -440,6 +445,7 @@
 		AC71844D21A2523E0056DF3F /* TableCell */ = {
 			isa = PBXGroup;
 			children = (
+				AC867E38221B9E4C0010EE91 /* NotificationCell */,
 				ACBEB7202203E8D700E87190 /* SettingCell */,
 				ACB5289921FE9DC600A4E98E /* UserProfileCell */,
 				ACA12F0921F16D7100E56664 /* MyUserProfile */,
@@ -492,6 +498,14 @@
 				AC7D187621B508360041503F /* NCEmptyTableView.swift */,
 			);
 			path = TableEmptyView;
+			sourceTree = "<group>";
+		};
+		AC867E38221B9E4C0010EE91 /* NotificationCell */ = {
+			isa = PBXGroup;
+			children = (
+				AC867E39221B9E610010EE91 /* NCNotificationCell.swift */,
+			);
+			path = NotificationCell;
 			sourceTree = "<group>";
 		};
 		AC9727A121B8E09000F265FD /* Detail */ = {
@@ -951,6 +965,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				ACCC08AC2180140100D6391A /* AppDelegate.swift in Sources */,
+				AC867E3A221B9E610010EE91 /* NCNotificationCell.swift in Sources */,
 				AC910DB322092D67008EF419 /* NCPager+Menu.swift in Sources */,
 				ACA50A872186A1FE00B2040A /* NCSignUpViewController.swift in Sources */,
 				ACDEACDC219E4C5B009964AE /* NCPageViewController.swift in Sources */,
@@ -1009,6 +1024,7 @@
 				ACE36204220146900023CC26 /* NCUserListView.swift in Sources */,
 				ACA50A7D2182B8CB00B2040A /* UIButton+Animation.swift in Sources */,
 				AC423AB921ED8A12008B81AA /* NCComment.swift in Sources */,
+				AC867E37221A3F580010EE91 /* NCNotification.swift in Sources */,
 				AC9F256E219D061D0090A77E /* NCHomeTopView.swift in Sources */,
 				ACA50A912186AD7F00B2040A /* NCTextButton.swift in Sources */,
 				ACBBBA0E21AB7FCE0077C6E4 /* NCCategories.swift in Sources */,

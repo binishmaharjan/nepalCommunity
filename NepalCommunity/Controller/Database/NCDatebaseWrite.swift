@@ -56,7 +56,7 @@ extension NCDatabaseWrite{
   
   //Algoria Database
   private func pushDataAlgolia(data: [String: AnyObject]) {
-
+    
     var index: Index?
     index = NCSessionManager.shared.client.index(withName: "NC_users")
     
@@ -488,35 +488,36 @@ extension NCDatabaseWrite{
         .collection(DatabaseReference.USERS_REF)
         .document(uid)
         .updateData(updateData, completion: { (error) in
-            if let error = error{completion?(nil,error)}
+          if let error = error{completion?(nil,error)}
           
           //Updating the algoria
           self.updateAlgoriaData(data: updateData as [String : AnyObject])
           
-            Firestore.firestore().collection(DatabaseReference.USERS_REF).document(uid).getDocument(completion: { (snapshot, error) in
-              if let error = error{
-                completion?(nil,error)
+          Firestore.firestore().collection(DatabaseReference.USERS_REF).document(uid).getDocument(completion: { (snapshot, error) in
+            if let error = error{
+              completion?(nil,error)
+              return
+            }
+            
+            guard let snapshot = snapshot,
+              let data = snapshot.data()
+              else {
+                completion?(nil,NSError.init(domain: "Error", code: -1, userInfo: nil))
                 return
-              }
-              
-              guard let snapshot = snapshot,
-                let data = snapshot.data()
-                else {
-                  completion?(nil,NSError.init(domain: "Error", code: -1, userInfo: nil))
-                  return
-              }
-              
-              do{
-                let user = try FirestoreDecoder().decode(NCUser.self, from: data)
-                completion?(user,nil)
-              }catch{
-                completion?(nil,error)
-              }
-            })
+            }
+            
+            do{
+              let user = try FirestoreDecoder().decode(NCUser.self, from: data)
+              completion?(user,nil)
+            }catch{
+              completion?(nil,error)
+            }
+          })
         })
     }
   }
   
+  //Update ALgoria data
   private func updateAlgoriaData(data : [String : AnyObject]){
     guard let objectId = NCSessionManager.shared.user?.uid else {return}
     
@@ -529,6 +530,41 @@ extension NCDatabaseWrite{
         }
       })
     }
-
+    
+  }
+  
+  
+  //Notification
+  func writeNotification(notificaitonId:String,receiverId:String,notificationType:String,transitionId: String,completion :((Error?)->())?){
+    guard let currentUser = NCSessionManager.shared.user,
+          currentUser.uid != receiverId
+    else {return}
+    
+    let notification  = NCNotification.init(notificationId: notificaitonId,
+                                            senderId: currentUser.uid,
+                                            dateCreated: NCDate.dateToString(),
+                                            notificationType: notificationType,
+                                            transitionId: transitionId,
+                                            isSeen: false)
+    DispatchQueue.global(qos: .default).async {
+      do{
+        let data = try FirestoreEncoder().encode(notification) as [String : AnyObject]
+        Firestore.firestore()
+          .collection(DatabaseReference.USERS_REF)
+          .document(receiverId)
+          .collection(DatabaseReference.NOTIFICATION_REF)
+          .document(notificaitonId)
+          .setData(data) { (error) in
+            if let error = error{
+              DispatchQueue.main.async {completion?(error)}
+            }else{
+              DispatchQueue.main.async {completion?(nil)}
+            }
+        }
+      }catch{
+        completion?(error)
+      }
+    }
   }
 }
+
