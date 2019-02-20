@@ -368,6 +368,22 @@ extension NCDetailView : NCDatabaseWrite{
         return
       }
       NCDropDownNotification.shared.showSuccess(message: "Comment Done")
+      
+      //Send Notification
+      let notificationID = randomID(length: 25)
+      let receiverId = article.uid
+      self.writeNotification(notificaitonId: notificationID,
+                             receiverId: receiverId,
+                             notificationType: NCNotificationType.comment.rawValue,
+                             transitionId: articleId,
+                             completion: { (error) in
+        if let error = error{
+          Dlog(error.localizedDescription)
+          return
+        }
+        Dlog("Notification Sent")
+      })
+      
     }
   }
   

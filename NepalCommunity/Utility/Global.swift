@@ -99,6 +99,10 @@ class DatabaseReference{
   static let REPORT_REF = "reports"
   static let REPORT_IDS = "report_ids"
   static let REPORT_TYPE = "report_type"
+  
+  //Notification
+  static let NOTIFICATION_REF = "notifications"
+  static let NOTIFICATION_ID = "notification_id"
 }
 
 class StorageReference{

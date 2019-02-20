@@ -78,9 +78,6 @@ class NCSingleHomeView : NCBaseView{
     tableView.edgesToSuperview()
   }
   
-  
-  
-  
   private func loadArticles(){
     guard let referenceTitle = self.referenceTitle else {
       Dlog("No Reference")

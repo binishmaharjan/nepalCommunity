@@ -17,6 +17,7 @@ class NCUserCell : UITableViewCell{
   private weak var userNameLbl : UILabel?
   private weak var userEmailLbl : UILabel?
   private weak var container : UIView?
+  private weak var border : UIView?
   
   var user : NCUser?{
     didSet{
@@ -77,6 +78,11 @@ class NCUserCell : UITableViewCell{
     emailLabel.font = NCFont.normal(size: 14)
     emailLabel.adjustsFontSizeToFitWidth = true
     container.addSubview(emailLabel)
+    
+    let border = UIView()
+    self.border = border
+    container.addSubview(border)
+    border.backgroundColor = NCColors.darKGray
   }
   
   private func setupConstraints(){
@@ -84,23 +90,28 @@ class NCUserCell : UITableViewCell{
           let userImage = self.userImage,
           let userNameLbl = self.userNameLbl,
           let userEmailLbl = self.userEmailLbl,
-          let container = self.container
+          let container = self.container,
+          let border = self.border
       else {return}
     
     container.edgesToSuperview()
     
-    userImageBG.topToSuperview(offset : 4)
+    userImageBG.topToSuperview(offset : 10)
     userImageBG.height(42)
     userImageBG.leftToSuperview(offset : 8)
     userImage.width(to: userImage, userImage.heightAnchor)
     
     userImage.edgesToSuperview()
-    container.bottom(to: userImageBG, offset : 4)
     
     userNameLbl.top(to: userImageBG)
     userNameLbl.leftToRight(of: userImageBG, offset: 8)
     
     userEmailLbl.topToBottom(of: userNameLbl, offset : 2)
     userEmailLbl.left(to: userNameLbl)
+    
+    border.edgesToSuperview(excluding: .top)
+    border.height(1)
+    
+    container.bottom(to: userImageBG, offset : 10)
   }
 }

@@ -30,6 +30,8 @@ class NCNotificationController : NCViewController{
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     self.navigationController?.navigationBar.isHidden = true
+    guard let mainView = self.mainView else {return}
+    mainView.user = NCSessionManager.shared.user
   }
   
   override func viewWillDisappear(_ animated: Bool) {
