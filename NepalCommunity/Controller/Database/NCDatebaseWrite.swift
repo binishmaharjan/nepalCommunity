@@ -15,8 +15,19 @@ import InstantSearch
 protocol NCDatabaseWrite{
   func writeEmailUser(userId : String, username: String,iconUrl : String,email : String, completion : ((_ error: Error?)->())? )
   func writeFacebookUser(userId: String, username: String, iconUrl: String, email : String, completion: ((Error?) -> ())?)
-  
+  func writeGooglUser(userId: String, username:String, iconUrl: String, email: String,completion: ((Error?) -> ())?)
   func postArticle(articleId : String, userId: String, title: String, description: String, category : String,imageURL : String, hasImage : Int, completion : ((Error?) -> ())?)
+  func postComment(commentId : String, uid:String, articleId: String, commentString: String,completion : ((Error?) -> ())?)
+  func report(id: String, type : String,uid:String, completion : ((Error?) -> ())?)
+  func deleteComment(articleId: String, commentId : String,completion : ((Error?)->())?)
+  func deleteArticle(articleId : String, completion : ((Error?)->())?)
+  func registerLikedArticle(uid : String, aritcleid:String, completion :((Error?)->())?)
+  func registerDislikeArticle(uid : String, aritcleid:String, completion :((Error?)->())?)
+  func removeLikedArticle(uid : String, aritcleid:String, completion :((Error?)->())?)
+   func removeDislikedArticle(uid : String, aritcleid:String, completion :((Error?)->())?)
+  func editField(uid : String, name : String, url : String, completion : ((NCUser?,Error?)->())?)
+  func writeNotification(notificaitonId:String,receiverId:String,notificationType:String,transitionId: String,completion :((Error?)->())?)
+  func udpateIsSeen(notificationId:String, completion : ((Error?)->())?)
   
 }
 
@@ -564,6 +575,22 @@ extension NCDatabaseWrite{
       }catch{
         completion?(error)
       }
+    }
+  }
+  
+  //Update Notification isSeen
+  func udpateIsSeen(notificationId:String, completion : ((Error?)->())?){
+    guard let user = NCSessionManager.shared.user else {return}
+    let notificationRef = Firestore.firestore()
+      .collection(DatabaseReference.USERS_REF)
+      .document(user.uid)
+      .collection(DatabaseReference.NOTIFICATION_REF)
+      .document(notificationId)
+    
+    DispatchQueue.global(qos: .default).async {
+      notificationRef.updateData(["is_seen" : true], completion: { (error) in
+        completion?(error)
+      })
     }
   }
 }

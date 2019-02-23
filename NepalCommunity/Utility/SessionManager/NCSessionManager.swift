@@ -51,6 +51,7 @@ class NCSessionManager{
       
       do{
         self.user  = try FirebaseDecoder().decode(NCUser.self, from: data)
+        NCNotificationManager.postSessionUserDownloaded()
       }catch{
         Dlog(error.localizedDescription)
       }

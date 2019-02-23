@@ -34,6 +34,9 @@ class NCNotificationView : NCBaseView{
   private var isLoading: Bool = false
   private var LAST_COUNT : Int = 1
   
+  //Refresh Control
+  private var refreshControl : UIRefreshControl = UIRefreshControl()
+  
   
   //Notification
   var notifiations: [NCNotification] = [NCNotification]()
@@ -79,6 +82,12 @@ class NCNotificationView : NCBaseView{
     tableView.delegate = self
     tableView.dataSource = self
     tableView.register(CELL1_CLASS, forCellReuseIdentifier: CELL1_ID)
+    
+    refreshControl = UIRefreshControl()
+    tableView.refreshControl = refreshControl
+    refreshControl.backgroundColor = NCColors.clear
+    refreshControl.tintColor = NCColors.blue
+    refreshControl.addTarget(self, action: #selector(refreshControlWasDragged), for: .valueChanged)
   }
   
   
@@ -123,6 +132,14 @@ extension NCNotificationView : UITableViewDelegate, UITableViewDataSource{
       loadMoreNotification()
     }
   }
+  
+  //Refresh Action
+  @objc private func refreshControlWasDragged(){
+    self.loadNotification()
+    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+      appDelegate.tabBarController?.showBadge(isShow: false)
+    }
+  }
 }
 
 //MARK: Data
@@ -146,12 +163,14 @@ extension NCNotificationView{
         if let error = error {
           Dlog(error.localizedDescription)
           self.isLoading = false
+          self.refreshControl.endRefreshing()
           return
         }
         
         guard let snapshot = snapshot else {
           Dlog("No Snapshot")
           self.isLoading = false
+          self.refreshControl.endRefreshing()
           return
         }
         
@@ -159,6 +178,7 @@ extension NCNotificationView{
           Dlog("No last snapshot")
           self.isLoading = false
           self.isLastPage = true
+          self.refreshControl.endRefreshing()
           return
         }
         
@@ -177,6 +197,7 @@ extension NCNotificationView{
         }
         
         DispatchQueue.main.async {
+          self.refreshControl.endRefreshing()
           self.isLoading = false
           self.tableView?.reloadData()
         }

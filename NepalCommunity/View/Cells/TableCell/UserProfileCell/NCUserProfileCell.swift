@@ -341,7 +341,7 @@ extension NCUserProfileCell : NCDatabaseAccess, NCDatabaseWrite{
       //Sending the notification
       let notificationId = randomID(length: 25)
       let receiverId = otherUser.uid
-      self.writeNotification(notificaitonId: notificationId, receiverId: receiverId, notificationType: NCNotificationType.follow.rawValue, transitionId: receiverId) { (error) in
+      self.writeNotification(notificaitonId: notificationId, receiverId: receiverId, notificationType: NCNotificationType.follow.rawValue, transitionId: myUser.uid) { (error) in
         if let error = error {
           Dlog(error.localizedDescription)
           return

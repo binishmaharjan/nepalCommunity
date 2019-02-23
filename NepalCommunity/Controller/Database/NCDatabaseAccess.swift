@@ -13,6 +13,7 @@ import CodableFirebase
 
 protocol NCDatabaseAccess{
   func downloadUser(uid: String,completion: (( NCUser?,Error?) -> ())?)
+  func downloadArticle(articleId: String,completion: (( NCArticle?,Error?) -> ())?)
   func checkedLike(uid:String, articleId: String, completion: (( Bool?,Error?) -> ())?)
   func checkedDislike(uid:String, articleId:String,completion: ((Bool?,Error?) -> ())?)
 }
@@ -34,6 +35,29 @@ extension NCDatabaseAccess{
           do{
             let user = try FirebaseDecoder().decode(NCUser.self, from: data)
             DispatchQueue.main.async {completion?(user,nil)}
+          }catch{
+            DispatchQueue.main.async {completion?(nil,error)}
+          }
+      }
+    }
+  }
+  
+  func downloadArticle(articleId: String,completion: (( NCArticle?,Error?) -> ())?){
+    DispatchQueue.global(qos: .default).async {
+      Firestore.firestore().collection(DatabaseReference.ARTICLE_REF)
+        .whereField(DatabaseReference.ARTICLE_ID, isEqualTo: articleId)
+        .getDocuments { (snapshot, error) in
+          if let error = error {
+            DispatchQueue.main.async {completion?(nil,error)}
+            return
+          }
+          
+          guard let snapshot = snapshot,
+            let first =  snapshot.documents.first else {return}
+          let data = first.data()
+          do{
+            let article = try FirebaseDecoder().decode(NCArticle.self, from: data)
+            DispatchQueue.main.async {completion?(article,nil)}
           }catch{
             DispatchQueue.main.async {completion?(nil,error)}
           }
