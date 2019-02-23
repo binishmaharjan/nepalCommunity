@@ -90,4 +90,13 @@ extension NCNotificationManager{
   static func receive(dismissLogin observer :Any, selector :Selector){
     receive(name: N_DISMISS_LOGIN, observer: observer, selector: selector)
   }
+  
+  //MARK: Session User
+  private static let N_SESSION_USER_DOWNLOADED = "N_SESSION_USER_DOWNLOADED"
+  static func postSessionUserDownloaded(){
+    self.post(name: N_SESSION_USER_DOWNLOADED, object: nil)
+  }
+  static func receive(sessionUserDownloaded observer: Any, selector:Selector){
+    receive(name: N_SESSION_USER_DOWNLOADED, observer: observer, selector: selector)
+  }
 }

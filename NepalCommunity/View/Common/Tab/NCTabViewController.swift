@@ -15,6 +15,9 @@ class NCTabViewController : UITabBarController{
   private var handle: AuthStateDidChangeListenerHandle?
   
   //MARK: Variables
+  private weak var notificationAlertView : UIView?
+  private let NOTI_TAB_NUMBER : Int = 3
+  
   override func viewDidLoad() {
     super.viewDidLoad()
     
@@ -63,6 +66,7 @@ class NCTabViewController : UITabBarController{
                                                            left: TabViewConstants.TAB_ITEM_OFF_H,
                                                            bottom: -TabViewConstants.TAB_ITEM_OFF_V,
                                                            right: TabViewConstants.TAB_ITEM_OFF_H)
+
     notificationView.title = nil
     notificationView.tabBarItem.image = UIImage(named:"icon_bell")?
       .withRenderingMode(UIImage.RenderingMode.alwaysOriginal)
@@ -87,6 +91,23 @@ class NCTabViewController : UITabBarController{
     }
     
     self.viewControllers = [homeNav,searchNav,categoryView,notificationNav,meNav]
+    
+    
+    let notificationTabBar = tabBar.subviews[NOTI_TAB_NUMBER]
+    notificationTabBar.subviews.forEach{(view) in
+      guard let icon = view as? UIImageView else {return}
+      
+      let notificationAlertView = UIView()
+      self.notificationAlertView  = notificationAlertView
+      notificationAlertView.backgroundColor = NCColors.red
+      notificationAlertView.layer.cornerRadius = 5
+      view.addSubview(notificationAlertView)
+      notificationAlertView.height(TabViewConstants.BADGE_SIZE)
+      notificationAlertView.width(TabViewConstants.BADGE_SIZE)
+      notificationAlertView.top(to: icon, offset : 5)
+      notificationAlertView.right(to: icon)
+      notificationAlertView.alpha = 0.0
+    }
   }
   
   private func setupTabBar(){
@@ -181,6 +202,14 @@ class NCTabViewController : UITabBarController{
   }
 }
 
+//MARK: Badge
+extension NCTabViewController{
+  func showBadge(isShow : Bool){
+    guard let badge = self.notificationAlertView else {return}
+    badge.alpha = isShow ? 1.0 : 0.0
+  }
+}
+
 
 //MARK: Tab bar pressed
 extension NCTabViewController: UITabBarControllerDelegate{
@@ -200,5 +229,6 @@ extension NCTabViewController{
     static let MIDDLE_BUTTON_OFFSET : CGFloat = 20
     static let TAB_ITEM_OFF_V : CGFloat = 6
     static let TAB_ITEM_OFF_H : CGFloat = 0
+    static let BADGE_SIZE : CGFloat = 10
   }
 }

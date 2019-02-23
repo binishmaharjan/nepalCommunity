@@ -50,7 +50,7 @@ class NCHomeTopView: NCBaseView{
     self.titleLbl = titleLbl
     titleLbl.font = NCFont.heavy(size: 24)
     titleLbl.textColor = NCColors.white
-    titleLbl.text = LOCALIZE("APPICON")
+    titleLbl.text = LOCALIZE("")
     header.addSubview(titleLbl)
   }
   

@@ -64,6 +64,7 @@ class NCNotificationCell : UITableViewCell, NCDatabaseAccess{
     let container = UIView()
     self.container = container
     self.addSubview(container)
+    container.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(cellWasTapped)))
     
     let iconBG = UIView()
     self.iconBG = iconBG
@@ -94,10 +95,10 @@ class NCNotificationCell : UITableViewCell, NCDatabaseAccess{
   
   private func setupConstraints(){
     guard let container = self.container,
-          let iconBG = self.iconBG,
-          let icon = self.icon,
-          let notificationLabel = self.notificationLabel,
-          let border = self.border
+      let iconBG = self.iconBG,
+      let icon = self.icon,
+      let notificationLabel = self.notificationLabel,
+      let border = self.border
       else {return}
     
     container.edgesToSuperview()
@@ -154,7 +155,7 @@ class NCNotificationCell : UITableViewCell, NCDatabaseAccess{
   //Create Notification Text With Data
   private func processNotificationType(){
     guard let sender = self.sender,
-          let notificationLabel = self.notificationLabel,
+      let notificationLabel = self.notificationLabel,
       let notificationType = self.notificationType else {return}
     
     let senderName = sender.username
@@ -170,7 +171,7 @@ class NCNotificationCell : UITableViewCell, NCDatabaseAccess{
       notiText = " has liked your article."
     case NCNotificationType.articleDislike.rawValue :
       notiText = " has disliked your article."
-    case NCNotificationType.commentDislike.rawValue :
+    case NCNotificationType.commentLike.rawValue :
       notiText = " has liked your comment."
     case NCNotificationType.commentDislike.rawValue :
       notiText = " has disliked your comment."
@@ -190,5 +191,72 @@ class NCNotificationCell : UITableViewCell, NCDatabaseAccess{
   private func processIsSeen(){
     guard let isSeen = self.isSeen else {return}
     self.backgroundColor = isSeen ? NCColors.white : NCColors.gray
+  }
+}
+
+
+//MARK: Cell Pressed
+extension NCNotificationCell : NCDatabaseWrite{
+  @objc private func cellWasTapped(){
+    guard let notification = self.notification,
+      let notificationType = self.notificationType,
+      let transitionId = self.transitionId
+      else {return}
+    
+    
+    //Change The Status To Seen
+    self.isSeen = true
+    self.processIsSeen()
+    udpateIsSeen(notificationId: notification.notificationId) { (error) in
+      if let error = error {
+        Dlog(error.localizedDescription)
+        return
+      }
+      //Notification Seen
+    }
+    
+    //Showing the page
+    switch notificationType {
+    case NCNotificationType.follow.rawValue:
+      self.showUserPage(userId: transitionId)
+    default:
+      self.showArticlePage(articleId: transitionId)
+    }
+  }
+  
+  private func showUserPage(userId: String){
+    NCActivityIndicator.shared.start(view: self)
+    downloadUser(uid: userId) { (user, error) in
+      if let error = error{
+        Dlog(error.localizedDescription)
+        NCActivityIndicator.shared.stop()
+        return
+      }
+      guard let user = user else{
+        Dlog("No User")
+        NCActivityIndicator.shared.stop()
+        return
+      }
+      NCActivityIndicator.shared.stop()
+      NCPager.shared.showUserPage(user: user)
+    }
+  }
+  
+  private func showArticlePage(articleId: String){
+    NCActivityIndicator.shared.start(view: self)
+    downloadArticle(articleId: articleId) { (article, error) in
+      if let error = error{
+        Dlog(error.localizedDescription)
+        NCActivityIndicator.shared.stop()
+        return
+      }
+      guard let article = article else{
+        Dlog("No Article")
+        NCActivityIndicator.shared.stop()
+        return
+      }
+      NCActivityIndicator.shared.stop()
+      NCPager.shared.showDetailPage(article: article, user: NCSessionManager.shared.user!, shouldKeyBoardShowUp: false)
+    }
   }
 }
